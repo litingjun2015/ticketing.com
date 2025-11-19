@@ -1,0 +1,54 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-type" class="form-control selectpicker" name="row[type]">
+                {foreach name="typeList" item="vo"}
+                    <option value="{$key|htmlentities}" {in name="key" value="$row.type"}selected{/in}>{$vo|htmlentities}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Xx_json')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <dl class="fieldlist" data-name="row[xx_json]">
+                <dd>
+                    <ins>{:__('Key')}(从0开始)</ins>
+                    <ins>{:__('Value')}</ins>
+                </dd>
+                <dd><a href="javascript:;" class="btn btn-sm btn-success btn-append"><i class="fa fa-plus"></i> {:__('Append')}</a></dd>
+                <textarea name="row[xx_json]" class="form-control hide" cols="30" rows="5">{$row.xx_json|htmlentities}</textarea>
+            </dl>
+
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Tag_json')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <dl class="fieldlist" data-name="row[tag_json]">
+                <dd>
+                    <ins>{:__('Key')}(从0开始)</ins>
+                    <ins>{:__('Value')}</ins>
+                </dd>
+                <dd><a href="javascript:;" class="btn btn-sm btn-success btn-append"><i class="fa fa-plus"></i> {:__('Append')}</a></dd>
+                <textarea name="row[tag_json]" class="form-control hide" cols="30" rows="5">{$row.tag_json|htmlentities}</textarea>
+            </dl>
+
+
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

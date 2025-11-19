@@ -1,0 +1,37 @@
+export default {
+	data() {
+		return {
+			tabbar_list: [{
+					text: '首页',
+					icon: '/static/business/index.png',
+					action_icon: '/static/business/index_action.png'
+				},
+				{ text: '发布', icon: '/static/business/fb.png', action_icon: '/static/business/fb_action.png' },
+				{
+					text: '订单',
+					icon: '/static/business/order.png',
+					action_icon: '/static/business/order_action.png'
+				},
+				{ text: '返回', icon: '/static/business/back.png', action_icon: '/static/business/back.png' },
+			],
+			tz_url: [
+				'/pagesB/index/index',
+				'/pagesB/release/release',
+				'/pagesB/order/order',
+			]
+		}
+	},
+	methods: {
+		change(e) {
+			if (e == 3) {
+				uni.switchTab({
+					url: '/pages/me/me'
+				})
+			} else {
+				uni.redirectTo({
+					url: this.tz_url[e]
+				})
+			}
+		}
+	}
+}

@@ -1,0 +1,64 @@
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('User_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-user_id" data-rule="required" data-source="user/user/index" data-field="username"
+                   class="form-control selectpage" name="row[user_id]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+
+            <select id="c-type" class="form-control selectpicker" name="row[type]">
+                {foreach name="typeList" item="vo"}
+                <option value="{$key|htmlentities}" {in name="key" value="1" }selected{
+                /in}>{$vo|htmlentities}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group" data-favisible="type=1">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Bank_name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-bank_name" data-rule="required" class="form-control" name="row[bank_name]" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="form-group" data-favisible="type=1">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Bank_code')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-bank_code" data-rule="required" class="form-control" name="row[bank_code]" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="form-group" data-favisible="type=1">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Bank_mobile')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-bank_mobile" data-rule="required" class="form-control" name="row[bank_mobile]" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="form-group" data-favisible="type=3">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Zfb_code')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-zfb_code" data-rule="required" class="form-control" name="row[zfb_code]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group" data-favisible="type=2">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Wx_code')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-wx_code" data-rule="required" class="form-control" name="row[wx_code]" type="text" value="">
+        </div>
+    </div>
+
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

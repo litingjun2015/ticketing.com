@@ -1,0 +1,224 @@
+<style>
+    .upload-imagess {
+        background: url('/assets/addons/example/img/plus.png') no-repeat center center;
+        background-size: 30px 30px;
+        height: 30px;
+        width: 30px;
+        border: 1px solid #ccc;
+    }
+    .upload-imagesss {
+        background: url('/assets/addons/example/img/plus.png') no-repeat center center;
+        background-size: 30px 30px;
+        height: 30px;
+        width: 30px;
+        border: 1px solid #ccc;
+    }
+
+</style>
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Brand_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-brand_id" data-rule="required" data-source="fzly/house/brand/index" data-params='{"custom[switch]":1}' data-field="title"  class="form-control selectpage" name="row[brand_id]" type="text" value="{$row.brand_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Title')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-title" data-rule="required" class="form-control" name="row[title]" type="text" value="{$row.title|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('City')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class='control-relative'><input id="c-city" class="form-control" data-level="city" data-toggle="city-picker" name="row[city]" type="text" value="{$row.city|htmlentities}" placeholder="请选择城市"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Image')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-image" data-rule="required" class="form-control" size="50" name="row[image]" type="text" value="{$row.image|htmlentities}">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-image" class="btn btn-danger faupload" data-input-id="c-image" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp" data-multiple="false" data-preview-id="p-image"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-image" class="btn btn-primary fachoose" data-input-id="c-image" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-image"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-image"></ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Stay_type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-stay_type" class="form-control selectpicker" multiple="" name="row[stay_type][]">
+                {foreach name="stayTypeList" item="vo"}
+                    <option value="{$key|htmlentities}" {in name="key" value="$row.stay_type"}selected{/in}>{$vo|htmlentities}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Grade')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-grade" class="form-control selectpicker" name="row[grade]">
+                {foreach name="gradeList" item="vo"}
+                    <option value="{$key|htmlentities}" {in name="key" value="$row.grade"}selected{/in}>{$vo|htmlentities}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Facilities')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-facilities" class="form-control selectpicker" multiple="" name="row[facilities][]">
+                {foreach name="facilitiesList" item="vo"}
+                    <option value="{$key|htmlentities}" {in name="key" value="$row.facilities"}selected{/in}>{$vo|htmlentities}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Images')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-images" data-rule="required" class="form-control" size="50" name="row[images]" type="text" value="{$row.images|htmlentities}">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-images" class="btn btn-danger faupload" data-input-id="c-images" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp" data-multiple="true" data-preview-id="p-images"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-images" class="btn btn-primary fachoose" data-input-id="c-images" data-mimetype="image/*" data-multiple="true"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-images"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-images"></ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Address')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="hidden" class="form-control" name="row[lon]" id="lng" placeholder="经度" value="{$row.lon|htmlentities}">
+            <input type="hidden" class="form-control" name="row[lat]" id="lat" placeholder="纬度" value="{$row.lat|htmlentities}">
+            <input id="c-address" class="form-control" data-toggle="addresspicker" data-input-id="c-address" name="row[address]" type="text" value="{$row.address|htmlentities}">
+            <button type="button" class="btn btn-primary" data-toggle="addresspicker" data-input-id="c-address" data-lng-id="lng" data-lat-id="lat">点击选择地址</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Address_xx')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-address_xx" class="form-control" name="row[address_xx]" type="text" value="{$row.address_xx|htmlentities}">
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Multiplejson_yd')}:</label>
+        <div class="col-xs-12 col-sm-8">
+
+            <table class="table fieldlist" data-name="row[multiplejson_yd]" data-template="row[multiplejson_yd]tpl" id="second-table">
+                <tr>
+                    <td>{:__('图标')}</td>
+                    <td>{:__('介绍')}</td>
+                    <td width="90">{:__('Operate')}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <a href="javascript:;" class="btn btn-sm btn-success btn-append"><i class="fa fa-plus"></i> {:__('Append')}</a>
+                        <textarea name="row[multiplejson_yd]" class="form-control hide" cols="30" rows="5">{$row.multiplejson_yd|htmlentities}</textarea>
+                    </td>
+                </tr>
+            </table>
+            <script type="text/html" id="row[multiplejson_yd]tpl">
+                <tr>
+                    <td>
+                        <input type="hidden" name="<%=name%>[<%=index%>][icon]" id="c-images-<%=index%>" value="<%=row.icon%>">
+                        <button type="button" id="faupload-imagess" class="btn btn-danger faupload upload-imagess" data-input-id="c-images-<%=index%>" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp" data-multiple="false" <%if(row.icon){%>style="background-image: url('<%=Fast.api.cdnurl(row.icon)%>')"<%}%>></button>
+
+                    </td>
+                    <td><input type="text" name="<%=name%>[<%=index%>][intro]" class="form-control" value="<%=row.intro%>"/></td>
+
+                    <td width="90">
+                        <span class="btn btn-sm btn-danger btn-remove"><i class="fa fa-times"></i></span>
+                        <span class="btn btn-sm btn-primary btn-dragsort"><i class="fa fa-arrows"></i></span>
+                    </td>
+                </tr>
+            </script>
+
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Guarantee')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-guarantee" class="form-control" name="row[guarantee]" type="text" value="{$row.guarantee|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Multiplejson_md')}:</label>
+        <div class="col-xs-12 col-sm-8">
+
+            <table class="table fieldlist" data-name="row[multiplejson_md]" data-template="row[multiplejson_md]tpl" id="second-table1">
+                <tr>
+                    <td>{:__('图标')}</td>
+                    <td>{:__('标签')}</td>
+                    <td>{:__('介绍')}</td>
+                    <td width="90">{:__('Operate')}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <a href="javascript:;" class="btn btn-sm btn-success btn-append"><i class="fa fa-plus"></i> {:__('Append')}</a>
+                        <textarea name="row[multiplejson_md]" class="form-control hide" cols="30" rows="5">{$row.multiplejson_md|htmlentities}</textarea>
+                    </td>
+                </tr>
+            </table>
+            <script type="text/html" id="row[multiplejson_md]tpl">
+                <tr>
+                    <td>
+                        <input type="hidden" name="<%=name%>[<%=index%>][icon]" id="c-imagess-<%=index%>" value="<%=row.icon%>">
+                        <button type="button" id="faupload-imagesss" class="btn btn-danger faupload upload-imagesss" data-input-id="c-imagess-<%=index%>" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp" data-multiple="false" <%if(row.icon){%>style="background-image: url('<%=Fast.api.cdnurl(row.icon)%>')"<%}%>></button>
+
+                    </td>
+                    <td><input type="text" name="<%=name%>[<%=index%>][label]" class="form-control" value="<%=row.label%>"/></td>
+                    <td><input type="text" name="<%=name%>[<%=index%>][intro]" class="form-control" value="<%=row.intro%>"/></td>
+
+                    <td width="90">
+                        <span class="btn btn-sm btn-danger btn-remove"><i class="fa fa-times"></i></span>
+                        <span class="btn btn-sm btn-primary btn-dragsort"><i class="fa fa-arrows"></i></span>
+                    </td>
+                </tr>
+            </script>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Weigh')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-weigh" class="form-control" name="row[weigh]" type="number" value="{$row.weigh|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <div class="radio">
+            {foreach name="statusList" item="vo"}
+            <label for="row[status]-{$key|htmlentities}"><input id="row[status]-{$key|htmlentities}" name="row[status]" type="radio" value="{$key|htmlentities}" {in name="key" value="$row.status"}checked{/in} /> {$vo|htmlentities}</label>
+            {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

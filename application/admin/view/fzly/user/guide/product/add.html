@@ -1,0 +1,225 @@
+<style>
+    .upload-imagess {
+        background: url('/assets/addons/example/img/plus.png') no-repeat center center;
+        background-size: 30px 30px;
+        height: 30px;
+        width: 30px;
+        border: 1px solid #ccc;
+    }
+
+</style>
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('User_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-user_id" data-rule="required" data-source="fzly/user/user/index2" data-params='{"custom[type]":"1"}' data-field="username" class="form-control selectpage" name="row[user_id]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Title')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-title" data-rule="required" class="form-control" name="row[title]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Type_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-type_id" data-rule="required" data-source="fzly/user/guide/type/index" data-field="title" class="form-control selectpage" name="row[type_id]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Image')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-image" data-rule="required" class="form-control" size="50" name="row[image]" type="text">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-image" class="btn btn-danger faupload" data-input-id="c-image" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp" data-multiple="false" data-preview-id="p-image"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-image" class="btn btn-primary fachoose" data-input-id="c-image" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-image"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-image"></ul>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Jq_title')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-jq_title" data-rule="required" class="form-control" name="row[jq_title]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Zm_image')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-zm_image" data-rule="required" class="form-control" size="50" name="row[zm_image]" type="text">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-zm_image" class="btn btn-danger faupload" data-input-id="c-zm_image" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp" data-multiple="false" data-preview-id="p-zm_image"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-zm_image" class="btn btn-primary fachoose" data-input-id="c-zm_image" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-zm_image"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-zm_image"></ul>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Model')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-model" class="form-control selectpicker" multiple="" name="row[model][]">
+                {foreach name="modelList" item="vo"}
+                    <option value="{$key|htmlentities}" {in name="key" value=""}selected{/in}>{$vo|htmlentities}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Duration')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-duration" class="form-control selectpicker" multiple="" name="row[duration][]">
+                {foreach name="durationList" item="vo"}
+                    <option value="{$key|htmlentities}" {in name="key" value=""}selected{/in}>{$vo|htmlentities}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Yd_multiplejson')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <table class="table fieldlist" data-name="row[yd_multiplejson]" data-template="row[yd_multiplejson]tpl" id="second-table">
+                <tr>
+                    <td>{:__('yd_multiplejson icon')}</td>
+                    <td>{:__('yd_multiplejson intro')}</td>
+                    <td width="90">{:__('Operate')}</td>
+                </tr>
+                <tr><td colspan="3">
+                <a href="javascript:;" class="btn btn-sm btn-success btn-append"><i class="fa fa-plus"></i> {:__('Append')}</a>
+                <textarea name="row[yd_multiplejson]" class="form-control hide" cols="30" rows="5"></textarea>
+                </td></tr>
+            </table>
+            <script type="text/html" id="row[yd_multiplejson]tpl">
+                <tr>
+                    <td>
+                        <input type="hidden" name="<%=name%>[<%=index%>][icon]" id="c-images-<%=index%>" value="<%=row.icon%>">
+                        <button type="button" id="faupload-imagess" class="btn btn-danger faupload upload-imagess" data-input-id="c-images-<%=index%>" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp" data-multiple="false" <%if(row.icon){%>style="background-image: url('<%=Fast.api.cdnurl(row.icon)%>')"<%}%>></button>
+
+                    </td>
+                    <td><input type="text" name="<%=name%>[<%=index%>][intro]" class="form-control" value="<%=row.intro%>"/></td>
+                    <td width="90">
+                        <span class="btn btn-sm btn-danger btn-remove"><i class="fa fa-times"></i></span>
+                        <span class="btn btn-sm btn-primary btn-dragsort"><i class="fa fa-arrows"></i></span>
+                    </td>
+                </tr>
+            </script>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Guarantee')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-guarantee" class="form-control" name="row[guarantee]" type="text">
+        </div>
+    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Cp_content')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <textarea id="c-cp_content" class="form-control editor" rows="5" name="row[cp_content]" cols="50"></textarea>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Tw_content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-tw_content" class="form-control editor" rows="5" name="row[tw_content]" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Fy_content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-fy_content" class="form-control editor" rows="5" name="row[fy_content]" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Tg_content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-tg_content" class="form-control editor" rows="5" name="row[tg_content]" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Tg_multiplejson')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <table class="table fieldlist" data-name="row[tg_multiplejson]" data-template="row[tg_multiplejson]tpl">
+                <tr>
+                    <td>{:__('tg_multiplejson time')}</td>
+<td>{:__('tg_multiplejson fy')}</td>
+                    <td width="90">{:__('Operate')}</td>
+                </tr>
+                <tr><td colspan="3">
+                <a href="javascript:;" class="btn btn-sm btn-success btn-append"><i class="fa fa-plus"></i> {:__('Append')}</a>
+                <textarea name="row[tg_multiplejson]" class="form-control hide" cols="30" rows="5"></textarea>
+                </td></tr>
+            </table>
+            <script type="text/html" id="row[tg_multiplejson]tpl">
+                <tr>
+                    <td><input type="text" name="<%=name%>[<%=index%>][time]" class="form-control" value="<%=row.time%>"/></td>
+<td><input type="text" name="<%=name%>[<%=index%>][fy]" class="form-control" value="<%=row.fy%>"/></td>
+                    <td width="90">
+                        <span class="btn btn-sm btn-danger btn-remove"><i class="fa fa-times"></i></span>
+                        <span class="btn btn-sm btn-primary btn-dragsort"><i class="fa fa-arrows"></i></span>
+                    </td>
+                </tr>
+            </script>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('价格')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-price" class="form-control" step="0.01" name="row[price]" type="number">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('评分')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-score" class="form-control" name="row[score]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <div class="radio">
+            {foreach name="statusList" item="vo"}
+            <label for="row[status]-{$key|htmlentities}"><input id="row[status]-{$key|htmlentities}" name="row[status]" type="radio" value="{$key|htmlentities}" {in name="key" value="1"}checked{/in} /> {$vo|htmlentities}</label>
+            {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group" data-favisible="status=3">
+        <label class="control-label col-xs-12 col-sm-2">{:__('拒绝原因')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-reason" class="form-control" name="row[reason]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Weigh')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-weigh" class="form-control" name="row[weigh]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,219 @@
+ *,  
+ *::before,  
+ *::after {  
+   box-sizing: border-box;  
+   touch-action: pan-y;  
+ }  
+ html {  
+   -webkit-text-size-adjust: 100%;  
+   -webkit-tap-highlight-color: transparent;  
+ }  
+
+ body {  
+   margin: 0;  
+   -webkit-overflow-scrolling: touch;  
+   background-color: #f5f5f5;  
+ }  
+
+ h1, h2, h3, h4, h5, h6, p, ul, ol, dl, input,  
+ button,  
+ select,  
+ optgroup,  
+ textarea{  
+    margin: 0;  
+    padding: 0;  
+ }  
+
+input,   
+textarea,   
+select,   
+button {   
+    font-size:14px ;   
+}  
+ i {  
+     font-style: normal;  
+ }  
+ ol,  
+ ul,  
+ dl {  
+   list-style: none;  
+ }  
+
+ a {  
+   text-decoration: none;  
+ }  
+
+ input {  
+  background: none;  
+  outline: none;  
+  border: 0px;  
+ }  
+image {
+	will-change: transform;
+
+
+}
+ img {  
+   vertical-align: middle;  
+   border-style: none;  
+ }  
+
+ a,  
+ area,  
+ button,  
+ label,  
+ select,  
+ textarea {  
+   -ms-touch-action: manipulation;  
+   touch-action: manipulation;  
+ }  
+
+ table {  
+   border-collapse: collapse;  
+ }  
+
+ label {  
+   display: inline-block;  
+ }  
+
+ button,  
+ html [type="button"],  
+ [type="reset"],  
+ [type="submit"] {  
+   -webkit-appearance: button;  
+ }
+ 
+ image {
+ 	width: 100%;
+ 	height: 100%;
+ }
+ button::after {
+ 	border: none;
+ }
+ button {
+ 	background-color: transparent;
+ 	padding-left: 0;
+ 	padding-right: 0;
+ 	line-height: inherit;
+ }
+ 
+ button {
+ 	border-radius: 0;
+ }
+ 
+ page{
+	 background: #F5F5F5 ;
+ }
+
+.flexColumn{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.me-text-beyond {
+	/*文本内容超宽度省略号显示 单行*/
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.me-text-beyond-multi {
+	/*文本内容超宽度省略号显示 多行*/
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.magRight{
+	margin-right: 20rpx;
+}
+
+.black{
+	color: black;
+}
+
+.flexc{
+	display: flex;
+	align-items: center;
+}
+
+.flexs{
+	display: flex;
+	justify-content: space-between;
+}
+
+.flexw{
+	display: flex;
+	flex-wrap: wrap;
+}
+.flexc_C{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.flexEnd{
+	display: flex;
+	justify-content: flex-end;
+}
+	
+.gray{
+	color: #C7C8D3;
+}
+
+
+.mag20{
+	margin-top: 20rpx;
+}
+// 字体
+.size12{
+	font-size: 24rpx;
+}
+
+.size14{
+	font-size: 28rpx;
+}
+
+.size16{
+	font-size: 32rpx;
+}
+
+.size18{
+	font-size: 36rpx;
+}
+
+.size24{
+	font-size: 48rpx;
+}
+
+
+// 字体颜色
+.hue1{
+	color: #b2b2b2;
+}
+
+.hue2{
+color:	#FF5024
+}
+.hue3{
+	color: #0083CD;
+}
+
+// 字体加粗
+
+.blod{
+	font-weight: bold;
+}
+
+//文字方向
+.text_center{
+	text-align: center;
+}
+.text_left{
+	text-align: left;
+}
+.text_right{
+	text-align: right;
+}

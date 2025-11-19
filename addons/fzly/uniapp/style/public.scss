@@ -1,0 +1,257 @@
+//  ************************************************
+// 工具类
+//  ************************************************
+@for $i from 1 through 50
+{
+    //  ************************************************
+    // 外边距
+    .mt-#{$i * 2} {
+        margin-top: (2upx * $i);
+    }
+    .mr-#{$i * 2} {
+        margin-right: (2upx * $i);
+    }
+    .mb-#{$i * 2} {
+        margin-bottom: (2upx * $i);
+    }
+    .ml-#{$i * 2} {
+        margin-left: (2upx * $i);
+    }
+    .m-#{$i * 2} {
+        margin: (2upx * $i);
+    }
+	.br-#{$i * 2}{
+		border-radius: (2upx * $i);
+	}
+    //  ************************************************
+
+
+    //  ************************************************
+    //  内边距
+	.ptb-#{$i * 2} {
+	    padding: (2upx * $i) 0;
+	}
+	.plr-#{$i * 2} {
+	    padding:0 (2upx * $i);
+	}
+	
+    .pt-#{$i * 2} {
+        padding-top: (2upx * $i);
+    }
+    .pr-#{$i * 2} {
+        padding-right: (2upx * $i);
+    }
+    .pb-#{$i * 2} {
+        padding-bottom: (2upx * $i);
+    }
+    .pl-#{$i * 2} {
+        padding-left: (2upx * $i);
+    }
+    .p-#{$i * 2} {
+        padding: (2upx * $i);
+		box-sizing: border-box;
+    }
+    //  ************************************************
+
+
+    //  ************************************************
+    // 字体大小
+    .f-size-#{$i * 2} {
+        font-size: (2upx * $i);
+    }
+    //  ************************************************
+}
+
+.ma { margin: auto;}
+
+//  ************************************************
+/* 阴影 */
+.shadow-sm {
+    box-shadow: 0 2upx 4upx rgba(114, 130, 138, 0.2)!important;
+}
+.shadow {
+    box-shadow: 0 8upx 16upx rgba(114, 130, 138, 0.2)!important;
+}
+.shadow-lg {
+    box-shadow: 0 16upx 48upx rgba(114, 130, 138, 0.2)!important;
+}
+//  ************************************************
+
+
+//  ************************************************
+// 栅格栏 12 
+@for $i from 1 through 12 {
+    .span12-#{$i} {
+        width: #{ 100% * ($i / 12) }
+    }
+}
+// 栅格栏  24 
+@for $i from 1 through 24 {
+    .span24-#{$i} {
+        width: #{ 100% * ($i / 24) }
+    }
+}
+//  ************************************************
+
+//  ************************************************
+/* flex布局 */
+.d-flex{ display: flex; }  // flex 布局
+.d-block{ display: block; } // 块级元素
+.d-inline-block{ display: inline-block; } // 行内块元素
+
+.flex-1{ flex: 1; }  //  表示 flex容器 子元素所占的比例   可选项 1 0 auto  默认 auto  
+.flex-2{ flex: 2; }  //  表示 flex容器 子元素所占的比例   可选项 1 0 auto  默认 auto  
+.flex-row{ flex-direction: row; } //  主轴为水平方向，起点在左端
+.flex-row-reverse{ flex-direction: row-reverse; } //  主轴为水平方向，起点在右端
+.flex-column{ flex-direction: column; } //   //  主轴为垂直方向，起点在上边
+.flex-column-reverse{ flex-direction: column-reverse; } //   //  主轴为垂直方向，起点在下边
+
+.flex-nowrap{ flex-wrap: nowrap; } // 不换行
+.flex-wrap{ flex-wrap: wrap; }  //  换行
+.flex-wrap-reverse { flex-wrap: wrap-reverse; }  //  换行第一行在下方
+
+.flex-shrink{flex-shrink: 0;} //  元素宽度大于 容器宽度的收缩比例 0为不收缩
+.j-start{ justify-content: flex-start; }  // 水平元素左对齐
+.j-au{ justify-content: space-around; }
+.j-center{ justify-content: center; } //  水平元素居中
+.j-end{ justify-content: flex-end; } // 水平元素 右对齐
+.j-sb{display: flex; justify-content: space-between; } // 水平元素两端对齐
+.a-start{ align-items: flex-start; } // 垂直元素 上对齐
+.a-center{display: flex; align-items:center; } // 垂直元素 居中对齐
+.a-end{ align-items:flex-end; } // 垂直元素底对齐
+.a-stretch{ align-items: stretch; } // 垂直元素 默认
+.a-self-start{ align-self: flex-start; } // 当前元素 水平左对齐
+.a-self-auto{ align-self: auto; }  //  当前元素 跟随
+.a-self-end{ align-self: flex-end; }  // 当前元素  水平右对齐
+.a-self-stretch{ align-self:stretch; } // 当前元素 默认
+.a-self-baseline{ align-self:baseline; } 
+//  ************************************************
+
+
+//  ************************************************
+// 定位
+.p-ab { position: absolute;}
+.p-fi { position: fixed;}
+.p-re { position: relative}
+.t-0 { top: 0;}
+.r-0 { right: 0;}
+.b-0 { bottom: 0;}
+.l-0 { left: 0;}
+// 垂直居中flex方式
+.f-cc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.f-bold {
+	font-weight: bold;
+}
+
+.f-column{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+// 垂直居中定位方式
+.p-cc {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+//  ************************************************
+
+
+//  ************************************************
+// 文字
+
+// 文字居中
+.text-center {
+    text-align: center;
+}
+// 文字右对齐
+.text-right {
+    text-align: right;
+}
+// 文字加粗
+.text-bold {
+    font-weight: bold;
+}
+.f-400 {
+	font-weight: 400;
+}
+.f-500 {
+	font-weight: 500;
+}
+.f-600 {
+	font-weight: 600;
+}
+//  鼠标手
+.cup {
+    cursor: pointer;
+}
+.w-100{
+	width: 100%;
+}
+
+//  ************************************************
+// 盒子
+
+//  css 3 盒子
+.box3 {
+    box-sizing: border-box;
+}
+	
+.letter-spacing-2{
+letter-spacing: 2rpx;
+}
+
+
+//  ************************************************
+// 页面样式公共部分
+//  ************************************************
+
+.page-center {
+    width: 1200upx;
+    margin: auto;
+    overflow: hidden;
+}   
+
+.line-1 {
+	/*文本内容超宽度省略号显示 单行*/
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	// width: 100%;
+}
+
+.line-2 {
+	/*文本内容超宽度省略号显示 多行*/
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.lineThrough{
+	text-decoration: line-through;
+}
+
+page{
+ background-color: #F5F7FB;
+}
+
+.z-index{
+	position: relative;
+    z-index: 9;
+}
+	button {
+		margin: 0;
+		padding: 0;
+		line-height: inherit;
+		background-color: transparent;
+	}
+	

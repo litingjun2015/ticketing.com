@@ -1,0 +1,12 @@
+<?php 
+ return array (
+  'table_name' => 'fa_fzly_admission,fa_fzly_admission_money_log,fa_fzly_admission_type,fa_fzly_advertising,fa_fzly_advertising_log,fa_fzly_app,fa_fzly_app_navigation,fa_fzly_app_url,fa_fzly_attractions,fa_fzly_attractions_type,fa_fzly_comment,fa_fzly_content,fa_fzly_coupon,fa_fzly_coupon_receive,fa_fzly_distribution_grade,fa_fzly_distribution_grade_log,fa_fzly_distribution_log,fa_fzly_distribution_share,fa_fzly_distribution_tghb,fa_fzly_distribution_withdraw_log,fa_fzly_evaluate,fa_fzly_feedback,fa_fzly_guide_money_log,fa_fzly_guide_product,fa_fzly_guide_type,fa_fzly_house,fa_fzly_house_brand,fa_fzly_message_log,fa_fzly_message_push,fa_fzly_order,fa_fzly_order_detail,fa_fzly_order_evaluate,fa_fzly_pact,fa_fzly_record,fa_fzly_revenue_log,fa_fzly_search_history,fa_fzly_session,fa_fzly_share,fa_fzly_trends,fa_fzly_trends_type,fa_fzly_user_admission,fa_fzly_user_bank,fa_fzly_user_detail,fa_fzly_user_dz,fa_fzly_user_follow,fa_fzly_user_guide,fa_fzly_user_sc,fa_fzly_user_travel,fa_fzly_withdraw_log',
+  'self_path' => 'application/admin/lang/zh-cn/fzly
+application/admin/controller/fzly
+application/admin/model/fzly
+application/admin/validate/fzly
+application/admin/view/fzly
+public/assets/js/backend/fzly
+public/assets/addons/fzly',
+  'update_data' => '',
+);

@@ -1,0 +1,770 @@
+<style>
+
+
+    html {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .content {
+        flex: 1;
+        background: #f7f7fa;
+        height: 100vh;
+        overflow: hidden;
+        overflow-y: auto;
+        white-space: nowrap;
+    }
+
+
+    .content {
+        flex: 1;
+        background: #f7f7fa;
+        height: 100vh;
+        overflow: hidden;
+        overflow-y: auto;
+        white-space: nowrap;
+    }
+
+
+    .floor1-box {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .flex-1 {
+        flex: 1;
+        display: flex;
+        justify-content: space-around;
+        /* flex-wrap: wrap; */
+    }
+
+    .flex-2 {
+        flex: 1;
+        display: flex;
+        justify-content: space-around;
+        /* flex-wrap: wrap; */
+    }
+
+    .floor1-each {
+        height: 154px;
+        flex: 1;
+        border-radius: 10px 10px 10px 10px;
+        opacity: 1;
+        /* margin-left: 24px; */
+        margin: 24px 12px 0 12px;
+
+        padding: 0 28px 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+
+    .text-box-text {
+        font-size: 16px;
+        font-weight: 400;
+        color: #FFF;
+    }
+
+    .floor1-each-img-r {
+        width: 16px;
+        height: 10px;
+    }
+
+    .change-img {
+        width: 78px;
+        height: 78px;
+    }
+
+    .floor1-each-img-r {
+        width: 78px;
+        height: 78px;
+    }
+
+    .each-1 {
+        background: #6392ea;
+
+    }
+
+    .each-2 {
+        background: #d46808;
+
+    }
+
+    .each-3 {
+        background: #ea3535;
+
+    }
+
+    .each-4 {
+        background: #182120;
+
+    }
+
+
+    .newbox-5-1 {
+        flex: 1;
+        /* max-width: 250px; */
+        min-width: 150px;
+        height: 576px;
+        background: #FFFFFF;
+        border-radius: 20px 20px 20px 20px;
+        opacity: 1;
+        /* margin-top: 24px; */
+        margin: 24px 12px 0 12px;
+    }
+
+    .box-3-head {
+        padding: 24px 24px 12px 24px;
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    .title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333333;
+        padding-right: 10px;
+        position: relative;
+        top: 3px;
+        margin-bottom: 10px;
+    }
+
+    .rod {
+        display: inline-block;
+        width: 4px;
+        height: 15px;
+        background: #00ce9b;
+        border-radius: 0px 0px 0px 0px;
+        opacity: 1;
+    }
+
+
+    div::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    div::-webkit-scrollbar-track {
+        background: #ebf1fc;
+        border-radius: 2px;
+    }
+
+    div::-webkit-scrollbar-thumb {
+        background: #e5e5e7;
+        border-radius: 10px;
+    }
+
+    div::-webkit-scrollbar-thumb:hover {
+        background: #e5e5e7;
+    }
+
+    .list-box {
+        width: 98%;
+        height: 310px;
+        background: #ffffff;
+        border-radius: 10px 10px 10px 10px;
+        opacity: 1;
+        margin: auto;
+        overflow: hidden;
+        overflow-y: auto;
+        white-space: nowrap;
+    }
+    .list-box::-webkit-scrollbar{
+        display: none;
+    }
+
+    .title-box {
+        width: 456px;
+        width: 90%;
+        background: #fafafa;
+        border-radius: 0px 0px 0px 0px;
+        opacity: 1;
+        margin: auto;
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 0;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666666;
+        margin-top: 24px;
+    }
+
+    .title-1 {
+        flex: 1;
+        text-align: center;
+    }
+
+    .title-2 {
+        flex: 3;
+        padding-left: 20px;
+    }
+
+    .title-3 {
+        flex: 2;
+        text-align: center;
+    }
+
+    .title-4 {
+        flex: 1;
+        text-align: center;
+    }
+
+    .overflow-box {
+        width: 100%;
+        height: 240px;
+        overflow: hidden;
+        overflow-y: auto;
+        white-space: nowrap;
+    }
+
+    .content-box {
+        width: 90%;
+        opacity: 1;
+        margin: auto;
+        display: flex;
+        justify-content: space-around;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666666;
+        margin-top: 24px;
+    }
+
+    .title-1 {
+        flex: 1;
+        text-align: center;
+    }
+
+    .title-2 {
+        flex: 3;
+        padding-left: 20px;
+    }
+
+    .title-3 {
+        flex: 2;
+        text-align: center;
+    }
+
+    .title-4 {
+        flex: 1;
+        text-align: center;
+    }
+
+    /* 4 */
+    .box-4 {
+        flex: 1;
+        margin-top: 24px;
+        /* max-width: 525px; */
+
+        margin: 24px 12px 0 12px;
+    }
+
+    .box-4-1 {
+        /* width: 525px; */
+        width: 100%;
+        height: 276px;
+        background: #ffffff;
+        border-radius: 20px 20px 20px 20px;
+        opacity: 1;
+    }
+
+    .box-4-2 {
+        /* width: 525px; */
+        width: 100%;
+        height: 276px;
+        background: #ffffff;
+        border-radius: 20px 20px 20px 20px;
+        opacity: 1;
+        margin-top: 24px;
+    }
+
+    /* 5 */
+    .box-5 {
+        /* max-width: 525px; */
+        flex: 1;
+        height: 576px;
+        background: #ffffff;
+        border-radius: 20px 20px 20px 20px;
+        opacity: 1;
+        /* margin: 24px 24px 0 24px; */
+        margin: 24px 12px 0 12px;
+        /* padding: 0 14px; */
+
+    }
+
+    .box-5-each {
+        /* max-width: 455px; */
+        width: 95%;
+        height: 160px;
+        background: #fafafc;
+        border-radius: 20px 20px 20px 20px;
+        opacity: 1;
+        margin: auto;
+        margin-top: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .box-5-text {
+        margin-left: 24px;
+    }
+
+    .today {
+        font-size: 16px;
+        font-weight: 400;
+        color: #999999;
+    }
+
+    .number {
+        font-size: 40px;
+        font-weight: bold;
+        color: #FFF;
+        margin-top: 14px;
+    }
+
+    .number-b {
+        font-size: 40px;
+        font-weight: bold;
+        color: #333333;
+        margin-top: 14px;
+    }
+
+
+    .box-5-img {
+        flex: 1;
+        margin-right: 22px;
+    }
+
+    .img-box-5-img {
+        width: 100%;
+
+    }
+
+    .box-6-each {
+        flex: 1;
+
+        height: 160px;
+        background: #f5f5f9;
+        border-radius: 20px 20px 20px 20px;
+        opacity: 1;
+        padding: 20px 0 20px 20px;
+        margin: 24px 12px 0 12px;
+    }
+
+    .box-6-each-title {
+        /* font-size: 16px; */
+        font-weight: 400;
+        color: #333333;
+    }
+
+    .box-6-each-title-img {
+        width: 28px;
+        height: 28px;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    .box-6-each-number {
+        font-size: 40px;
+        font-weight: bold;
+        color: #333333;
+        margin-top: 12px;
+    }
+    .single-1 {
+        background: #eee5ff;
+    }
+
+    .single-2 {
+        background: #fef3e8;
+    }
+
+    .single-3 {
+        background: #e9fcec;
+    }
+
+    .single-4 {
+        background: #f0f6fb;
+    }
+
+    .single-5 {
+        background: #ffe9ed;
+    }
+
+    .single-6 {
+        background: #f5f5f9;
+    }
+
+    .box-7 {
+        flex: 1;
+        height: 420px;
+        background: #ffffff;
+        border-radius: 20px 20px 20px 20px;
+        opacity: 1;
+        margin: 24px 12px 0 12px;
+    }
+
+
+    .charts-box{
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        color: #333;
+        padding: 10px 24px;
+    }
+    .line{
+        width:4px;
+        height: 15px;
+        margin-right: 10px;
+        background: #00CE9B;
+    }
+
+    @media (max-width: 900px) {
+        .flex-1{
+            flex-wrap: wrap;
+        }
+        .flex-2{
+            flex-wrap: wrap;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .box-1,.newbox-3{
+            min-width: 400px;
+        }
+        .box-4{
+            min-width: 400px;
+        }
+        .box-5{
+            min-width: 400px;
+        }
+        .box-5-img{
+            display: none;
+        }
+
+    }
+
+    @media (max-width: 400px) {
+        .box-3-head{
+            flex-wrap: wrap;
+        }
+        .box-1,.newbox-3{
+            min-width: 100%;
+        }
+        .box-4{
+            min-width: 100%;
+        }
+        .box-5{
+            min-width: 100%;
+        }
+
+
+    }
+
+
+
+</style>
+<div class="content">
+    <!-- <div class="head"></div> -->
+
+    <div class="floor1-box">
+        <div class="flex-1">
+
+
+            <div class="floor1-each each-1">
+                <div class="text-box">
+                    <div class="text-box-text">总用户</div>
+                    <div class="number">{$user|htmlentities}</div>
+
+                </div>
+                <div class="floor1-each-img-r">
+                    <img src="/assets/addons/fzly/t/user.png" alt="" />
+                </div>
+            </div>
+            <div class="floor1-each each-2">
+                <div class="text-box">
+                    <div class="text-box-text">总门票数</div>
+                    <div class="number">{$mp|htmlentities}</div>
+
+                </div>
+                <div class="floor1-each-img-r">
+                    <img src="/assets/addons/fzly/t/member.png" alt="" />
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-2">
+
+            <div class="floor1-each each-3">
+                <div class="text-box">
+                    <div class="text-box-text">总导游数</div>
+                    <div class="number">{$dy|htmlentities}</div>
+
+                </div>
+                <div class="floor1-each-img-r">
+                    <img src="/assets/addons/fzly/t/serve.png" alt="" />
+                </div>
+            </div>
+            <div class="floor1-each each-4">
+                <div class="text-box">
+                    <div class="text-box-text">总导游产品数</div>
+                    <div class="number">{$cp|htmlentities}</div>
+
+                </div>
+                <div class="floor1-each-img-r">
+                    <img src="/assets/addons/fzly/t/serve.png" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="floor1-box">
+        <div class="flex-1">
+            <div class="box-4">
+                <div class="box-4-1">
+                    <div class="nav-tabs-custom charts-custom">
+                        <!-- Tabs within a box -->
+                        <div class="charts-box">
+                            <div class="line"></div>订单趋势
+                        </div>
+
+                        <div class="tab-content no-padding">
+                            <!-- Morris chart - Sales -->
+                            <div class="chart tab-pane active" id="line-chart" style="position: relative; height: 230px;"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="box-4-2">
+                    <div class="nav-tabs-custom charts-custom">
+                        <!-- Tabs within a box -->
+
+                        <div class="charts-box">
+                            <div class="line"></div>用户趋势
+                        </div>
+                        <div class="tab-content no-padding">
+                            <!-- Morris chart - Sales -->
+                            <div class="chart tab-pane active" id="line-user-chart" style="position: relative; height: 230px;"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="newbox-5-1">
+                <div class="box-6-each single-1">
+                    <div class="box-6-each-title">
+                        <img class="box-6-each-title-img" src="/assets/addons/fzly/t/single-1.png" alt="" />今日新增攻略
+                    </div>
+                    <div class="box-6-each-number">{$j_gl|htmlentities}</div>
+
+                </div>
+                <div class="box-6-each single-3">
+                    <div class="box-6-each-title">
+                        <img class="box-6-each-title-img" src="/assets/addons/fzly/t/single-4.png" alt="" />今日新增游记
+                    </div>
+                    <div class="box-6-each-number">{$j_yj|htmlentities}</div>
+
+                </div>
+                <div class="box-6-each single-5">
+                    <div class="box-6-each-title">
+                        <img class="box-6-each-title-img" src="/assets/addons/fzly/t/single-6.png" alt="" />今日新增动态
+                    </div>
+                    <div class="box-6-each-number">{$j_dt|htmlentities}</div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-2">
+            <div class="newbox-5-1">
+                <div class="box-6-each single-2">
+                    <div class="box-6-each-title">
+                        <img class="box-6-each-title-img" src="/assets/addons/fzly/t/single-2.png" alt="" />昨日新增攻略
+                    </div>
+                    <div class="box-6-each-number">{$z_gl|htmlentities}</div>
+
+                </div>
+                <div class="box-6-each single-4">
+                    <div class="box-6-each-title">
+                        <img class="box-6-each-title-img" src="/assets/addons/fzly/t/single-3.png" alt="" />昨日新增游记
+                    </div>
+                    <div class="box-6-each-number">{$z_yj|htmlentities}</div>
+                </div>
+                <div class="box-6-each single-6">
+                    <div class="box-6-each-title">
+                        <img class="box-6-each-title-img" src="/assets/addons/fzly/t/single-5.png" alt="" />昨日新增动态
+                    </div>
+                    <div class="box-6-each-number">{$z_dt|htmlentities}</div>
+                </div>
+            </div>
+
+            <div class="box-5">
+                <div class="box-5-each">
+                    <div class="box-5-text">
+                        <div class="today">今日订单</div>
+                        <div class="number-b">{$j_dd|htmlentities}</div>
+
+                    </div>
+                    <div class="box-5-img">
+                        <img class="img-box-5-img" src="/assets/addons/fzly/t/trend-1.png" alt="" />
+                    </div>
+                </div>
+                <div class="box-5-each">
+                    <div class="box-5-text">
+                        <div class="today">今日用户</div>
+                        <div class="number-b">{$j_user|htmlentities}</div>
+
+                    </div>
+                    <div class="box-5-img">
+                        <img class="img-box-5-img" src="/assets/addons/fzly/t/trend-2.png" alt="" />
+                    </div>
+                </div>
+                <div class="box-5-each">
+                    <div class="box-5-text">
+                        <div class="today">今日新增导游</div>
+                        <div class="number-b">{$j_daoy|htmlentities}</div>
+                    </div>
+                    <div class="box-5-img">
+                        <img class="img-box-5-img" src="/assets/addons/fzly/t/trend-3.png" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="floor1-box" id="app">
+
+        <div class="flex-1 flex-rank">
+            <div class="box-7">
+                <div class="box-3-head">
+                    <div class="title">
+                        <span class="rod"></span> 门票浏览量排行
+                    </div>
+
+                </div>
+
+                <div class="list-box">
+
+                    <div class="title-box">
+                        <div class="title-1">排名</div>
+                        <div class="title-2">门票名</div>
+                        <div class="title-3">浏览量</div>
+                    </div>
+
+                    <div class="overflow-box" v-if="goodsType == 0">
+
+                        {volist name="mp_list" id="vo" key="k" }
+                        <div class="content-box">
+                            <div class="title-1">{$k|htmlentities}</div>
+                            <div class="title-2">{$vo.title|htmlentities}</div>
+                            <div class="title-3">{$vo.view_nums|htmlentities}</div>
+                        </div>
+                        {/volist}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-7">
+                <div class="box-3-head">
+                    <div class="title">
+                        <span class="rod"></span> 门票销量排行
+                    </div>
+                </div>
+
+                <div class="list-box">
+
+                    <div class="title-box">
+                        <div class="title-1">排名</div>
+                        <div class="title-2">门票</div>
+                        <div class="title-3">订单量</div>
+                        <div class="title-4">金额</div>
+                    </div>
+
+                    <div class="overflow-box" v-if="cityType == 0">
+
+                        {volist name="mp_xl" id="vo" key="k" }
+                        <div class="content-box">
+                            <div class="title-1">{$k|htmlentities}</div>
+                            <div class="title-2">{$vo.title|htmlentities}</div>
+                            <div class="title-3">{$vo.nums|htmlentities}</div>
+                            <div class="title-3">{$vo.pp|htmlentities}</div>
+                        </div>
+                        {/volist}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-2  flex-rank">
+            <div class="box-7">
+                <div class="box-3-head">
+                    <div class="title">
+                        <span class="rod"></span> 导游粉丝数排行
+                    </div>
+
+                </div>
+
+                <div class="list-box">
+
+                    <div class="title-box">
+                        <div class="title-1">排名</div>
+                        <div class="title-2">导游</div>
+                        <div class="title-3">粉丝数</div>
+                    </div>
+
+                    <div class="overflow-box" v-if="shopType == 0">
+                        {volist name="dy_list" id="vo" key="k" }
+                        <div class="content-box">
+                            <div class="title-1">{$k|htmlentities}</div>
+                            <div class="title-2">{$vo.user_name|htmlentities}</div>
+                            <div class="title-3">{$vo.fs_s|htmlentities}</div>
+                        </div>
+                        {/volist}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="box-7">
+                <div class="box-3-head">
+                    <div class="title">
+                        <span class="rod"></span> 导游产品销量排行
+                    </div>
+                </div>
+
+                <div class="list-box">
+
+                    <div class="title-box">
+                        <div class="title-1">排名</div>
+                        <div class="title-2">产品名</div>
+                        <div class="title-3">订单量</div>
+                        <div class="title-4">金额</div>
+                    </div>
+
+                    <div class="overflow-box" v-if="skillType == 0">
+                        {volist name="mp_pro" id="vo" key="k" }
+                        <div class="content-box">
+                            <div class="title-1">{$k|htmlentities}</div>
+                            <div class="title-2">{$vo.title|htmlentities}</div>
+                            <div class="title-3">{$vo.nums|htmlentities}</div>
+                            <div class="title-3">{$vo.pp|htmlentities}</div>
+                        </div>
+                        {/volist}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</div>
