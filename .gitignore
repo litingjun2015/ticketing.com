@@ -1,0 +1,78 @@
+# ========================== 框架核心忽略项（ThinkPHP5/FastAdmin） ==========================
+# 框架运行时缓存/日志/临时文件（核心，必须忽略）
+runtime/
+# FastAdmin 上传文件目录（用户上传的图片/附件等，绝对不能纳入版本控制）
+public/uploads/
+# 环境变量配置文件（不同环境的数据库、域名等配置，本地/测试/生产不一致）
+.env
+# 若你手动修改了数据库配置文件，也可忽略（建议优先用 .env 管理）
+# application/database.php
+
+# ========================== 前端依赖与编译文件 ==========================
+# npm 依赖包（体积大，可通过 npm install 安装，无需纳入版本控制）
+node_modules/
+# yarn 缓存（若使用 yarn 包管理）
+.yarn/
+yarn.lock
+# 前端编译后的临时文件（FastAdmin 的 src 是源码，assets 为编译后输出，若需统一编译可忽略）
+# 注意：若团队直接修改 assets 下的文件，需注释此行
+public/assets/js/app.js
+public/assets/css/app.css
+public/assets/js/backend/custom.js
+public/assets/css/backend/custom.css
+# 前端打包压缩后的产物（若使用构建工具额外打包）
+dist/
+build/
+
+# ========================== PHP 依赖与工具 ==========================
+# Composer 依赖包（可通过 composer install 安装，无需纳入版本控制）
+vendor/
+# Composer 锁文件（可选：保留可锁定依赖版本，团队协作建议保留）
+# composer.lock
+# PHPUnit 测试报告（单元测试生成）
+phpunit.xml
+tests/_output/
+# PHPStan/Psalm 静态分析缓存
+.phpstan-cache/
+.psalm/
+
+# ========================== 编辑器/IDE 配置文件 ==========================
+# VSCode 配置
+.vscode/
+.idea/
+# PHPStorm 配置
+*.iml
+*.ipr
+*.iws
+# Sublime Text 配置
+*.sublime-project
+*.sublime-workspace
+# Vim 临时文件
+*.swp
+*.swo
+# 记事本临时文件
+*.tmp
+*.bak
+# Windows 系统隐藏文件
+Thumbs.db
+Desktop.ini
+# macOS 系统隐藏文件
+.DS_Store
+.AppleDouble
+.LSOverride
+# Linux 系统临时文件
+*~
+
+# ========================== 其他临时文件 ==========================
+# 日志文件（除框架 runtime 外的自定义日志）
+*.log
+# 压缩包/安装包
+*.zip
+*.rar
+*.tar.gz
+# 临时备份文件
+*.bak
+*.backup
+# 调试用的测试文件
+test.php
+demo.php
