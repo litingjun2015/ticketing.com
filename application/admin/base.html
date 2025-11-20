@@ -5,6 +5,17 @@
     <title>{block name="title"}后台管理系统{/block}</title>
     <!-- 公共CSS -->
     <link rel="stylesheet" href="/static/admin/css/common.css">
+
+    <!-- 修正后（根据实际路径调整） -->
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <script src="/static/layui/layui.js"></script>
+
+    <script>
+        // 在引入layui.js后添加
+        if (typeof layui === 'undefined') {
+            console.error('Layui加载失败，请检查路径是否正确：/static/layui/layui.js');
+        }
+    </script>
 </head>
 <body>
 <!-- 公共头部 -->

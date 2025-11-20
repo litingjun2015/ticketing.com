@@ -1,20 +1,22 @@
+{extend name="common/base" /}  <!-- 继承父模板（base.html） -->
+
 {block name="content"}
 <div class="layui-card">
     <div class="layui-card-header">
         <h3 class="layui-card-title">系统设置</h3>
         <div class="layui-btn-group layui-card-header-toolbar">
-            {foreach name="tabs" item="tab"}
-            <button class="layui-btn layui-btn-sm" data-url="{$tab.url}" data-icon="{$tab.icon}">
+            {foreach name="tabs" item="tab" key="k"}
+            <button class="layui-btn layui-btn-sm" data-url="{$tab.url}" data-icon="{$tab.icon}" data-index="{$k}">
                 <i class="{$tab.icon}"></i> {$tab.title}
             </button>
             {/foreach}
         </div>
     </div>
     <div class="layui-card-body">
-        <div class="layui-tab layui-tab-card" id="systemSettingTabs">
+        <div class="layui-tab layui-tab-card" id="systemSettingTabs" lay-filter="systemSettingTabs">
             <ul class="layui-tab-title">
                 {foreach name="tabs" item="tab" key="k"}
-                <li class="{if $k == 0}layui-this{/if}">
+                <li class="{if $k == 0}layui-this{/if}" data-url="{$tab.url}">
                     <i class="{$tab.icon}"></i> {$tab.title}
                 </li>
                 {/foreach}
@@ -45,23 +47,28 @@
             var icon = currentTab.find('i').attr('class');
             var title = currentTab.text().replace(/\s+/g, '');
             $('.layui-card-title').html('<i class="' + icon + '"></i> ' + title);
+
+            // 确保iframe正确加载
+            var iframe = $('.layui-tab-content .layui-tab-item:eq(' + tabIndex + ') iframe');
+            if(iframe.length && iframe.attr('src') !== currentTab.data('url')){
+                iframe.attr('src', currentTab.data('url'));
+            }
         });
 
         // 顶部按钮点击事件
         $('.layui-card-header-toolbar button').on('click', function(){
-            var url = $(this).data('url');
-            var icon = $(this).data('icon');
-            var title = $(this).text().trim();
+            var index = $(this).data('index');
+            if (typeof index !== 'undefined') {
+                // 切换到对应的tab
+                element.tabChange('systemSettingTabs', index);
 
-            // 切换到对应的tab
-            var tabIndex = $('.layui-tab-title li').index(function(){
-                return $(this).text().trim() === title;
-            });
-
-            if (tabIndex !== -1) {
-                element.tabChange('systemSettingTabs', tabIndex);
+                // 高亮显示当前按钮
+                $(this).addClass('layui-btn-normal').siblings().removeClass('layui-btn-normal');
             }
         });
+
+        // 初始化第一个按钮状态
+        $('.layui-card-header-toolbar button:eq(0)').addClass('layui-btn-normal');
     });
 </script>
 {/block}
