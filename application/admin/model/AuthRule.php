@@ -7,6 +7,8 @@ use think\Model;
 
 class AuthRule extends Model
 {
+    protected $name = 'auth_rule';
+    protected $pk = 'id';
 
     // 开启自动写入时间戳字段
     protected $autoWriteTimestamp = 'int';

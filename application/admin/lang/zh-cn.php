@@ -1,6 +1,14 @@
 <?php
 
 return [
+        // 其他菜单...
+        '系统设置' => 'systemsetting',
+        '基础参数配置' => 'systemsetting/basic',
+        '库存预警配置' => 'systemsetting/stock_warn',
+        '订单规则配置' => 'systemsetting/order_rule',
+        '票价规则配置' => 'systemsetting/price_rule',
+        '角色权限管理' => 'systemsetting/role',
+        '操作日志管理' => 'systemsetting/log',
     'User id'                                               => '会员ID',
     'Username'                                              => '用户名',
     'Nickname'                                              => '昵称',

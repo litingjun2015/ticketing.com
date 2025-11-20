@@ -8,6 +8,8 @@ use think\Loader;
 
 class AdminLog extends Model
 {
+    protected $name = 'admin_log';
+    protected $pk = 'id';
 
     // 开启自动写入时间戳字段
     protected $autoWriteTimestamp = 'int';

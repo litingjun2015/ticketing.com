@@ -1,78 +1,98 @@
-
 {block name="content"}
 <div class="layui-card">
     <div class="layui-card-header">
         <h3 class="layui-card-title">票价规则配置</h3>
         <div class="layui-btn-group layui-card-header-toolbar">
-            <button class="layui-btn layui-btn-normal" id="saveBtn">保存配置</button>
+            <button class="layui-btn layui-btn-normal" id="saveBtn"><i class="fa fa-save"></i> 保存配置</button>
         </div>
     </div>
+    <div class="layui-card-body">
+        <form class="layui-form" id="priceRuleForm">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">节假日溢价开关</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="holiday_premium_switch" value="1" title="启用"
+                           {if $priceRule.holiday_premium_switch == 1}checked{/if}>
+                    <input type="radio" name="holiday_premium_switch" value="0" title="禁用"
+                           {if $priceRule.holiday_premium_switch == 0}checked{/if}>
+                </div>
+            </div>
 
-    
-</div>
-<div class="layui-form-item">
-    <label class="layui-form-label required">团体票折扣基准</label>
-    <div class="layui-input-block">
-        <input type="number" name="group_discount_base" value="{$priceRule.group_discount_base|default=90}"
-               class="layui-input" lay-verify="required|number|min:50|max:99" placeholder="请输入50-99之间的整数（%）">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">节假日溢价比例</label>
+                <div class="layui-input-block">
+                    <input type="number" name="holiday_premium_rate"
+                           value="{$priceRule.holiday_premium_rate|default=100}"
+                           class="layui-input"
+                           lay-verify="required|number|min:100|max:200"
+                           placeholder="请输入100%-200%之间的整数">
+                    <p class="layui-form-mid layui-word-aux">节假日期间的票价溢价比例</p>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label required">节假日日期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="holiday_dates"
+                           value="{$priceRule.holiday_dates|default=''}"
+                           class="layui-input"
+                           placeholder="请输入节假日日期（格式：2024-06-01,2024-06-02）">
+                    <p class="layui-form-mid layui-word-aux">多个日期用逗号分隔</p>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label required">团体票折扣基准</label>
+                <div class="layui-input-block">
+                    <input type="number" name="group_discount_base"
+                           value="{$priceRule.group_discount_base|default=90}"
+                           class="layui-input"
+                           lay-verify="required|number|min:50|max:99"
+                           placeholder="请输入50%-99%之间的整数">
+                    <p class="layui-form-mid layui-word-aux">团体票的最低折扣基准</p>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label required">适用票种</label>
+                <div class="layui-input-block">
+                    <select name="apply_ticket_types[]" multiple lay-verify="required">
+                        <option value="成人票" {if in_array('成人票', $priceRule.apply_ticket_types)}selected{/if}>成人票</option>
+                        <option value="儿童票" {if in_array('儿童票', $priceRule.apply_ticket_types)}selected{/if}>儿童票</option>
+                        <option value="亲子票" {if in_array('亲子票', $priceRule.apply_ticket_types)}selected{/if}>亲子票</option>
+                        <option value="老年票" {if in_array('老年票', $priceRule.apply_ticket_types)}selected{/if}>老年票</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label required">状态</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status" value="1" title="启用"
+                           {if $priceRule.status == 1}checked{/if}>
+                    <input type="radio" name="status" value="0" title="禁用"
+                           {if $priceRule.status == 0}checked{/if}>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-
-
-</form>
-</div>
-</div>
 {/block}
+
 {block name="script"}
 <script>
     layui.use(['form', 'layer'], function(){
-        var form = layui.form, layer = layui.layer;
-
-        // 溢价开关切换
-        form.on('radio(holiday_premium_switch)', function(data){
-            if(data.value == 1){
-                $('#premiumRateWrap').show();
-                $('#holidayDateWrap').show();
-                $('input[name="holiday_premium_rate"]').attr('lay-verify', 'required|number|min:100|max:200');
-                $('input[name="holiday_dates"]').attr('lay-verify', 'required');
-            }else{
-                $('#premiumRateWrap').hide();
-                $('#holidayDateWrap').hide();
-                $('input[name="holiday_premium_rate"]').removeAttr('lay-verify');
-                $('input[name="holiday_dates"]').removeAttr('lay-verify');
-            }
-            form.render();
-        });
+        var form = layui.form,
+            layer = layui.layer;
 
         // 保存配置
         $('#saveBtn').click(function(){
             form.validate(function(valid){
                 if(valid){
-                    var switchVal = $('input[name="holiday_premium_switch"]:checked').val();
-                    var holidayDates = [];
-                    if(switchVal == 1){
-                        holidayDates = $('input[name="holiday_dates"]').val().split(',').filter(item=>item);
-                        if(holidayDates.length == 0){
-                            layer.msg('请输入有效的节假日日期', {icon:2});
-                            return;
-                        }
-                    }
-                    var applyTypes = $('input[name="apply_ticket_types"]').val().split(',').filter(item=>item);
-                    if(applyTypes.length == 0){
-                        layer.msg('请输入有效的适用票种', {icon:2});
-                        return;
-                    }
                     $.ajax({
-                        url: '{:url("systemsetting/systemsetting/priceRule")}',
+                        url: '{:url("systemsetting/systemsetting/price_rule")}',
                         type: 'post',
-                        data: {
-                            holiday_premium_switch: switchVal,
-                            holiday_premium_rate: $('input[name="holiday_premium_rate"]').val(),
-                            holiday_dates: holidayDates,
-                            group_discount_base: $('input[name="group_discount_base"]').val(),
-                            apply_ticket_types: applyTypes,
-                            status: $('input[name="status"]:checked').val()
-                        },
+                        data: $('#priceRuleForm').serialize(),
                         success: function(res){
                             if(res.code == 1){
                                 layer.msg(res.msg, {icon:1});

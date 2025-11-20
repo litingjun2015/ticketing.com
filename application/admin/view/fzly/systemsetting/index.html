@@ -1,0 +1,67 @@
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">系统设置</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            {foreach name="tabs" item="tab"}
+            <button class="layui-btn layui-btn-sm" data-url="{$tab.url}" data-icon="{$tab.icon}">
+                <i class="{$tab.icon}"></i> {$tab.title}
+            </button>
+            {/foreach}
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-card" id="systemSettingTabs">
+            <ul class="layui-tab-title">
+                {foreach name="tabs" item="tab" key="k"}
+                <li class="{if $k == 0}layui-this{/if}">
+                    <i class="{$tab.icon}"></i> {$tab.title}
+                </li>
+                {/foreach}
+            </ul>
+            <div class="layui-tab-content">
+                {foreach name="tabs" item="tab" key="k"}
+                <div class="layui-tab-item {if $k == 0}layui-show{/if}">
+                    <iframe src="{$tab.url}" frameborder="0" style="width:100%;height:calc(100vh - 200px);"></iframe>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+
+{block name="script"}
+<script>
+    layui.use(['element', 'layer'], function(){
+        var element = layui.element;
+        var layer = layui.layer;
+
+        // 监听tab切换
+        element.on('tab(systemSettingTabs)', function(data){
+            var tabIndex = data.index;
+            var currentTab = $('.layui-tab-title li:eq(' + tabIndex + ')');
+            var icon = currentTab.find('i').attr('class');
+            var title = currentTab.text().replace(/\s+/g, '');
+            $('.layui-card-title').html('<i class="' + icon + '"></i> ' + title);
+        });
+
+        // 顶部按钮点击事件
+        $('.layui-card-header-toolbar button').on('click', function(){
+            var url = $(this).data('url');
+            var icon = $(this).data('icon');
+            var title = $(this).text().trim();
+
+            // 切换到对应的tab
+            var tabIndex = $('.layui-tab-title li').index(function(){
+                return $(this).text().trim() === title;
+            });
+
+            if (tabIndex !== -1) {
+                element.tabChange('systemSettingTabs', tabIndex);
+            }
+        });
+    });
+</script>
+{/block}

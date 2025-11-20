@@ -1,0 +1,201 @@
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">角色权限管理</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            <button class="layui-btn layui-btn-normal" id="addRoleBtn"><i class="fa fa-plus"></i> 新增角色</button>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table" id="roleTable" lay-filter="roleTable">
+            <colgroup>
+                <col width="150">
+                <col width="200">
+                <col width="300">
+                <col width="150">
+                <col width="150">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>角色名称</th>
+                <th>权限规则</th>
+                <th>权限描述</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="roles" item="role"}
+            <tr data-id="{$role.id}">
+                <td>{$role.name}</td>
+                <td>{$role.rules}</td>
+                <td>
+                    {foreach name="authRules" item="rule"}
+                    {if in_array($rule.name, explode(',', $role.rules))}
+                    <span class="layui-badge layui-bg-blue layui-margin-right">{$rule.title}</span>
+                    {/if}
+                    {/foreach}
+                </td>
+                <td>{if $role.status == 1}正常{else}禁用{/if}</td>
+                <td>
+                    <button class="layui-btn layui-btn-xs layui-btn-normal editRoleBtn">编辑</button>
+                    <button class="layui-btn layui-btn-xs layui-btn-danger deleteRoleBtn">删除</button>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+
+        <!-- 新增/编辑角色弹窗 -->
+        <div id="editRole" style="display: none;">
+            <form class="layui-form" id="roleForm">
+                <input type="hidden" name="id">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">角色名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name"
+                               class="layui-input" lay-verify="required|max:30"
+                               placeholder="请输入角色名称（不超过30个字符）">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">权限分配</label>
+                    <div class="layui-input-block">
+                        <div class="layui-tree layui-tree-grid" id="authTree">
+                            {foreach name="authRules" item="rule"}
+                            <div data-name="{$rule.name}" data-title="{$rule.title}">
+                                <i class="layui-tree-spacer"></i>
+                                <i class="layui-tree-icon layui-icon layui-icon-ok"></i>
+                                <span class="layui-tree-name">{$rule.title}</span>
+                            </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form', 'layer', 'tree'], function(){
+        var form = layui.form,
+            layer = layui.layer,
+            tree = layui.tree;
+
+        // 初始化树结构
+        tree.render({
+            elem: '#authTree',
+            showCheckbox: true,
+            id: 'authTreeId',
+            click: function(obj){
+                // 节点点击事件
+            }
+        });
+
+        // 新增角色
+        $('#addRoleBtn').click(function(){
+            layer.open({
+                type: 1,
+                title: '新增角色',
+                area: ['600px', '400px'],
+                content: $('#editRole'),
+                success: function(layero, index){
+                    $('#roleForm')[0].reset();
+                    form.render();
+                }
+            });
+        });
+
+        // 编辑角色
+        $(document).on('click', '.editRoleBtn', function(){
+            var id = $(this).closest('tr').data('id');
+
+            $.ajax({
+                url: '{:url("systemsetting/systemsetting/role")}',
+                type: 'get',
+                data: {id: id},
+                success: function(res){
+                    if(res.code == 1){
+                        var role = res.data;
+                        $('#roleForm input[name="id"]').val(role.id);
+                        $('#roleForm input[name="name"]').val(role.name);
+
+                        // 设置权限勾选
+                        var rules = role.rules.split(',');
+                        var checkNodes = tree.getChecked('authTreeId');
+                        checkNodes.forEach(function(node){
+                            if(rules.indexOf(node.data.name) !== -1){
+                                tree.check('authTreeId', node.data.name);
+                            }
+                        });
+
+                        layer.open({
+                            type: 1,
+                            title: '编辑角色',
+                            area: ['600px', '400px'],
+                            content: $('#editRole')
+                        });
+                    }
+                }
+            });
+        });
+
+        // 保存角色
+        form.on('submit(roleForm)', function(data){
+            var field = data.field;
+            var checkedNodes = tree.getChecked('authTreeId');
+            field.rules = checkedNodes.map(function(node){
+                return node.data.name;
+            }).join(',');
+
+            $.ajax({
+                url: '{:url("systemsetting/systemsetting/role")}',
+                type: 'post',
+                data: {
+                    action: field.id ? 'edit_role' : 'add_role',
+                    ...field
+                },
+                success: function(res){
+                    if(res.code == 1){
+                        layer.msg(res.msg, {icon:1}, function(){
+                            layer.closeAll();
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg, {icon:2});
+                    }
+                }
+            });
+            return false;
+        });
+
+        // 删除角色
+        $(document).on('click', '.deleteRoleBtn', function(){
+            var id = $(this).closest('tr').data('id');
+            layer.confirm('确定要删除这个角色吗？', {icon:3, title:'提示'}, function(index){
+                $.ajax({
+                    url: '{:url("systemsetting/systemsetting/role")}',
+                    type: 'post',
+                    data: {
+                        action: 'delete_role',
+                        id: id
+                    },
+                    success: function(res){
+                        if(res.code == 1){
+                            layer.msg(res.msg, {icon:1});
+                            location.reload();
+                        }else{
+                            layer.msg(res.msg, {icon:2});
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+{/block}

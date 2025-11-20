@@ -1,0 +1,108 @@
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">操作日志管理</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            <button class="layui-btn layui-btn-danger" id="clearLogBtn"><i class="fa fa-trash"></i> 清空日志</button>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form" id="searchForm">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input type="text" name="search" id="searchInput"
+                           class="layui-input" placeholder="请输入用户名、操作或URL关键词">
+                </div>
+                <button class="layui-btn layui-btn-normal" id="searchBtn"><i class="fa fa-search"></i> 搜索</button>
+            </div>
+        </div>
+
+        <table class="layui-table" id="logTable" lay-filter="logTable">
+            <colgroup>
+                <col width="150">
+                <col width="150">
+                <col width="200">
+                <col width="150">
+                <col width="200">
+                <col width="150">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>操作时间</th>
+                <th>操作用户</th>
+                <th>操作行为</th>
+                <th>请求方法</th>
+                <th>请求URL</th>
+                <th>操作IP</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="logs" item="log"}
+            <tr>
+                <td>{date('Y-m-d H:i:s', $log.create_time)}</td>
+                <td>{$log.username}</td>
+                <td>{$log.action}</td>
+                <td>{$log.method}</td>
+                <td>{$log.url}</td>
+                <td>{$log.ip}</td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+
+        <div class="layui-box layui-laypage layui-laypage-molv" id="page"></div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form', 'layer', 'laypage'], function(){
+        var form = layui.form,
+            layer = layui.layer,
+            laypage = layui.laypage;
+
+        // 搜索
+        $('#searchBtn').click(function(){
+            var search = $('#searchInput').val();
+            window.location.href = '{:url("systemsetting/systemsetting/log")}' + '?search=' + encodeURIComponent(search);
+        });
+
+        // 清空日志
+        $('#clearLogBtn').click(function(){
+            layer.confirm('确定要清空所有操作日志吗？', {icon:3, title:'警告'}, function(index){
+                $.ajax({
+                    url: '{:url("systemsetting/systemsetting/log")}',
+                    type: 'post',
+                    data: {action: 'clear_log'},
+                    success: function(res){
+                        if(res.code == 1){
+                            layer.msg('操作日志已清空', {icon:1});
+                            location.reload();
+                        }else{
+                            layer.msg('日志清空失败', {icon:2});
+                        }
+                    }
+                });
+            });
+        });
+
+        // 分页
+        laypage.render({
+            elem: 'page',
+            count: {$total},
+            limit: {$limit},
+            curr: {$page},
+            layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh'],
+            jump: function(obj, first){
+                if(!first){
+                    window.location.href = '{:url("systemsetting/systemsetting/log")}' +
+                        '?page=' + obj.curr +
+                        '&limit=' + obj.limit +
+                        ($search ? '&search=' + encodeURIComponent($search) : '');
+                }
+            }
+        });
+    });
+</script>
+{/block}

@@ -3,15 +3,26 @@
     <div class="layui-card-header">
         <h3 class="layui-card-title">库存预警阈值配置</h3>
         <div class="layui-btn-group layui-card-header-toolbar">
-            <button class="layui-btn layui-btn-normal" id="addBtn">新增配置</button>
+            <button class="layui-btn layui-btn-normal" id="addBtn"><i class="fa fa-plus"></i> 新增配置</button>
+            <button class="layui-btn layui-btn-danger" id="deleteBtn"><i class="fa fa-trash"></i> 删除选中</button>
         </div>
     </div>
     <div class="layui-card-body">
-        <table class="layui-table" lay-size="sm">
+        <table class="layui-table" id="stockWarnTable" lay-filter="stockWarnTable">
+            <colgroup>
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="100">
+                <col width="200">
+                <col width="150">
+                <col width="150">
+            </colgroup>
             <thead>
             <tr>
+                <th><input type="checkbox" id="allCheck"></th>
                 <th>渠道类型</th>
-                <th>生效日期范围</th>
+                <th>生效日期</th>
                 <th>票种</th>
                 <th>预警阈值</th>
                 <th>通知接收人</th>
@@ -19,169 +30,223 @@
             </tr>
             </thead>
             <tbody>
-            {foreach $list as $item}
-            <tr>
+            {foreach name="list" item="item"}
+            <tr data-id="{$item.id}">
+                <td><input type="checkbox" class="itemCheck"></td>
                 <td>{$item.channel}</td>
                 <td>{$item.date_start} 至 {$item.date_end}</td>
                 <td>{$item.ticket_type}</td>
                 <td>{$item.warn_value}</td>
-                <td>{implode(',', $item.receivers)}</td>
+                <td>{join(',', $item.receivers)}</td>
                 <td>
-                    <button class="layui-btn layui-btn-xs" onclick="edit({$item.id})">编辑</button>
-                    <button class="layui-btn layui-btn-xs layui-btn-danger" onclick="del({$item.id})">删除</button>
+                    <button class="layui-btn layui-btn-xs layui-btn-normal editBtn">编辑</button>
+                    <button class="layui-btn layui-btn-xs layui-btn-danger deleteBtn">删除</button>
                 </td>
             </tr>
             {/foreach}
-
             </tbody>
         </table>
+
+        <!-- 新增/编辑弹窗 -->
+        <div id="editStockWarn" style="display: none;">
+            <form class="layui-form" id="stockWarnForm">
+                <input type="hidden" name="id">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">渠道类型</label>
+                    <div class="layui-input-block">
+                        <select name="channel" lay-verify="required">
+                            <option value="官网">官网</option>
+                            <option value="OTA">OTA</option>
+                            <option value="窗口">窗口</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">生效日期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="date_start" id="dateStart"
+                               class="layui-input" lay-verify="required|date"
+                               placeholder="请选择生效开始日期">
+                        <span class="layui-form-mid">-</span>
+                        <input type="text" name="date_end" id="dateEnd"
+                               class="layui-input" lay-verify="required|date"
+                               placeholder="请选择生效结束日期">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">票种</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="ticket_type"
+                               class="layui-input" lay-verify="required"
+                               placeholder="请输入票种名称">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">预警阈值</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="warn_value"
+                               class="layui-input" lay-verify="required|number|min:1"
+                               placeholder="请输入预警阈值（大于0）">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">通知接收人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="receivers"
+                               class="layui-input" lay-verify="required"
+                               placeholder="请输入接收人手机号（多个用逗号分隔）">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<!-- 新增/编辑弹窗 -->
-<div class="layui-layer-wrap" id="formLayer" style="display:none;">
-    <form class="layui-form" id="stockWarnForm" lay-filter="stockWarnForm">
-        <input type="hidden" name="id" value="">
-        <div class="layui-form-item">
-            <label class="layui-form-label required">渠道类型</label>
-            <div class="layui-input-block">
-                <select name="channel" lay-verify="required">
-                    <option value="">请选择</option>
-                    <option value="官网">官网</option>
-                    <option value="OTA">OTA</option>
-                    <option value="窗口">窗口</option>
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">生效日期</label>
-            <div class="layui-input-block">
-                <input type="date" name="date_start" lay-verify="required" class="layui-input" style="width:48%;display:inline-block;margin-right:4%;">
-                <input type="date" name="date_end" lay-verify="required" class="layui-input" style="width:48%;display:inline-block;">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">票种</label>
-            <div class="layui-input-block">
-                <input type="text" name="ticket_type" class="layui-input" lay-verify="required" placeholder="请输入票种名称">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">预警阈值</label>
-            <div class="layui-input-block">
-                <input type="number" name="warn_value" class="layui-input" lay-verify="required|number|min:1" placeholder="请输入正整数">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">通知接收人</label>
-            <div class="layui-input-block">
-                <input type="text" name="receivers" class="layui-input" lay-verify="required" placeholder="多个手机号用逗号分隔">
-            </div>
-        </div>
-    </form>
-</div>
 {/block}
+
 {block name="script"}
 <script>
-    layui.use(['form', 'layer'], function(){
-        var form = layui.form, layer = layui.layer;
-        var formLayer = null;
+    layui.use(['form', 'layer', 'laydate'], function(){
+        var form = layui.form,
+            layer = layui.layer,
+            laydate = layui.laydate;
 
-        // 新增配置
-        $('#addBtn').click(function(){
-            $('#stockWarnForm')[0].reset();
-            $('input[name="id"]').val('');
-            openLayer();
+        // 日期选择器
+        laydate.render({
+            elem: '#dateStart',
+            type: 'date'
+        });
+        laydate.render({
+            elem: '#dateEnd',
+            type: 'date'
         });
 
-        // 编辑配置
-        window.edit = function(id){
-            $.get('{:url("systemsetting/systemsetting/getStockWarn")}', {id:id}, function(res){
-                if(res.code == 1){
-                    var data = res.data;
-                    $('input[name="id"]').val(data.id);
-                    $('select[name="channel"]').val(data.channel);
-                    $('input[name="date_start"]').val(data.date_start);
-                    $('input[name="date_end"]').val(data.date_end);
-                    $('input[name="ticket_type"]').val(data.ticket_type);
-                    $('input[name="warn_value"]').val(data.warn_value);
-                    $('input[name="receivers"]').val(data.receivers.join(','));
-                    form.render();
-                    openLayer();
-                }else{
-                    layer.msg(res.msg, {icon:2});
-                }
-            }, 'json');
-        };
+        // 全选/反选
+        $('#allCheck').on('click', function(){
+            var isChecked = $(this).prop('checked');
+            $('.itemCheck').prop('checked', isChecked);
+        });
 
-        // 打开弹窗
-        function openLayer(){
-            formLayer = layer.open({
+        // 新增按钮
+        $('#addBtn').click(function(){
+            layer.open({
                 type: 1,
-                title: $('input[name="id"]').val() ? '编辑配置' : '新增配置',
-                area: ['600px', '450px'],
-                content: $('#formLayer'),
-                btn: ['保存', '取消'],
-                yes: function(index){
-                    form.validate(function(valid){
-                        if(valid){
-                            var receivers = $('input[name="receivers"]').val().split(',').filter(item=>item);
-                            if(receivers.length == 0){
-                                layer.msg('请输入有效的手机号', {icon:2});
-                                return;
-                            }
-                            $.ajax({
-                                url: '{:url("systemsetting/systemsetting/stockWarn")}',
-                                type: 'post',
-                                data: {
-                                    id: $('input[name="id"]').val(),
-                                    channel: $('select[name="channel"]').val(),
-                                    date_start: $('input[name="date_start"]').val(),
-                                    date_end: $('input[name="date_end"]').val(),
-                                    ticket_type: $('input[name="ticket_type"]').val(),
-                                    warn_value: $('input[name="warn_value"]').val(),
-                                    receivers: receivers
-                                },
-                                success: function(res){
-                                    if(res.code == 1){
-                                        layer.msg(res.msg, {icon:1}, function(){
-                                            layer.close(index);
-                                            location.reload();
-                                        });
-                                    }else{
-                                        layer.msg(res.msg, {icon:2});
-                                    }
-                                }
-                            });
-                        }
-                    });
-                },
-                btn2: function(index){
-                    layer.close(index);
+                title: '新增库存预警配置',
+                area: ['500px', '350px'],
+                content: $('#editStockWarn'),
+                success: function(layero, index){
+                    $('#stockWarnForm')[0].reset();
+                    form.render();
                 }
             });
-        }
+        });
 
-        // 删除配置
-        window.del = function(id){
-            layer.confirm('确定要删除该配置吗？', {icon:3}, function(index){
+        // 编辑按钮
+        $(document).on('click', '.editBtn', function(){
+            var id = $(this).closest('tr').data('id');
+            var row = $(this).closest('tr');
+
+            $.ajax({
+                url: '{:url("systemsetting/systemsetting/stock_warn")}',
+                type: 'get',
+                data: {id: id},
+                success: function(res){
+                    if(res.code == 1){
+                        var data = res.data;
+                        $('#stockWarnForm input[name="id"]').val(data.id);
+                        $('#stockWarnForm select[name="channel"]').val(data.channel);
+                        $('#stockWarnForm input[name="date_start"]').val(data.date_start);
+                        $('#stockWarnForm input[name="date_end"]').val(data.date_end);
+                        $('#stockWarnForm input[name="ticket_type"]').val(data.ticket_type);
+                        $('#stockWarnForm input[name="warn_value"]').val(data.warn_value);
+                        $('#stockWarnForm input[name="receivers"]').val(data.receivers.join(','));
+
+                        layer.open({
+                            type: 1,
+                            title: '编辑库存预警配置',
+                            area: ['500px', '350px'],
+                            content: $('#editStockWarn')
+                        });
+                    }
+                }
+            });
+        });
+
+        // 保存配置
+        form.on('submit(stockWarnForm)', function(data){
+            var field = data.field;
+            field.receivers = field.receivers.split(',');
+
+            $.ajax({
+                url: '{:url("systemsetting/systemsetting/stock_warn")}',
+                type: 'post',
+                data: field,
+                success: function(res){
+                    if(res.code == 1){
+                        layer.msg(res.msg, {icon:1}, function(){
+                            layer.closeAll();
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg, {icon:2});
+                    }
+                }
+            });
+            return false;
+        });
+
+        // 删除按钮
+        $(document).on('click', '.deleteBtn', function(){
+            var id = $(this).closest('tr').data('id');
+            layer.confirm('确定要删除这条配置吗？', {icon:3, title:'提示'}, function(index){
                 $.ajax({
-                    url: '{:url("systemsetting/systemsetting/stockWarnDelete")}',
+                    url: '{:url("systemsetting/systemsetting/stock_warn_delete")}',
                     type: 'get',
-                    data: {id:id},
+                    data: {id: id},
                     success: function(res){
                         if(res.code == 1){
-                            layer.msg(res.msg, {icon:1}, function(){
-                                location.reload();
-                            });
+                            layer.msg('删除成功', {icon:1});
+                            location.reload();
                         }else{
-                            layer.msg(res.msg, {icon:2});
+                            layer.msg('删除失败', {icon:2});
                         }
                     }
                 });
-                layer.close(index);
             });
-        };
+        });
+
+        // 批量删除
+        $('#deleteBtn').click(function(){
+            var ids = [];
+            $('.itemCheck:checked').each(function(){
+                ids.push($(this).closest('tr').data('id'));
+            });
+
+            if(ids.length == 0){
+                layer.msg('请选择要删除的配置', {icon:2});
+                return;
+            }
+
+            layer.confirm('确定要删除选中的' + ids.length + '条配置吗？', {icon:3, title:'提示'}, function(index){
+                $.ajax({
+                    url: '{:url("systemsetting/systemsetting/stock_warn_delete")}',
+                    type: 'post',
+                    data: {ids: ids},
+                    success: function(res){
+                        if(res.code == 1){
+                            layer.msg('删除成功', {icon:1});
+                            location.reload();
+                        }else{
+                            layer.msg('删除失败', {icon:2});
+                        }
+                    }
+                });
+            });
+        });
     });
 </script>
 {/block}

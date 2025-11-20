@@ -6,6 +6,8 @@ use think\Model;
 
 class AuthGroup extends Model
 {
+    protected $name = 'auth_group';
+    protected $pk = 'id';
 
     // 开启自动写入时间戳字段
     protected $autoWriteTimestamp = 'int';

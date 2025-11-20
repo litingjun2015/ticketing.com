@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>{$title|default='景区票务系统 - 系统设置'}</title>
+    <meta name="keywords" content="景区票务系统,FastAdmin,系统设置">
+    <meta name="description" content="景区票务系统后台管理系统">
+    <!-- 全局CSS -->
+    <link rel="stylesheet" href="__CDN__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ADMIN_CSS__/main.css?v={$site.version}" media="all">
+    <link rel="stylesheet" href="__ADMIN_CSS__/custom.css?v={$site.version}" media="all">
+    <!-- 自定义头部CSS，子模板可重写 -->
+    {block name="header_css"}{/block}
+    <!-- 页面favicon -->
+    <link rel="shortcut icon" href="__ROOT__/favicon.ico">
+</head>
+<body class="layui-layout-body">
+<!-- 整体布局容器 -->
+<div class="layui-layout layui-layout-admin">
+    <!-- 顶部导航栏 -->
+    <div class="layui-header layui-bg-blue">
+        <div class="layui-logo layui-hide-xs layui-bg-blue">
+            <img src="__ROOT__/uploads/scenic-logo.png" alt="景区票务系统" style="height: 40px; margin-top: 10px;">
+            <span style="color: #fff; font-size: 16px; margin-left: 10px;">景区票务系统</span>
+        </div>
+        <!-- 顶部右侧菜单 -->
+        <ul class="layui-nav layui-nav-menu layui-nav-right layui-hide-xs">
+            <!-- 用户信息 -->
+            <li class="layui-nav-item layui-dropdown">
+                <a href="javascript:;">
+                    <img src="{$admin.avatar|default='__ADMIN_IMG__/avatar.png'}" class="layui-nav-img">
+                    {$admin.nickname|default=$admin.username}
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="{:url('profile/index')}"><i class="layui-icon">&#xe612;</i> 个人资料</a></dd>
+                    <dd><a href="{:url('profile/password')}"><i class="layui-icon">&#xe631;</i> 修改密码</a></dd>
+                </dl>
+            </li>
+            <!-- 退出登录 -->
+            <li class="layui-nav-item">
+                <a href="javascript:logout();"><i class="layui-icon">&#xe64d;</i> 退出登录</a>
+            </li>
+        </ul>
+        <!-- 移动端菜单按钮 -->
+        <a class="layui-btn layui-btn-icon layui-btn-blue layui-hide-sm layui-show-xs-inline-block layui-header-button" data-event="leftMenu"><i class="layui-icon">&#xe620;</i></a>
+    </div>
+
+    <!-- 左侧侧边栏 -->
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 侧边栏菜单（由FastAdmin自动渲染权限菜单） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="admin-side-nav">
+                {notempty name="menus"}
+                {foreach name="menus" item="menu"}
+                <li class="layui-nav-item {eq name='menu.active' value='1'}layui-nav-itemed{/eq}">
+                    <a href="{$menu.url|raw}" {notempty name="menu.target"}target="{$menu.target}"{/notempty}>
+                    {notempty name="menu.icon"}<i class="{$menu.icon}"></i>{/notempty}
+                    <cite>{$menu.title}</cite>
+                    {notempty name="menu.children"}<span class="layui-nav-more"></span>{/notempty}
+                    </a>
+                    {notempty name="menu.children"}
+                    <dl class="layui-nav-child">
+                        {foreach name="menu.children" item="child"}
+                        <dd {eq name='child.active' value='1'}class="layui-this"{/eq}>
+                        <a href="{$child.url|raw}" {notempty name="child.target"}target="{$child.target}"{/notempty}>
+                        {notempty name="child.icon"}<i class="{$child.icon}"></i>{/notempty}
+                        <cite>{$child.title}</cite>
+                        </a>
+                        </dd>
+                        {/foreach}
+                    </dl>
+                    {/notempty}
+                </li>
+                {/foreach}
+                {/notempty}
+            </ul>
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="layui-body" id="LAY_app_body">
+        <div class="layui-tab layui-tab-card admin-tabs" lay-filter="admin-tabs" lay-allowClose="true">
+            <!-- 面包屑导航 -->
+            <div class="layui-header-content layui-row layui-col-space1 layui-breadcrumb" lay-filter="admin-breadcrumb">
+                {volist name="breadcrumb" id="vo"}
+                <a href="{$vo.url}">{$vo.title}</a>
+                {/volist}
+            </div>
+            <!-- 标签页容器（FastAdmin默认标签页功能） -->
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="{:md5(request()->url())}">
+                    <i class="{$Think.config.site.icon|default='layui-icon &#xe602;'}"></i>
+                    <cite>{$title|default='首页'}</cite>
+                </li>
+            </ul>
+            <!-- 主体内容占位符：子模板的{block name="content"}会渲染到这里 -->
+            <div class="layui-tab-content layui-tab-item layui-show">
+                {block name="content"}{/block}
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部版权栏 -->
+    <div class="layui-footer layui-bg-blue">
+        <div class="layui-container">
+            <p style="color: #fff; text-align: center; line-height: 44px;">
+                © 2025 景区票务系统 版权所有 {notempty name="site.icp"}| <a href="http://beian.miit.gov.cn/" target="_blank" style="color: #fff;">{$site.icp}</a>{/notempty}
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 遮罩层 -->
+<div class="site-mobile-shade" data-event="leftMenu"></div>
+
+<!-- 全局JS -->
+<script src="__CDN__/jquery/jquery-3.2.1.min.js"></script>
+<script src="__CDN__/layui/layui.js"></script>
+<script src="__ADMIN_JS__/app.js?v={$site.version}"></script>
+<!-- 退出登录JS -->
+<script>
+    function logout() {
+        layer.confirm('确定要退出登录吗？', {icon: 3, title:'提示'}, function(index){
+            location.href = "{:url('public/logout')}";
+            layer.close(index);
+        });
+    }
+</script>
+<!-- 子模板脚本占位符：子模板的{block name="script"}会渲染到这里 -->
+{block name="script"}{/block}
+</body>
+</html>
