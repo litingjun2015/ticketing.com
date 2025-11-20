@@ -1,10 +1,10 @@
 {block name="content"}
 <div class="layui-card">
     <div class="layui-card-header">
-        <h3 class="layui-card-title">系统基础信息配置</h3>
+        <h3 class="layui-card-title">系统基础参数配置</h3>
         <div class="layui-btn-group layui-card-header-toolbar">
-            <button class="layui-btn layui-btn-normal" id="saveBtn">保存配置</button>
-            <button class="layui-btn layui-btn-primary" id="resetBtn">重置</button>
+            <button class="layui-btn layui-btn-normal" id="saveBtn"><i class="fa fa-save"></i> 保存配置</button>
+            <button class="layui-btn layui-btn-primary" id="resetBtn"><i class="fa fa-refresh"></i> 重置</button>
         </div>
     </div>
     <div class="layui-card-body">
@@ -16,6 +16,15 @@
                            class="layui-input" lay-verify="required" placeholder="请输入景区名称">
                 </div>
             </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label required">系统名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="system_name" value="{$basicInfo.system_name|default='景区票务系统'}"
+                           class="layui-input" lay-verify="required" placeholder="请输入系统名称">
+                </div>
+            </div>
+
             <div class="layui-form-item">
                 <label class="layui-form-label">LOGO上传</label>
                 <div class="layui-input-block">
@@ -28,6 +37,7 @@
                     <p class="layui-form-mid layui-word-aux">支持PNG/JPG格式，大小不超过5MB</p>
                 </div>
             </div>
+
             <div class="layui-form-item">
                 <label class="layui-form-label required">联系电话</label>
                 <div class="layui-input-block">
@@ -35,6 +45,7 @@
                            class="layui-input" lay-verify="required|phone" placeholder="请输入11位手机号">
                 </div>
             </div>
+
             <div class="layui-form-item">
                 <label class="layui-form-label required">详细地址</label>
                 <div class="layui-input-block">
@@ -42,10 +53,77 @@
                            class="layui-input" lay-verify="required" placeholder="请输入详细地址">
                 </div>
             </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label required">版权信息</label>
+                <div class="layui-input-block">
+                    <input type="text" name="copyright" value="{$basicInfo.copyright|default=''}"
+                           class="layui-input" lay-verify="required" placeholder="请输入版权信息">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">ICP备案号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="icp" value="{$basicInfo.icp|default=''}"
+                           class="layui-input" placeholder="请输入ICP备案号">
+                </div>
+            </div>
+
+            <fieldset class="layui-elem-field">
+                <legend>系统参数设置</legend>
+                <div class="layui-field-box">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required">数据刷新间隔</label>
+                        <div class="layui-input-block">
+                            <input type="number" name="refresh_interval" value="{$basicInfo.refresh_interval|default=5}"
+                                   class="layui-input" lay-verify="required|number|min:1|max:60" placeholder="请输入1-60之间的整数（秒）">
+                            <p class="layui-form-mid layui-word-aux">设置系统自动刷新数据的时间间隔</p>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required">登录验证码</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="login_captcha" value="1" title="启用" <?php if($basicInfo['login_captcha'] == 1): ?>checked="checked"<?php endif; ?>>
+                            <input type="radio" name="login_captcha" value="0" title="禁用" <?php if($basicInfo['login_captcha'] == 0): ?>checked="checked"<?php endif; ?>>
+                        </div>
+
+                        <label class="layui-form-label required">操作日志记录</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="operation_log" value="1" title="启用" {eq
+                                   name="basicInfo.operation_log" value="1" checked="checked"/}>
+                            <input type="radio" name="operation_log" value="0" title="禁用" {eq
+                                   name="basicInfo.operation_log" value="0" checked="checked"/}>
+                        </div>
+
+                        <label class="layui-form-label required">默认语言</label>
+                        <div class="layui-input-block">
+                            <select name="default_lang" lay-verify="required">
+                                {foreach name="langOptions" item="lang"}
+                                <option value="{$lang.id}" {eq name="basicInfo.default_lang" value="$lang.id"
+                                        selected="selected"
+                                /}>{$lang.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required">时间显示格式</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="time_format" value="{$basicInfo.time_format|default='Y-m-d H:i:s'}"
+                                   class="layui-input" lay-verify="required" placeholder="例如: Y-m-d H:i:s">
+                            <p class="layui-form-mid layui-word-aux">PHP时间格式，如Y-m-d H:i:s表示2024-09-01 12:00:00</p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
         </form>
     </div>
 </div>
 {/block}
+
 {block name="script"}
 <script>
     layui.use(['form', 'layer'], function(){
@@ -77,7 +155,10 @@
 
         // 重置
         $('#resetBtn').click(function(){
-            $('#basicForm')[0].reset();
+            if(confirm('确定要重置表单吗？未保存的内容将会丢失！')){
+                $('#basicForm')[0].reset();
+                form.render();
+            }
         });
     });
 </script>

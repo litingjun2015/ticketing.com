@@ -21,3 +21,9 @@ if (!is_file(APP_PATH . 'admin/command/Install/install.lock')) {
 
 // 加载框架引导文件
 require __DIR__ . '/../thinkphp/start.php';
+
+// 打印 ThinkPHP 版本号
+//var_dump(THINK_VERSION);
+// 也可以用 echo 输出
+// echo 'ThinkPHP 版本：' . THINK_VERSION;
+//exit; // 防止后续代码执行，仅用于查看版本

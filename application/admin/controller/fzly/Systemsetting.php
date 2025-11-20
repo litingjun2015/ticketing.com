@@ -20,10 +20,10 @@ class Systemsetting extends Backend
         $this->model = new Basic();
     }
 
-    // 1. 系统基础信息配置
+    // 1. 系统基础参数配置
     public function basic()
     {
-        Log::info('这是一条调试日志 Systemsetting');
+        Log::info('系统基础参数配置调试日志');
 
         if ($this->request->isPost()) {
             $data = $this->request->post();
@@ -59,6 +59,12 @@ class Systemsetting extends Backend
 
         // 渲染页面：查询已有配置
         $basicInfo = (new Basic())->find() ?: [];
+        // 语言选项
+        $langOptions = [
+            ['id' => 'zh-cn', 'name' => '简体中文'],
+            ['id' => 'en-us', 'name' => '英文']
+        ];
+        $this->assign('langOptions', $langOptions);
         $this->assign('basicInfo', $basicInfo);
 
         return $this->view->fetch('fzly/systemsetting/basic');

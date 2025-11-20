@@ -73,3 +73,27 @@ VALUES (30, 5, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
 -- 票价规则测试数据
 INSERT INTO `fa_system_setting_price_rule` (`holiday_premium_switch`, `holiday_premium_rate`, `group_discount_base`, `apply_ticket_types`, `holiday_dates`, `status`, `create_time`, `update_time`)
 VALUES (1, 120, 90, '["成人票","亲子票"]', '["2024-06-10","2024-06-12"]', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
+
+-- 2025/11/20
+-- 扩展系统基础参数配置表
+ALTER TABLE `fa_system_setting_basic`
+    ADD COLUMN `system_name` varchar(100) NOT NULL DEFAULT '景区票务系统' COMMENT '系统名称',
+ADD COLUMN `copyright` varchar(255) NOT NULL DEFAULT '© 2024 景区票务系统 版权所有' COMMENT '版权信息',
+ADD COLUMN `icp` varchar(50) DEFAULT '' COMMENT 'ICP备案号',
+ADD COLUMN `refresh_interval` int(3) NOT NULL DEFAULT 5 COMMENT '数据刷新间隔(秒)',
+ADD COLUMN `login_captcha` tinyint(1) NOT NULL DEFAULT 1 COMMENT '登录验证码(1启用/0禁用)',
+ADD COLUMN `operation_log` tinyint(1) NOT NULL DEFAULT 1 COMMENT '操作日志记录(1启用/0禁用)',
+ADD COLUMN `default_lang` varchar(10) NOT NULL DEFAULT 'zh-cn' COMMENT '默认语言',
+ADD COLUMN `time_format` varchar(50) NOT NULL DEFAULT 'Y-m-d H:i:s' COMMENT '时间显示格式';
+
+-- 更新测试数据
+UPDATE `fa_system_setting_basic` SET
+                                     `system_name` = '黄山景区票务系统',
+                                     `copyright` = '© 2024 黄山景区管理局 版权所有',
+                                     `icp` = '皖ICP备12345678号',
+                                     `refresh_interval` = 10,
+                                     `login_captcha` = 1,
+                                     `operation_log` = 1,
+                                     `default_lang` = 'zh-cn',
+                                     `time_format` = 'Y-m-d H:i:s'
+WHERE `id` = 1;
