@@ -1,0 +1,84 @@
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">系统基础信息配置</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            <button class="layui-btn layui-btn-normal" id="saveBtn">保存配置</button>
+            <button class="layui-btn layui-btn-primary" id="resetBtn">重置</button>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <form class="layui-form" id="basicForm" enctype="multipart/form-data">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">景区名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="scenic_name" value="{$basicInfo.scenic_name|default=''}"
+                           class="layui-input" lay-verify="required" placeholder="请输入景区名称">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">LOGO上传</label>
+                <div class="layui-input-block">
+                    <input type="file" name="logo" class="layui-upload-file" accept="image/png,image/jpg">
+                    {if $basicInfo.logo}
+                    <div class="layui-upload-list" style="margin-top:10px;">
+                        <img src="{$basicInfo.logo}" style="width:100px;height:auto;" alt="景区LOGO">
+                    </div>
+                    {/if}
+                    <p class="layui-form-mid layui-word-aux">支持PNG/JPG格式，大小不超过5MB</p>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">联系电话</label>
+                <div class="layui-input-block">
+                    <input type="text" name="contact_phone" value="{$basicInfo.contact_phone|default=''}"
+                           class="layui-input" lay-verify="required|phone" placeholder="请输入11位手机号">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">详细地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="address" value="{$basicInfo.address|default=''}"
+                           class="layui-input" lay-verify="required" placeholder="请输入详细地址">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['form', 'layer'], function(){
+        var form = layui.form, layer = layui.layer;
+
+        // 保存配置
+        $('#saveBtn').click(function(){
+            form.validate(function(valid){
+                if(valid){
+                    $.ajax({
+                        url: '{:url("systemsetting/systemsetting/basic")}',
+                        type: 'post',
+                        data: new FormData($('#basicForm')[0]),
+                        processData: false,
+                        contentType: false,
+                        success: function(res){
+                            if(res.code == 1){
+                                layer.msg(res.msg, {icon:1}, function(){
+                                    location.reload();
+                                });
+                            }else{
+                                layer.msg(res.msg, {icon:2});
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // 重置
+        $('#resetBtn').click(function(){
+            $('#basicForm')[0].reset();
+        });
+    });
+</script>
+{/block}

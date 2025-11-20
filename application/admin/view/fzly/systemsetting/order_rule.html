@@ -1,0 +1,74 @@
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">订单规则配置</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            <button class="layui-btn layui-btn-normal" id="saveBtn">保存配置</button>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <form class="layui-form" id="orderRuleForm">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">支付超时时间</label>
+                <div class="layui-input-block">
+                    <input type="number" name="pay_timeout" value="{$orderRule.pay_timeout|default=30}"
+                           class="layui-input" lay-verify="required|number|min:5|max:120" placeholder="请输入5-120之间的整数（分钟）">
+                    <p class="layui-form-mid layui-word-aux">默认30分钟，修改后仅对新创建订单生效</p>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">库存释放间隔</label>
+                <div class="layui-input-block">
+                    <input type="number" name="stock_release_interval" value="{$orderRule.stock_release_interval|default=5}"
+                           class="layui-input" lay-verify="required|number|min:1|max:30" placeholder="请输入1-30之间的整数（分钟）">
+                    <p class="layui-form-mid layui-word-aux">需小于支付超时时间</p>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">规则状态</label>
+<!--                <div class="layui-input-block">-->
+<!--                    &lt;!&ndash; PHP7+ 空合并运算符写法（更简洁，推荐） &ndash;&gt;-->
+<!--                    <input type="radio" name="status" value="1" title="启用" <?php if (($orderRule['status'] ?? 1) == 1): ?>checked<?php endif; ?>>-->
+<!--                    <input type="radio" name="status" value="0" title="禁用" <?php if (($orderRule['status'] ?? 1) == 0): ?>checked<?php endif; ?>>-->
+<!--                    &lt;!&ndash; 你原来的三元运算符写法（兼容低版本PHP）也可保留，二选一即可 &ndash;&gt;-->
+<!--                    &lt;!&ndash; <input type="radio" name="status" value="1" title="启用" <?php if (isset($orderRule['status']) ? $orderRule['status'] : 1 == 1): ?>checked<?php endif; ?>> &ndash;&gt;-->
+<!--                    &lt;!&ndash; <input type="radio" name="status" value="0" title="禁用" <?php if (isset($orderRule['status']) ? $orderRule['status'] : 1 == 0): ?>checked<?php endif; ?>> &ndash;&gt;-->
+<!--                </div>-->
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['form', 'layer'], function(){
+        var form = layui.form, layer = layui.layer;
+
+        // 保存配置
+        $('#saveBtn').click(function(){
+            form.validate(function(valid){
+                if(valid){
+                    var payTimeout = parseInt($('input[name="pay_timeout"]').val());
+                    var releaseInterval = parseInt($('input[name="stock_release_interval"]').val());
+                    if(releaseInterval >= payTimeout){
+                        layer.msg('库存释放间隔需小于支付超时时间', {icon:2});
+                        return;
+                    }
+                    $.ajax({
+                        url: '{:url("systemsetting/systemsetting/orderRule")}',
+                        type: 'post',
+                        data: $('#orderRuleForm').serialize(),
+                        success: function(res){
+                            if(res.code == 1){
+                                layer.msg(res.msg, {icon:1});
+                            }else{
+                                layer.msg(res.msg, {icon:2});
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+{/block}

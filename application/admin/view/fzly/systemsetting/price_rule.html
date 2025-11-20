@@ -1,0 +1,89 @@
+
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">票价规则配置</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            <button class="layui-btn layui-btn-normal" id="saveBtn">保存配置</button>
+        </div>
+    </div>
+
+    
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label required">团体票折扣基准</label>
+    <div class="layui-input-block">
+        <input type="number" name="group_discount_base" value="{$priceRule.group_discount_base|default=90}"
+               class="layui-input" lay-verify="required|number|min:50|max:99" placeholder="请输入50-99之间的整数（%）">
+    </div>
+</div>
+
+
+</form>
+</div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['form', 'layer'], function(){
+        var form = layui.form, layer = layui.layer;
+
+        // 溢价开关切换
+        form.on('radio(holiday_premium_switch)', function(data){
+            if(data.value == 1){
+                $('#premiumRateWrap').show();
+                $('#holidayDateWrap').show();
+                $('input[name="holiday_premium_rate"]').attr('lay-verify', 'required|number|min:100|max:200');
+                $('input[name="holiday_dates"]').attr('lay-verify', 'required');
+            }else{
+                $('#premiumRateWrap').hide();
+                $('#holidayDateWrap').hide();
+                $('input[name="holiday_premium_rate"]').removeAttr('lay-verify');
+                $('input[name="holiday_dates"]').removeAttr('lay-verify');
+            }
+            form.render();
+        });
+
+        // 保存配置
+        $('#saveBtn').click(function(){
+            form.validate(function(valid){
+                if(valid){
+                    var switchVal = $('input[name="holiday_premium_switch"]:checked').val();
+                    var holidayDates = [];
+                    if(switchVal == 1){
+                        holidayDates = $('input[name="holiday_dates"]').val().split(',').filter(item=>item);
+                        if(holidayDates.length == 0){
+                            layer.msg('请输入有效的节假日日期', {icon:2});
+                            return;
+                        }
+                    }
+                    var applyTypes = $('input[name="apply_ticket_types"]').val().split(',').filter(item=>item);
+                    if(applyTypes.length == 0){
+                        layer.msg('请输入有效的适用票种', {icon:2});
+                        return;
+                    }
+                    $.ajax({
+                        url: '{:url("systemsetting/systemsetting/priceRule")}',
+                        type: 'post',
+                        data: {
+                            holiday_premium_switch: switchVal,
+                            holiday_premium_rate: $('input[name="holiday_premium_rate"]').val(),
+                            holiday_dates: holidayDates,
+                            group_discount_base: $('input[name="group_discount_base"]').val(),
+                            apply_ticket_types: applyTypes,
+                            status: $('input[name="status"]:checked').val()
+                        },
+                        success: function(res){
+                            if(res.code == 1){
+                                layer.msg(res.msg, {icon:1});
+                            }else{
+                                layer.msg(res.msg, {icon:2});
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+{/block}

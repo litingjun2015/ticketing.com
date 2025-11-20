@@ -1,0 +1,187 @@
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">库存预警阈值配置</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            <button class="layui-btn layui-btn-normal" id="addBtn">新增配置</button>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table" lay-size="sm">
+            <thead>
+            <tr>
+                <th>渠道类型</th>
+                <th>生效日期范围</th>
+                <th>票种</th>
+                <th>预警阈值</th>
+                <th>通知接收人</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $list as $item}
+            <tr>
+                <td>{$item.channel}</td>
+                <td>{$item.date_start} 至 {$item.date_end}</td>
+                <td>{$item.ticket_type}</td>
+                <td>{$item.warn_value}</td>
+                <td>{implode(',', $item.receivers)}</td>
+                <td>
+                    <button class="layui-btn layui-btn-xs" onclick="edit({$item.id})">编辑</button>
+                    <button class="layui-btn layui-btn-xs layui-btn-danger" onclick="del({$item.id})">删除</button>
+                </td>
+            </tr>
+            {/foreach}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 新增/编辑弹窗 -->
+<div class="layui-layer-wrap" id="formLayer" style="display:none;">
+    <form class="layui-form" id="stockWarnForm" lay-filter="stockWarnForm">
+        <input type="hidden" name="id" value="">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">渠道类型</label>
+            <div class="layui-input-block">
+                <select name="channel" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="官网">官网</option>
+                    <option value="OTA">OTA</option>
+                    <option value="窗口">窗口</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">生效日期</label>
+            <div class="layui-input-block">
+                <input type="date" name="date_start" lay-verify="required" class="layui-input" style="width:48%;display:inline-block;margin-right:4%;">
+                <input type="date" name="date_end" lay-verify="required" class="layui-input" style="width:48%;display:inline-block;">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">票种</label>
+            <div class="layui-input-block">
+                <input type="text" name="ticket_type" class="layui-input" lay-verify="required" placeholder="请输入票种名称">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">预警阈值</label>
+            <div class="layui-input-block">
+                <input type="number" name="warn_value" class="layui-input" lay-verify="required|number|min:1" placeholder="请输入正整数">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">通知接收人</label>
+            <div class="layui-input-block">
+                <input type="text" name="receivers" class="layui-input" lay-verify="required" placeholder="多个手机号用逗号分隔">
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['form', 'layer'], function(){
+        var form = layui.form, layer = layui.layer;
+        var formLayer = null;
+
+        // 新增配置
+        $('#addBtn').click(function(){
+            $('#stockWarnForm')[0].reset();
+            $('input[name="id"]').val('');
+            openLayer();
+        });
+
+        // 编辑配置
+        window.edit = function(id){
+            $.get('{:url("systemsetting/systemsetting/getStockWarn")}', {id:id}, function(res){
+                if(res.code == 1){
+                    var data = res.data;
+                    $('input[name="id"]').val(data.id);
+                    $('select[name="channel"]').val(data.channel);
+                    $('input[name="date_start"]').val(data.date_start);
+                    $('input[name="date_end"]').val(data.date_end);
+                    $('input[name="ticket_type"]').val(data.ticket_type);
+                    $('input[name="warn_value"]').val(data.warn_value);
+                    $('input[name="receivers"]').val(data.receivers.join(','));
+                    form.render();
+                    openLayer();
+                }else{
+                    layer.msg(res.msg, {icon:2});
+                }
+            }, 'json');
+        };
+
+        // 打开弹窗
+        function openLayer(){
+            formLayer = layer.open({
+                type: 1,
+                title: $('input[name="id"]').val() ? '编辑配置' : '新增配置',
+                area: ['600px', '450px'],
+                content: $('#formLayer'),
+                btn: ['保存', '取消'],
+                yes: function(index){
+                    form.validate(function(valid){
+                        if(valid){
+                            var receivers = $('input[name="receivers"]').val().split(',').filter(item=>item);
+                            if(receivers.length == 0){
+                                layer.msg('请输入有效的手机号', {icon:2});
+                                return;
+                            }
+                            $.ajax({
+                                url: '{:url("systemsetting/systemsetting/stockWarn")}',
+                                type: 'post',
+                                data: {
+                                    id: $('input[name="id"]').val(),
+                                    channel: $('select[name="channel"]').val(),
+                                    date_start: $('input[name="date_start"]').val(),
+                                    date_end: $('input[name="date_end"]').val(),
+                                    ticket_type: $('input[name="ticket_type"]').val(),
+                                    warn_value: $('input[name="warn_value"]').val(),
+                                    receivers: receivers
+                                },
+                                success: function(res){
+                                    if(res.code == 1){
+                                        layer.msg(res.msg, {icon:1}, function(){
+                                            layer.close(index);
+                                            location.reload();
+                                        });
+                                    }else{
+                                        layer.msg(res.msg, {icon:2});
+                                    }
+                                }
+                            });
+                        }
+                    });
+                },
+                btn2: function(index){
+                    layer.close(index);
+                }
+            });
+        }
+
+        // 删除配置
+        window.del = function(id){
+            layer.confirm('确定要删除该配置吗？', {icon:3}, function(index){
+                $.ajax({
+                    url: '{:url("systemsetting/systemsetting/stockWarnDelete")}',
+                    type: 'get',
+                    data: {id:id},
+                    success: function(res){
+                        if(res.code == 1){
+                            layer.msg(res.msg, {icon:1}, function(){
+                                location.reload();
+                            });
+                        }else{
+                            layer.msg(res.msg, {icon:2});
+                        }
+                    }
+                });
+                layer.close(index);
+            });
+        };
+    });
+</script>
+{/block}
