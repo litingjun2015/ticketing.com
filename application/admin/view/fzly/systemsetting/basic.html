@@ -25,13 +25,14 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">LOGO上传</label>
                 <div class="layui-input-block">
-                    <input type="file" name="logo" class="layui-upload-file" accept="image/png,image/jpg">
+                    <input type="file" name="logo" class="layui-upload-file" accept="image/png,image/jpg,image/jpeg" lay-verify="file">
                     {if $basicInfo.logo}
                     <div class="layui-upload-list" style="margin-top:10px;">
                         <img src="{$basicInfo.logo}" style="width:100px;height:auto;" alt="景区LOGO">
+                        <button type="button" class="layui-btn layui-btn-danger layui-btn-xs" id="delLogo">删除当前LOGO</button>
                     </div>
                     {/if}
-                    <p class="layui-form-mid layui-word-aux">支持PNG/JPG格式，大小不超过5MB</p>
+                    <p class="layui-form-mid layui-word-aux">支持PNG/JPG/JPEG格式，大小不超过5MB</p>
                 </div>
             </div>
 
@@ -181,5 +182,25 @@
         });
     });
     })
+
+    // 删除当前LOGO
+    $('#delLogo').click(function(){
+        layer.confirm('确定要删除当前LOGO吗？', {icon:3}, function(index){
+            $.ajax({
+                url: '{:url("fzly.Systemsetting/del_logo")}',
+                type: 'post',
+                success: function(res){
+                    if(res.code == 1){
+                        layer.msg('LOGO已删除', {icon:1}, function(){
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg, {icon:2});
+                    }
+                }
+            });
+            layer.close(index);
+        });
+    });
 </script>
 {/block}

@@ -92,23 +92,51 @@ class Systemsetting extends Controller
 //            }
 
             // 在Systemsetting.php的basic方法中添加调试信息
+            // 处理LOGO上传（完善版）
             if ($this->request->file('logo')) {
                 try {
                     $file = $this->request->file('logo');
-                    // 检查上传目录权限
+                    // 检查上传目录
                     $uploadPath = ROOT_PATH . 'public' . DS . 'uploads' . DS . date('Ym');
-                    if(!is_dir($uploadPath)){
+                    if (!is_dir($uploadPath)) {
                         mkdir($uploadPath, 0755, true);
                     }
+                    // 检查目录可写性
+                    if (!is_writable($uploadPath)) {
+                        throw new Exception('上传目录不可写，请检查权限');
+                    }
+
+                    // 验证文件（类型、大小）
+                    $validate = new \think\file\Validate([
+                        'size' => 5242880, // 限制5MB（5*1024*1024）
+                        'ext' => 'jpg,png,jpeg', // 允许的扩展名
+                        'type' => 'image/jpeg,image/png', // 允许的MIME类型
+                    ]);
+                    if (!$validate->check($file)) {
+                        throw new Exception($validate->getError());
+                    }
+
+                    // 上传文件（自动生成唯一文件名）
                     $info = $file->move($uploadPath);
-                    // ...后续代码
                     if ($info) {
-                        $data['logo'] = '/uploads/' . date('Ym') . '/' . $info->getSaveName();
+                        $newLogoPath = '/uploads/' . date('Ym') . '/' . $info->getSaveName();
+
+                        // 删除旧LOGO文件（如果存在）
+                        if (!empty($basicInfo['logo'])) {
+                            $oldLogoPath = ROOT_PATH . 'public' . $basicInfo['logo'];
+                            if (file_exists($oldLogoPath) && is_file($oldLogoPath)) {
+                                @unlink($oldLogoPath); // 静默删除，避免因删除失败中断流程
+                            }
+                        }
+
+                        $data['logo'] = $newLogoPath;
+                        Log::info('LOGO上传成功：' . $newLogoPath);
                     } else {
-                        $this->error($file->getError());
+                        throw new Exception('文件上传失败：' . $file->getError());
                     }
                 } catch (Exception $e) {
-                    $this->error('文件上传失败：' . $e->getMessage());
+                    Log::error('LOGO上传错误：' . $e->getMessage());
+                    $this->error('LOGO上传失败：' . $e->getMessage());
                 }
             }
 
@@ -485,4 +513,34 @@ class Systemsetting extends Controller
         $result = (new StockWarn())->destroy($id);
         $result ? $this->success('删除成功') : $this->error('删除失败');
     }
+
+    /**
+     * 删除LOGO
+     */
+    public function del_logo()
+    {
+        if (!$this->request->isPost()) {
+            $this->error('非法请求');
+        }
+
+        $basicInfo = $this->model->find();
+        if (empty($basicInfo['logo'])) {
+            $this->error('没有可删除的LOGO');
+        }
+
+        // 删除服务器文件
+        $logoPath = ROOT_PATH . 'public' . $basicInfo['logo'];
+        if (file_exists($logoPath) && is_file($logoPath)) {
+            @unlink($logoPath);
+        }
+
+        // 更新数据库
+        $result = $this->model->where('id', $basicInfo['id'])->update(['logo' => '']);
+        if ($result !== false) {
+            $this->success('LOGO删除成功');
+        } else {
+            $this->error('LOGO删除失败');
+        }
+    }
+
 }
