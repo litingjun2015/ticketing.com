@@ -3,13 +3,9 @@
 <div class="layui-card">
     <div class="layui-card-header">
         <h3 class="layui-card-title">基础参数配置</h3>
-        <div class="layui-btn-group layui-card-header-toolbar">
-            <button class="layui-btn layui-btn-normal" id="saveBtn"><i class="fa fa-save"></i> 保存配置</button>
-            <button class="layui-btn layui-btn-primary" id="resetBtn"><i class="fa fa-refresh"></i> 重置</button>
-        </div>
     </div>
     <div class="layui-card-body">
-        <form class="layui-form" id="basicForm" enctype="multipart/form-data">
+        <form class="layui-form" id="basicForm" enctype="multipart/form-data" method="post">
             <div class="layui-form-item">
                 <label class="layui-form-label required">景区名称</label>
                 <div class="layui-input-block">
@@ -122,6 +118,11 @@
                             <p class="layui-form-mid layui-word-aux">PHP时间格式，如Y-m-d H:i:s表示2024-09-01 12:00:00</p>
                         </div>
                     </div>
+
+                    <div class="layui-btn-group layui-card-header-toolbar">
+                        <button type="button" class="layui-btn layui-btn-normal" id="saveBtn"><i class="fa fa-save"></i> 保存配置</button>
+                        <button class="layui-btn layui-btn-primary" id="resetBtn"><i class="fa fa-refresh"></i> 重置</button>
+                    </div>
                 </div>
             </fieldset>
         </form>
@@ -136,11 +137,14 @@
             layer = layui.layer;
 
         // 保存配置
-        $('#saveBtn').click(function(){
+        $('#saveBtn').click(function(e){
+            // 阻止按钮默认提交行为（关键修复）
+            e.preventDefault();
             form.validate(function(valid){
                 if(valid){
+                    console.log('表单验证通过，提交数据');
                     $.ajax({
-                        url: '{:url("admin/fzly.Systemsetting/basic")}',
+                        url: '{:url("fzly.Systemsetting/basic")}',
                         type: 'post',
                         data: new FormData($('#basicForm')[0]),
                         processData: false,
@@ -153,11 +157,20 @@
                             }else{
                                 layer.msg(res.msg, {icon:2});
                             }
+                        },
+                        error: function(xhr, status, error){
+                            console.error('请求错误:', error);
+                            layer.msg('保存失败，网络错误', {icon:2});
                         }
                     });
+                }else{
+                    // 新增验证失败提示
+                    layer.msg('表单验证失败，请检查输入项', {icon:2});
+                    return false;
                 }
             });
-        });
+            // 额外保险：阻止事件冒泡
+            return false;
 
         // 重置
         $('#resetBtn').click(function(){
@@ -167,5 +180,6 @@
             }
         });
     });
+    })
 </script>
 {/block}

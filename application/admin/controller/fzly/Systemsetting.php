@@ -15,6 +15,9 @@ use think\Db;
 use think\Exception;
 use think\Log;
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 class Systemsetting extends Controller
 {
     protected $noNeedLogin = [];
@@ -49,23 +52,28 @@ class Systemsetting extends Controller
     // 基础参数配置
     public function basic()
     {
+        // 在basic()方法开头添加
+//        var_dump($this->request->method()); // 应输出"POST"
+//        exit;
+
         if ($this->request->isPost()) {
             $data = $this->request->post();
 
-            // 验证数据
+            // 在basic()方法的Validate中添加
             $validate = new \think\Validate([
                 'scenic_name' => 'require|max:50',
+                'system_name' => 'require|max:50',
                 'contact_phone' => 'require|mobile',
                 'address' => 'require|max:255',
                 'refresh_interval' => 'require|number|between:1,60',
+                'login_captcha' => 'require|in:0,1', // 新增
+                'operation_log' => 'require|in:0,1', // 新增
+                'default_lang' => 'require', // 新增
+                'time_format' => 'require|max:50',
             ], [
-                'scenic_name.require' => '景区名称不能为空',
-                'contact_phone.require' => '联系电话不能为空',
-                'contact_phone.mobile' => '联系电话格式不正确',
-                'address.require' => '地址不能为空',
-                'refresh_interval.require' => '数据刷新间隔不能为空',
-                'refresh_interval.number' => '数据刷新间隔必须为数字',
-                'refresh_interval.between' => '数据刷新间隔必须在1-60秒之间',
+                // 补充对应错误提示
+                'system_name.require' => '系统名称不能为空',
+                'time_format.require' => '时间显示格式不能为空',
             ]);
 
             if (!$validate->check($data)) {
@@ -73,13 +81,34 @@ class Systemsetting extends Controller
             }
 
             // 处理LOGO上传
+//            if ($this->request->file('logo')) {
+//                $file = $this->request->file('logo');
+//                $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . date('Ym'));
+//                if ($info) {
+//                    $data['logo'] = '/uploads/' . date('Ym') . '/' . $info->getSaveName();
+//                } else {
+//                    $this->error($file->getError());
+//                }
+//            }
+
+            // 在Systemsetting.php的basic方法中添加调试信息
             if ($this->request->file('logo')) {
-                $file = $this->request->file('logo');
-                $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . date('Ym'));
-                if ($info) {
-                    $data['logo'] = '/uploads/' . date('Ym') . '/' . $info->getSaveName();
-                } else {
-                    $this->error($file->getError());
+                try {
+                    $file = $this->request->file('logo');
+                    // 检查上传目录权限
+                    $uploadPath = ROOT_PATH . 'public' . DS . 'uploads' . DS . date('Ym');
+                    if(!is_dir($uploadPath)){
+                        mkdir($uploadPath, 0755, true);
+                    }
+                    $info = $file->move($uploadPath);
+                    // ...后续代码
+                    if ($info) {
+                        $data['logo'] = '/uploads/' . date('Ym') . '/' . $info->getSaveName();
+                    } else {
+                        $this->error($file->getError());
+                    }
+                } catch (Exception $e) {
+                    $this->error('文件上传失败：' . $e->getMessage());
                 }
             }
 
@@ -95,11 +124,17 @@ class Systemsetting extends Controller
                 $result = $this->model->save($data);
             }
 
-            $result ? $this->success('配置保存成功，已实时生效', '') : $this->error('配置保存失败');
+            // 修改后
+            if ($result !== false) {
+                $this->success('配置保存成功，已实时生效', '');
+            } else {
+                $this->error('配置保存失败');
+            }
         }
 
         // 查询已有配置
         $basicInfo = $this->model->find() ?: [];
+        Log::record('当前配置记录：' . var_export($basicInfo, true));
 
         // 语言选项
         $langOptions = [

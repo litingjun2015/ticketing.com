@@ -26,6 +26,21 @@ class Basic extends Model
         'refresh_interval.between' => '数据刷新间隔必须在1-60秒之间',
     ];
 
+    // 允许批量赋值的字段
+    protected $fillable = [
+        'scenic_name',
+        'system_name',
+        'logo',
+        'contact_phone',
+        'address',
+        'icp',
+        'refresh_interval',
+        'login_captcha',
+        'operation_log',
+        'default_lang',
+        'time_format'
+    ];
+
     public function checkData($data)
     {
         $validate = new \think\Validate($this->validateRule, $this->validateMsg);
