@@ -66,32 +66,26 @@
 
                 <div class="layui-form-item">
                     <label class="layui-form-label required">生效日期</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="date_start" id="dateStart"
-                               class="layui-input" lay-verify="required|date"
-                               placeholder="请选择生效开始日期">
-                        <span class="layui-form-mid">-</span>
-                        <input type="text" name="date_end" id="dateEnd"
-                               class="layui-input" lay-verify="required|date"
-                               placeholder="请选择生效结束日期">
+                    <div class="layui-input-inline">
+                        <input type="text" name="date_start" id="dateStart" class="layui-input" lay-verify="required" placeholder="开始日期">
+                    </div>
+                    <div class="layui-form-mid">至</div>
+                    <div class="layui-input-inline">
+                        <input type="text" name="date_end" id="dateEnd" class="layui-input" lay-verify="required" placeholder="结束日期">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label required">票种</label>
                     <div class="layui-input-block">
-                        <input type="text" name="ticket_type"
-                               class="layui-input" lay-verify="required"
-                               placeholder="请输入票种名称">
+                        <input type="text" name="ticket_type" class="layui-input" lay-verify="required" placeholder="请输入票种名称">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label required">预警阈值</label>
                     <div class="layui-input-block">
-                        <input type="number" name="warn_value"
-                               class="layui-input" lay-verify="required|number|min:1"
-                               placeholder="请输入预警阈值（大于0）">
+                        <input type="number" name="warn_value" class="layui-input" lay-verify="required|number|gt:0" placeholder="请输入预警阈值数量">
                     </div>
                 </div>
 
@@ -101,6 +95,14 @@
                         <input type="text" name="receivers"
                                class="layui-input" lay-verify="required"
                                placeholder="请输入接收人手机号（多个用逗号分隔）">
+                    </div>
+                </div>
+
+                <!-- 新增保存按钮 -->
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn" id="saveBtn" lay-submit lay-filter="saveBtn">保存配置</button>
+                        <button type="button" class="layui-btn layui-btn-primary" id="cancelBtn">取消</button>
                     </div>
                 </div>
             </form>
@@ -115,6 +117,7 @@
         var form = layui.form,
             layer = layui.layer,
             laydate = layui.laydate;
+        var currentIndex = null;
 
         // 日期选择器
         laydate.render({
@@ -134,83 +137,89 @@
 
         // 新增按钮
         $('#addBtn').click(function(){
-            layer.open({
+            // 重置表单
+            $('#stockWarnForm')[0].reset();
+            $('input[name="id"]').val('');
+
+            currentIndex = layer.open({
                 type: 1,
                 title: '新增库存预警配置',
-                area: ['500px', '350px'],
+                area: ['500px', '450px'],
                 content: $('#editStockWarn'),
-                success: function(layero, index){
-                    $('#stockWarnForm')[0].reset();
-                    form.render();
-                }
             });
         });
 
-        <!-- 编辑按钮 -->
+        // 编辑按钮
         $(document).on('click', '.editBtn', function(){
             var id = $(this).closest('tr').data('id');
 
+            // 重置表单
+            $('#stockWarnForm')[0].reset();
+
+            // 获取数据并填充表单
             $.ajax({
-                url: '{:url("fzly/systemsetting/get_stock_warn")}', // 修改URL
+                url: '{:url("fzly/systemsetting/get_stock_warn")}',
                 type: 'get',
                 data: {id: id},
-                dataType: 'json', // 明确指定数据类型
                 success: function(res){
                     if(res.code == 1){
                         var data = res.data;
-                        $('#stockWarnForm input[name="id"]').val(data.id);
-                        $('#stockWarnForm select[name="channel"]').val(data.channel);
-                        $('#stockWarnForm input[name="date_start"]').val(data.date_start);
-                        $('#stockWarnForm input[name="date_end"]').val(data.date_end);
-                        $('#stockWarnForm input[name="ticket_type"]').val(data.ticket_type);
-                        $('#stockWarnForm input[name="warn_value"]').val(data.warn_value);
-                        $('#stockWarnForm input[name="receivers"]').val(data.receivers.join(','));
+                        $('input[name="id"]').val(data.id);
+                        $('select[name="channel"]').val(data.channel);
+                        $('input[name="date_start"]').val(data.date_start);
+                        $('input[name="date_end"]').val(data.date_end);
+                        $('input[name="ticket_type"]').val(data.ticket_type);
+                        $('input[name="warn_value"]').val(data.warn_value);
+                        $('input[name="receivers"]').val(data.receivers.join(','));
 
-                        // 重新渲染表单，确保下拉框等组件正确显示
+                        // 重新渲染表单
                         form.render();
 
-                        layer.open({
+                        currentIndex = layer.open({
                             type: 1,
                             title: '编辑库存预警配置',
-                            area: ['500px', '350px'],
-                            content: $('#editStockWarn')
+                            area: ['500px', '450px'],
+                            content: $('#editStockWarn'),
                         });
                     } else {
-                        layer.msg(res.msg || '获取数据失败', {icon: 2});
+                        layer.msg(res.msg, {icon: 2});
                     }
-                },
-                error: function(){
-                    layer.msg('请求失败，请重试', {icon: 2});
                 }
             });
         });
 
-        // 保存配置
-        form.on('submit(stockWarnForm)', function(data){
-            var field = data.field;
-            field.receivers = field.receivers.split(',');
+        // 取消按钮
+        $('#cancelBtn').click(function(){
+            layer.close(currentIndex);
+        });
+
+        // 保存按钮
+        form.on('submit(saveBtn)', function(data){
+            var url = '{:url("fzly/systemsetting/stock_warn")}';
 
             $.ajax({
-                url: '{:url("fzly/systemsetting/stock_warn")}', // 修正URL
+                url: url,
                 type: 'post',
-                data: field,
+                data: data.field,
                 success: function(res){
                     if(res.code == 1){
-                        layer.msg(res.msg, {icon:1}, function(){
-                            layer.closeAll();
-                            location.reload();
-                        });
-                    }else{
-                        layer.msg(res.msg, {icon:2});
+                        layer.msg(res.msg, {icon: 1});
+                        layer.close(currentIndex);
+                        // 刷新页面
+                        location.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2});
                     }
                 }
             });
+
             return false;
         });
 
         // 删除按钮
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).closest('tr').data('id');
+
             layer.confirm('确定要删除这条配置吗？', {icon:3, title:'提示'}, function(index){
                 $.ajax({
                     url: '{:url("systemsetting/systemsetting/stock_warn_delete")}',
