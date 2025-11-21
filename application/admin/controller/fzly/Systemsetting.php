@@ -250,6 +250,26 @@ class Systemsetting extends Controller
         return $this->view->fetch('fzly/systemsetting/stock_warn');
     }
 
+    // 获取单条库存预警配置
+    public function get_stock_warn($id)
+    {
+        if (!$id) {
+            return $this->error('参数错误');
+        }
+
+        $stockWarnModel = new StockWarn();
+        $data = $stockWarnModel->find($id);
+
+        if (!$data) {
+            return $this->error('数据不存在');
+        }
+
+        // 解析接收人JSON
+        $data['receivers'] = json_decode($data['receivers'], true);
+
+        return $this->success('获取成功', '', $data);
+    }
+
     // 订单规则配置
     public function order_rule()
     {

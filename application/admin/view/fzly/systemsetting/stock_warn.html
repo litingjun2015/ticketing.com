@@ -146,15 +146,15 @@
             });
         });
 
-        // 编辑按钮
+        <!-- 编辑按钮 -->
         $(document).on('click', '.editBtn', function(){
             var id = $(this).closest('tr').data('id');
-            var row = $(this).closest('tr');
 
             $.ajax({
-                url: '{:url("systemsetting/systemsetting/stock_warn")}',
+                url: '{:url("fzly/systemsetting/get_stock_warn")}', // 修改URL
                 type: 'get',
                 data: {id: id},
+                dataType: 'json', // 明确指定数据类型
                 success: function(res){
                     if(res.code == 1){
                         var data = res.data;
@@ -166,13 +166,21 @@
                         $('#stockWarnForm input[name="warn_value"]').val(data.warn_value);
                         $('#stockWarnForm input[name="receivers"]').val(data.receivers.join(','));
 
+                        // 重新渲染表单，确保下拉框等组件正确显示
+                        form.render();
+
                         layer.open({
                             type: 1,
                             title: '编辑库存预警配置',
                             area: ['500px', '350px'],
                             content: $('#editStockWarn')
                         });
+                    } else {
+                        layer.msg(res.msg || '获取数据失败', {icon: 2});
                     }
+                },
+                error: function(){
+                    layer.msg('请求失败，请重试', {icon: 2});
                 }
             });
         });
@@ -183,7 +191,7 @@
             field.receivers = field.receivers.split(',');
 
             $.ajax({
-                url: '{:url("systemsetting/systemsetting/stock_warn")}',
+                url: '{:url("fzly/systemsetting/stock_warn")}', // 修正URL
                 type: 'post',
                 data: field,
                 success: function(res){
