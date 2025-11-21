@@ -112,9 +112,17 @@ class Systemsetting extends Controller
                 }
             }
 
+//            Log::info('$data[login_captcha]');
+//            Log::info($data['login_captcha']);
+
             // 处理单选框
-            $data['login_captcha'] = isset($data['login_captcha']) ? 1 : 0;
-            $data['operation_log'] = isset($data['operation_log']) ? 1 : 0;
+            $data['login_captcha'] = isset($data['login_captcha']) ? (int)$data['login_captcha'] : 0;
+            $data['operation_log'] = isset($data['operation_log']) ? (int)$data['operation_log'] : 0;
+//            $data['operation_log'] = isset($data['operation_log']) ? 1 : 0;
+
+            Log::info('debug');
+            Log::info($data); // 应输出"POST"
+//        exit;
 
             // 新增或更新（仅保留一条配置）
             $exist = $this->model->find();
