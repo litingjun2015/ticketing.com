@@ -1,0 +1,108 @@
+{extend name="common/base" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">处理退单</h3>
+    </div>
+    <div class="layui-card-body">
+        <form class="layui-form" lay-filter="handleForm" method="post" action="{:url('handle')}">
+            <input type="hidden" name="ids" value="{$row.id}">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">退单号</label>
+                <div class="layui-input-block">
+                    <input type="text" value="{$row.refund_no}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">原订单号</label>
+                <div class="layui-input-block">
+                    <input type="text" value="{$row.order_no}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">申请人</label>
+                <div class="layui-input-block">
+                    <input type="text" value="{$row.user.username}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">退款金额</label>
+                <div class="layui-input-block">
+                    <input type="text" value="¥{$row.refund_amount}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">手续费</label>
+                <div class="layui-input-block">
+                    <input type="text" value="¥{$row.fee_amount}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">实际退款</label>
+                <div class="layui-input-block">
+                    <input type="text" value="¥{$row.actual_amount}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">申请原因</label>
+                <div class="layui-input-block">
+                    <textarea class="layui-textarea" readonly>{$row.refund_reason}</textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">处理结果 <span class="layui-red">*</span></label>
+                <div class="layui-input-block">
+                    <input type="radio" name="row[status]" value="2" title="同意退款" checked>
+                    <input type="radio" name="row[status]" value="3" title="拒绝退款">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">处理备注 <span class="layui-red">*</span></label>
+                <div class="layui-input-block">
+                    <textarea name="row[handle_note]" class="layui-textarea" required placeholder="请输入处理备注"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="submitForm">提交处理</button>
+                    <button type="button" class="layui-btn layui-btn-primary" onclick="parent.layer.closeAll()">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form'], function(){
+        var form = layui.form;
+
+        // 表单提交
+        form.on('submit(submitForm)', function(data){
+            var index = layer.load(2);
+            $.post($(this).closest('form').attr('action'), data.field, function(res){
+                layer.close(index);
+                if (res.code === 1) {
+                    parent.layer.msg(res.msg, {icon: 1});
+                    parent.layer.closeAll();
+                    parent.layui.table.reload('table');
+                } else {
+                    layer.msg(res.msg, {icon: 2});
+                }
+            }, 'json');
+            return false;
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,107 @@
+{extend name="common/base" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">退单详情</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="parent.layer.closeAll()"><i class="fa fa-times"></i> 关闭</button>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">退单信息</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table">
+                            <tr>
+                                <td width="30%">退单号</td>
+                                <td>{$row.refund_no}</td>
+                            </tr>
+                            <tr>
+                                <td>原订单号</td>
+                                <td>{$row.order_no}</td>
+                            </tr>
+                            <tr>
+                                <td>订单类型</td>
+                                <td>{:isset($orderTypeList[$row.order_type]) ? $orderTypeList[$row.order_type] : ''}</td>
+                            </tr>
+                            <tr>
+                                <td>退款金额</td>
+                                <td>¥{$row.refund_amount}</td>
+                            </tr>
+                            <tr>
+                                <td>手续费</td>
+                                <td>¥{$row.fee_amount}</td>
+                            </tr>
+                            <tr>
+                                <td>实际退款金额</td>
+                                <td>¥{$row.actual_amount}</td>
+                            </tr>
+                            <tr>
+                                <td>退款方式</td>
+                                <td>{:isset($refundTypeList[$row.refund_type]) ? $refundTypeList[$row.refund_type] : ''}</td>
+                            </tr>
+                            <tr>
+                                <td>退款原因</td>
+                                <td>{$row.refund_reason}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">处理信息</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table">
+                            <tr>
+                                <td width="30%">状态</td>
+                                <td>
+                                    {php}
+                                    $statusList = $this->view->get('statusList');
+                                    $color = '';
+                                    switch($row['status']){
+                                    case 1: $color = 'layui-btn-normal'; break;
+                                    case 2: $color = 'layui-btn-warm'; break;
+                                    case 3: $color = 'layui-btn-danger'; break;
+                                    case 4: $color = 'layui-btn-success'; break;
+                                    case 5: $color = 'layui-btn-primary'; break;
+                                    }
+                                    {/php}
+                                    <span class="layui-btn {$color} layui-btn-xs">{$statusList[$row.status]}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>申请人</td>
+                                <td>{$row.user.username}</td>
+                            </tr>
+                            <tr>
+                                <td>申请时间</td>
+                                <td>{$row.create_time|date='Y-m-d H:i:s',###}</td>
+                            </tr>
+                            <tr>
+                                <td>处理人</td>
+                                <td>{$admin.username ?? '未处理'}</td>
+                            </tr>
+                            <tr>
+                                <td>处理时间</td>
+                                <td>{$row.handle_time ? date('Y-m-d H:i:s', $row.handle_time) : '未处理'}</td>
+                            </tr>
+                            <tr>
+                                <td>处理备注</td>
+                                <td>{$row.handle_note ?? '无'}</td>
+                            </tr>
+                            <tr>
+                                <td>支付平台退款号</td>
+                                <td>{$row.refund_transaction_id ?? '无'}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

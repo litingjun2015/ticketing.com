@@ -1,0 +1,107 @@
+{extend name="common/base" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">申请退单</h3>
+    </div>
+    <div class="layui-card-body">
+        <form class="layui-form" lay-filter="createForm" method="post" action="{:url('create')}">
+            <input type="hidden" name="order_id" value="{$order.id}">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">原订单号</label>
+                <div class="layui-input-block">
+                    <input type="text" value="{$order.order_no}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单类型</label>
+                <div class="layui-input-block">
+                    <input type="text" value="{:isset($orderTypeList[$order.order_type]) ? $orderTypeList[$order.order_type] : ''}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单金额</label>
+                <div class="layui-input-block">
+                    <input type="text" value="¥{$order.order_amount_total}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">支付时间</label>
+                <div class="layui-input-block">
+                    <input type="text" value="{$order.pay_time|date='Y-m-d H:i:s',###}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">已支付时长</label>
+                <div class="layui-input-block">
+                    <input type="text" value="{$refundData.time_diff} 分钟" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">适用规则</label>
+                <div class="layui-input-block">
+                    <input type="text" value="{$refundData.rule ? '支付后'.$refundData.rule.time_range.'分钟内，手续费'.$refundData.rule.fee_rate.'%' : '无适用规则，0手续费'}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">手续费</label>
+                <div class="layui-input-block">
+                    <input type="text" value="¥{$refundData.fee_amount}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">实际退款金额</label>
+                <div class="layui-input-block">
+                    <input type="text" value="¥{$refundData.actual_amount}" class="layui-input" readonly>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">退款原因 <span class="layui-red">*</span></label>
+                <div class="layui-input-block">
+                    <textarea name="row[refund_reason]" class="layui-textarea" required placeholder="请输入退款原因"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="submitForm">提交退款申请</button>
+                    <button type="button" class="layui-btn layui-btn-primary" onclick="parent.layer.closeAll()">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form'], function(){
+        var form = layui.form;
+
+        // 表单提交
+        form.on('submit(submitForm)', function(data){
+            var index = layer.load(2);
+            $.post($(this).closest('form').attr('action'), data.field, function(res){
+                layer.close(index);
+                if (res.code === 1) {
+                    parent.layer.msg(res.msg, {icon: 1});
+                    parent.layer.closeAll();
+                    parent.layui.table.reload('table');
+                } else {
+                    layer.msg(res.msg, {icon: 2});
+                }
+            }, 'json');
+            return false;
+        });
+    });
+</script>
+{/block}

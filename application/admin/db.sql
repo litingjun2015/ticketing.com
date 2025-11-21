@@ -405,3 +405,59 @@ VALUES
     ('官网', '2024-07-01', '2024-07-31', '成人票', 100, '["13800138000","13900139000"]', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
     ('OTA', '2024-07-01', '2024-07-31', '成人票', 80, '["13800138000"]', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
     ('官网', '2024-07-01', '2024-07-31', '儿童票', 50, '["13800138000","13900139000"]', UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
+
+-- 退单
+-- 退单规则配置表
+CREATE TABLE `fa_fzly_refund_rule` (
+                                       `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                       `order_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订单类型(1:门票订单,2:导游订单)',
+                                       `time_range` int(10) NOT NULL COMMENT '时间范围(分钟)',
+                                       `fee_rate` decimal(5,2) NOT NULL COMMENT '手续费比例(%)',
+                                       `min_fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '最低手续费',
+                                       `max_fee` decimal(10,2) NOT NULL DEFAULT '99999.99' COMMENT '最高手续费',
+                                       `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态(1:启用,0:禁用)',
+                                       `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+                                       `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+                                       PRIMARY KEY (`id`),
+                                       KEY `idx_order_type` (`order_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='退单规则配置表';
+
+-- 退单记录表
+CREATE TABLE `fa_fzly_refund_order` (
+                                        `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                        `refund_no` varchar(32) NOT NULL COMMENT '退单号',
+                                        `order_id` int(10) unsigned NOT NULL COMMENT '关联订单ID',
+                                        `order_no` varchar(32) NOT NULL COMMENT '原订单号',
+                                        `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+                                        `order_type` tinyint(1) NOT NULL COMMENT '订单类型(1:门票订单,2:导游订单)',
+                                        `refund_amount` decimal(10,2) NOT NULL COMMENT '退款金额',
+                                        `fee_amount` decimal(10,2) NOT NULL COMMENT '手续费金额',
+                                        `actual_amount` decimal(10,2) NOT NULL COMMENT '实际退款金额',
+                                        `refund_reason` varchar(255) NOT NULL COMMENT '退款原因',
+                                        `refund_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '退款方式(1:原路返回)',
+                                        `status` tinyint(1) NOT NULL COMMENT '状态(1:申请中,2:已同意,3:已拒绝,4:已完成,5:失败)',
+                                        `rule_id` int(10) unsigned DEFAULT NULL COMMENT '适用规则ID',
+                                        `admin_id` int(10) unsigned DEFAULT NULL COMMENT '处理管理员ID',
+                                        `handle_time` int(10) unsigned DEFAULT NULL COMMENT '处理时间',
+                                        `handle_note` varchar(255) DEFAULT NULL COMMENT '处理备注',
+                                        `transaction_id` varchar(64) DEFAULT NULL COMMENT '支付平台交易号',
+                                        `refund_transaction_id` varchar(64) DEFAULT NULL COMMENT '支付平台退款号',
+                                        `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+                                        `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+                                        PRIMARY KEY (`id`),
+                                        UNIQUE KEY `uniq_refund_no` (`refund_no`),
+                                        KEY `idx_order_id` (`order_id`),
+                                        KEY `idx_user_id` (`user_id`),
+                                        KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='退单记录表';
+
+-- 插入测试数据
+INSERT INTO `fa_fzly_refund_rule` (`order_type`, `time_range`, `fee_rate`, `min_fee`, `max_fee`, `status`, `create_time`, `update_time`) VALUES
+                                                                                                                                             (1, 30, 0.00, 0.00, 99999.99, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+                                                                                                                                             (1, 1440, 10.00, 1.00, 99999.99, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+                                                                                                                                             (1, 4320, 20.00, 2.00, 99999.99, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+                                                                                                                                             (1, 10080, 30.00, 5.00, 99999.99, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+                                                                                                                                             (2, 30, 0.00, 0.00, 99999.99, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+                                                                                                                                             (2, 1440, 15.00, 2.00, 99999.99, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+                                                                                                                                             (2, 4320, 30.00, 5.00, 99999.99, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+                                                                                                                                             (2, 10080, 50.00, 10.00, 99999.99, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
