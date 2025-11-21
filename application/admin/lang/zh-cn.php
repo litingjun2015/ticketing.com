@@ -2,7 +2,6 @@
 
 return [
         // 其他菜单...
-        '系统设置' => 'systemsetting',
         '基础参数配置' => 'systemsetting/basic',
         '库存预警配置' => 'systemsetting/stock_warn',
         '订单规则配置' => 'systemsetting/order_rule',

@@ -163,6 +163,14 @@
                 data: {id: id},
                 success: function(res){
                     if(res.code == 1){
+                        // 关键修复：确保receivers是数组
+                        var receivers = res.data.receivers || []; // 防止为null/undefined
+                        if (!Array.isArray(receivers)) { // 强制转为数组
+                            receivers = [];
+                        }
+                        // 再调用join()
+                        var receiversStr = receivers.join(',');
+
                         var data = res.data;
                         $('input[name="id"]').val(data.id);
                         $('select[name="channel"]').val(data.channel);
@@ -170,7 +178,7 @@
                         $('input[name="date_end"]').val(data.date_end);
                         $('input[name="ticket_type"]').val(data.ticket_type);
                         $('input[name="warn_value"]').val(data.warn_value);
-                        $('input[name="receivers"]').val(data.receivers.join(','));
+                        $('input[name="receivers"]').val(receiversStr);
 
                         // 重新渲染表单
                         form.render();

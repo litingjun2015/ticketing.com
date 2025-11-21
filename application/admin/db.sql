@@ -324,3 +324,9 @@ INSERT INTO `fa_auth_rule` (`pid`, `type`, `name`, `title`, `icon`, `status`, `c
                                                                                                                 (1, 1, 'systemsetting/price_rule', '票价规则配置', 'fa fa-money', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
                                                                                                                 (1, 1, 'systemsetting/role', '角色权限管理', 'fa fa-group', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
                                                                                                                 (1, 1, 'systemsetting/log', '操作日志管理', 'fa fa-file-text-o', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
+-- 2025/11/21
+-- 为门票表添加价格、使用规则、适用人群字段
+ALTER TABLE `fa_fzly_admission`
+    ADD COLUMN `price` DECIMAL(10,2) NOT NULL DEFAULT 0.00 COMMENT '门票价格' AFTER `hot`,
+ADD COLUMN `use_rules` TEXT COMMENT '使用规则' AFTER `price`,
+ADD COLUMN `applicable_people` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '适用人群（逗号分隔）' AFTER `use_rules`;

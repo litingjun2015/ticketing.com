@@ -86,11 +86,11 @@ class Order extends Backend
                 }else{
                     $row->guide_name = "";
                 }
-                if ($row->order_type == 1){
-                    $row->goods_id = Admission::get($row->goods_id)->title;
-                }else{
-                    $row->goods_id = Product::get($row->goods_id)->title;
-                }
+//                if ($row->order_type == 1){
+//                    $row->goods_id = Admission::get($row->goods_id)->goods_id;
+//                }else{
+//                    $row->goods_id = Product::get($row->goods_id)->id;
+//                }
             }
 
             $result = array("total" => $list->total(), "rows" => $list->items());

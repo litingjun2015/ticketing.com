@@ -79,6 +79,39 @@
             <ul class="row list-inline faupload-preview" id="p-images"></ul>
         </div>
     </div>
+    <!-- 价格字段 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('价格')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-price" data-rule="required|number|min:0.01" step="0.01" class="form-control" name="row[price]" type="number" value="{$row.price|htmlentities}" placeholder="请输入门票价格">
+            <p class="help-block">请输入正数，保留两位小数</p>
+        </div>
+    </div>
+
+    <!-- 使用规则字段 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('使用规则')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-use_rules" class="form-control" rows="5" name="row[use_rules]" placeholder="请输入使用规则">{$row.use_rules|htmlentities}</textarea>
+            <p class="help-block">例如：有效期、入园时间限制等</p>
+        </div>
+    </div>
+
+    <!-- 适用人群字段 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('适用人群')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <select id="c-applicable_people" class="form-control selectpicker" multiple name="row[applicable_people][]" data-rule="required">
+                <option value="成人" {in name="row.applicable_people" value="成人"}selected{/in}>成人</option>
+                <option value="儿童" {in name="row.applicable_people" value="儿童"}selected{/in}>儿童</option>
+                <option value="老人" {in name="row.applicable_people" value="老人"}selected{/in}>老人</option>
+                <option value="学生" {in name="row.applicable_people" value="学生"}selected{/in}>学生</option>
+                <option value="军人" {in name="row.applicable_people" value="军人"}selected{/in}>军人</option>
+                <option value="残疾人" {in name="row.applicable_people" value="残疾人"}selected{/in}>残疾人</option>
+            </select>
+            <p class="help-block">按住Ctrl键可多选</p>
+        </div>
+    </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Tags')}:</label>
         <div class="col-xs-12 col-sm-8">
