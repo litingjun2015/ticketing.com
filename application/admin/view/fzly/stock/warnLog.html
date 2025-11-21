@@ -1,0 +1,137 @@
+{extend name="common/base" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">库存预警记录</h3>
+    </div>
+    <div class="layui-card-body">
+        <form class="layui-form layui-col-space5" lay-filter="searchForm">
+            <div class="layui-row">
+                <div class="layui-col-md2">
+                    <input type="text" name="ticket_type" placeholder="票种名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md2">
+                    <input type="text" name="channel" placeholder="渠道类型" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md2">
+                    <input type="text" name="date" placeholder="库存日期" autocomplete="off" class="layui-input" id="date">
+                </div>
+                <div class="layui-col-md2">
+                    <select name="status">
+                        <option value="">所有状态</option>
+                        <option value="0">未处理</option>
+                        <option value="1">已处理</option>
+                    </select>
+                </div>
+                <div class="layui-col-md2">
+                    <input type="text" name="warn_time" placeholder="预警时间" autocomplete="off" class="layui-input" id="warnTime">
+                </div>
+                <div class="layui-col-md2">
+                    <button class="layui-btn" lay-submit lay-filter="search"><i class="fa fa-search"></i> 搜索</button>
+                    <button type="reset" class="layui-btn layui-btn-primary"><i class="fa fa-refresh"></i> 重置</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="layui-table" id="warnLogTable" lay-filter="warnLogTable"></table>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form', 'table', 'laydate', 'layer'], function(){
+        var form = layui.form;
+        var table = layui.table;
+        var laydate = layui.laydate;
+        var layer = layui.layer;
+        var $ = layui.$;
+
+        // 日期选择器
+        laydate.render({
+            elem: '#date',
+            type: 'date'
+        });
+
+        laydate.render({
+            elem: '#warnTime',
+            range: true
+        });
+
+        // 渲染表格
+        var tableIns = table.render({
+            elem: '#warnLogTable',
+            url: '{:url("warnLog")}',
+            page: true,
+            limit: 10,
+            limits: [10, 20, 30, 50],
+            cols: [[
+                {type: 'checkbox', fixed: 'left'},
+                {field: 'id', title: 'ID', width: 80, sort: true},
+                {field: 'ticket_type', title: '票种', width: 120},
+                {field: 'channel', title: '渠道', width: 100},
+                {field: 'date', title: '库存日期', width: 120},
+                {field: 'current_stock', title: '当前库存', width: 100, templet: function(d){
+                        return '<span style="color:red;">' + d.current_stock + '</span>';
+                    }},
+                {field: 'warn_value', title: '预警阈值', width: 100},
+                {field: 'status_text', title: '状态', width: 100, templet: function(d){
+                        return d.status == 0 ? '<span style="color:orange;">未处理</span>' : '<span style="color:green;">已处理</span>';
+                    }},
+                {field: 'warn_time', title: '预警时间', width: 160, templet: function(d){
+                        return layui.util.toDateString(d.warn_time * 1000, 'yyyy-MM-dd HH:mm:ss');
+                    }},
+                {field: 'process_user_name', title: '处理人', width: 120},
+                {field: 'process_time', title: '处理时间', width: 160, templet: function(d){
+                        return d.process_time ? layui.util.toDateString(d.process_time * 1000, 'yyyy-MM-dd HH:mm:ss') : '';
+                    }},
+                {title: '操作', width: 120, align: 'center', fixed: 'right', toolbar: '#warnBar'}
+            ]]
+        });
+
+        // 搜索
+        form.on('submit(search)', function(data){
+            tableIns.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+
+        // 工具条事件
+        table.on('tool(warnLogTable)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'handle'){
+                if(data.status == 1){
+                    layer.msg('该预警已处理', {icon: 2});
+                    return;
+                }
+
+                layer.confirm('确定要标记为已处理吗？', function(index){
+                    $.ajax({
+                        url: '{:url("handleWarn")}',
+                        type: 'post',
+                        data: {id: data.id},
+                        success: function(res){
+                            if(res.code == 1){
+                                layer.msg(res.msg, {icon: 1});
+                                tableIns.reload();
+                            } else {
+                                layer.msg(res.msg, {icon: 2});
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+
+<!-- 工具条模板 -->
+<script type="text/html" id="warnBar">
+    {{#  if(d.status == 0){ }}
+    <button class="layui-btn layui-btn-xs layui-btn-primary" lay-event="handle">标记处理</button>
+    {{#  } }}
+</script>
+{/block}

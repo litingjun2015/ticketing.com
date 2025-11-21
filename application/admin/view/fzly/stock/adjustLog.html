@@ -1,0 +1,97 @@
+{extend name="common/base" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">库存调整日志</h3>
+    </div>
+    <div class="layui-card-body">
+        <form class="layui-form layui-col-space5" lay-filter="searchForm">
+            <div class="layui-row">
+                <div class="layui-col-md2">
+                    <input type="text" name="ticket_type" placeholder="票种名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md2">
+                    <input type="text" name="channel" placeholder="渠道类型" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md2">
+                    <input type="text" name="date" placeholder="库存日期" autocomplete="off" class="layui-input" id="date">
+                </div>
+                <div class="layui-col-md2">
+                    <select name="adjust_type">
+                        <option value="">所有类型</option>
+                        <option value="1">增加</option>
+                        <option value="2">减少</option>
+                    </select>
+                </div>
+                <div class="layui-col-md2">
+                    <input type="text" name="create_time" placeholder="操作时间" autocomplete="off" class="layui-input" id="createTime">
+                </div>
+                <div class="layui-col-md2">
+                    <button class="layui-btn" lay-submit lay-filter="search"><i class="fa fa-search"></i> 搜索</button>
+                    <button type="reset" class="layui-btn layui-btn-primary"><i class="fa fa-refresh"></i> 重置</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="layui-table" id="adjustLogTable" lay-filter="adjustLogTable"></table>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form', 'table', 'laydate'], function(){
+        var form = layui.form;
+        var table = layui.table;
+        var laydate = layui.laydate;
+        var $ = layui.$;
+
+        // 日期选择器
+        laydate.render({
+            elem: '#date',
+            type: 'date'
+        });
+
+        laydate.render({
+            elem: '#createTime',
+            range: true
+        });
+
+        // 渲染表格
+        var tableIns = table.render({
+            elem: '#adjustLogTable',
+            url: '{:url("adjustLog")}',
+            where: {
+                stock_id: '{$Think.get.stock_id|default=""}'
+            },
+            page: true,
+            limit: 10,
+            limits: [10, 20, 30, 50],
+            cols: [[
+                {field: 'id', title: 'ID', width: 80, sort: true},
+                {field: 'ticket_type', title: '票种', width: 120},
+                {field: 'channel', title: '渠道', width: 100},
+                {field: 'date', title: '库存日期', width: 120},
+                {field: 'adjust_type_text', title: '调整类型', width: 100},
+                {field: 'adjust_value', title: '调整数量', width: 100},
+                {field: 'before_stock', title: '调整前', width: 100},
+                {field: 'after_stock', title: '调整后', width: 100},
+                {field: 'operator_name', title: '操作人', width: 120},
+                {field: 'remark', title: '备注', minWidth: 150},
+                {field: 'create_time', title: '操作时间', width: 160, templet: function(d){
+                        return layui.util.toDateString(d.create_time * 1000, 'yyyy-MM-dd HH:mm:ss');
+                    }}
+            ]]
+        });
+
+        // 搜索
+        form.on('submit(search)', function(data){
+            tableIns.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

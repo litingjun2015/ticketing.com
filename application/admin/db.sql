@@ -329,4 +329,79 @@ INSERT INTO `fa_auth_rule` (`pid`, `type`, `name`, `title`, `icon`, `status`, `c
 ALTER TABLE `fa_fzly_admission`
     ADD COLUMN `price` DECIMAL(10,2) NOT NULL DEFAULT 0.00 COMMENT '门票价格' AFTER `hot`,
 ADD COLUMN `use_rules` TEXT COMMENT '使用规则' AFTER `price`,
-ADD COLUMN `applicable_people` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '适用人群（逗号分隔）' AFTER `use_rules`;
+ADD COLUMN `applicable_people` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '适用人群（逗号分隔）' AFTER `use_rules`;--
+
+--
+-- 库存信息表
+CREATE TABLE `fa_stock` (
+                            `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                            `ticket_type` varchar(30) NOT NULL COMMENT '票种',
+                            `channel` varchar(20) NOT NULL COMMENT '渠道类型（官网/OTA/窗口）',
+                            `total_stock` int(10) NOT NULL DEFAULT 0 COMMENT '总库存',
+                            `used_stock` int(10) NOT NULL DEFAULT 0 COMMENT '已使用库存',
+                            `available_stock` int(10) NOT NULL DEFAULT 0 COMMENT '可用库存',
+                            `lock_stock` int(10) NOT NULL DEFAULT 0 COMMENT '锁定库存',
+                            `date` date NOT NULL COMMENT '库存日期',
+                            `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态（1启用/0禁用）',
+                            `create_time` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '创建时间',
+                            `update_time` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间',
+                            PRIMARY KEY (`id`),
+                            UNIQUE KEY `uniq_ticket_channel_date` (`ticket_type`,`channel`,`date`),
+                            KEY `idx_available_stock` (`available_stock`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='库存信息表';
+
+-- 库存调整记录表
+CREATE TABLE `fa_stock_adjust_log` (
+                                       `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                       `stock_id` int(10) unsigned NOT NULL COMMENT '库存ID',
+                                       `ticket_type` varchar(30) NOT NULL COMMENT '票种',
+                                       `channel` varchar(20) NOT NULL COMMENT '渠道类型',
+                                       `date` date NOT NULL COMMENT '库存日期',
+                                       `adjust_type` tinyint(1) NOT NULL COMMENT '调整类型（1增加/2减少）',
+                                       `adjust_value` int(10) NOT NULL COMMENT '调整数量',
+                                       `before_stock` int(10) NOT NULL COMMENT '调整前库存',
+                                       `after_stock` int(10) NOT NULL COMMENT '调整后库存',
+                                       `operator_id` int(10) unsigned NOT NULL COMMENT '操作人ID',
+                                       `operator_name` varchar(50) NOT NULL COMMENT '操作人姓名',
+                                       `remark` varchar(255) DEFAULT '' COMMENT '调整备注',
+                                       `create_time` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '创建时间',
+                                       PRIMARY KEY (`id`),
+                                       KEY `idx_stock_id` (`stock_id`),
+                                       KEY `idx_create_time` (`create_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='库存调整记录表';
+
+-- 库存预警记录表
+CREATE TABLE `fa_stock_warn_log` (
+                                     `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                     `stock_id` int(10) unsigned NOT NULL COMMENT '库存ID',
+                                     `ticket_type` varchar(30) NOT NULL COMMENT '票种',
+                                     `channel` varchar(20) NOT NULL COMMENT '渠道类型',
+                                     `date` date NOT NULL COMMENT '库存日期',
+                                     `current_stock` int(10) NOT NULL COMMENT '当前库存',
+                                     `warn_value` int(10) NOT NULL COMMENT '预警阈值',
+                                     `warn_time` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '预警时间',
+                                     `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '处理状态（0未处理/1已处理）',
+                                     `process_time` int(10) unsigned DEFAULT 0 COMMENT '处理时间',
+                                     `process_user_id` int(10) unsigned DEFAULT 0 COMMENT '处理人ID',
+                                     `process_user_name` varchar(50) DEFAULT '' COMMENT '处理人姓名',
+                                     PRIMARY KEY (`id`),
+                                     KEY `idx_stock_id` (`stock_id`),
+                                     KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='库存预警记录表';
+
+-- 插入测试数据
+INSERT INTO `fa_stock`
+(`ticket_type`, `channel`, `total_stock`, `used_stock`, `available_stock`, `lock_stock`, `date`, `create_time`, `update_time`)
+VALUES
+    ('成人票', '官网', 1000, 350, 600, 50, '2024-07-01', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+    ('成人票', 'OTA', 800, 200, 550, 50, '2024-07-01', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+    ('儿童票', '官网', 500, 100, 380, 20, '2024-07-01', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+    ('成人票', '官网', 1000, 200, 750, 50, '2024-07-02', UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
+
+-- 插入库存预警配置测试数据（扩展已有的表）
+INSERT INTO `fa_system_setting_stock_warn`
+(`channel`, `date_start`, `date_end`, `ticket_type`, `warn_value`, `receivers`, `create_time`, `update_time`)
+VALUES
+    ('官网', '2024-07-01', '2024-07-31', '成人票', 100, '["13800138000","13900139000"]', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+    ('OTA', '2024-07-01', '2024-07-31', '成人票', 80, '["13800138000"]', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+    ('官网', '2024-07-01', '2024-07-31', '儿童票', 50, '["13800138000","13900139000"]', UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
