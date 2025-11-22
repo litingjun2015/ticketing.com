@@ -1,0 +1,69 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Product_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-product_id" data-rule="required" min="0" data-source="product/index" class="form-control selectpage" name="row[product_id]" type="text" value="{$row.product_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-type" data-rule="required" class="form-control selectpicker" name="row[type]">
+                {foreach name="typeList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.type"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Related_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-related_id" data-rule="required" min="0" data-source="related/index" class="form-control selectpage" name="row[related_id]" type="text" value="{$row.related_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Quantity')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-quantity" data-rule="required" class="form-control" name="row[quantity]" type="number" value="{$row.quantity|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Before_quantity')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-before_quantity" data-rule="required" min="0" class="form-control" name="row[before_quantity]" type="number" value="{$row.before_quantity|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('After_quantity')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-after_quantity" data-rule="required" min="0" class="form-control" name="row[after_quantity]" type="number" value="{$row.after_quantity|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Remark')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-remark" class="form-control " rows="5" name="row[remark]" cols="50">{$row.remark|htmlentities}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Operate_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-operate_id" data-rule="required" min="0" data-source="operate/index" class="form-control selectpage" name="row[operate_id]" type="text" value="{$row.operate_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Operate_name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-operate_name" data-rule="required" class="form-control" name="row[operate_name]" type="text" value="{$row.operate_name|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+        </div>
+    </div>
+</form>
