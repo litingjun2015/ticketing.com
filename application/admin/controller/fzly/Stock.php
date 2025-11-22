@@ -86,7 +86,7 @@ class Stock extends Backend
         }
         return json(['code' => 0, 'data' => ['warn_value' => 0]]);
     }
-
+ 
     /**
      * 库存报表
      */
