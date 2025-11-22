@@ -1,0 +1,87 @@
+<?php
+
+namespace app\admin\model\fzly;
+
+use think\Model;
+
+
+class Promotionchannel extends Model
+{
+
+    
+
+    
+
+    // 表名
+    protected $name = 'fzly_promotion_channel';
+    
+    // 自动写入时间戳字段
+    protected $autoWriteTimestamp = 'integer';
+
+    // 定义时间戳字段名
+    protected $createTime = 'createtime';
+    protected $updateTime = 'updatetime';
+    protected $deleteTime = false;
+
+    // 追加属性
+    protected $append = [
+        'channel_text',
+        'start_time_text',
+        'end_time_text',
+        'status_text'
+    ];
+    
+
+    
+    public function getChannelList()
+    {
+        return ['mini_program' => __('Mini_program'), 'offline_window' => __('Offline_window'), 'ota' => __('Ota'), 'self_operated' => __('Self_operated')];
+    }
+
+    public function getStatusList()
+    {
+        return ['normal' => __('Normal'), 'hidden' => __('Hidden')];
+    }
+
+
+    public function getChannelTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['channel'] ?? '');
+        $list = $this->getChannelList();
+        return $list[$value] ?? '';
+    }
+
+
+    public function getStartTimeTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['start_time'] ?? '');
+        return is_numeric($value) ? date("Y-m-d H:i:s", $value) : $value;
+    }
+
+
+    public function getEndTimeTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['end_time'] ?? '');
+        return is_numeric($value) ? date("Y-m-d H:i:s", $value) : $value;
+    }
+
+
+    public function getStatusTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['status'] ?? '');
+        $list = $this->getStatusList();
+        return $list[$value] ?? '';
+    }
+
+    protected function setStartTimeAttr($value)
+    {
+        return $value === '' ? null : ($value && !is_numeric($value) ? strtotime($value) : $value);
+    }
+
+    protected function setEndTimeAttr($value)
+    {
+        return $value === '' ? null : ($value && !is_numeric($value) ? strtotime($value) : $value);
+    }
+
+
+}
