@@ -1,0 +1,87 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Stock_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-stock_id" data-rule="required" min="0" data-source="stock/index" class="form-control selectpage" name="row[stock_id]" type="text" value="{$row.stock_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Time_slot_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-time_slot_id" min="0" data-rule="required" data-source="time/slot/index" class="form-control selectpage" name="row[time_slot_id]" type="text" value="{$row.time_slot_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Order_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-order_id" data-rule="required" data-source="order/index" class="form-control selectpage" name="row[order_id]" type="text" value="{$row.order_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Ticket_type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-ticket_type" data-rule="required" class="form-control" name="row[ticket_type]" type="text" value="{$row.ticket_type|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Channel')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-channel" data-rule="required" class="form-control" name="row[channel]" type="text" value="{$row.channel|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Date')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-date" data-rule="required" class="form-control datetimepicker" data-date-format="YYYY-MM-DD" data-use-current="true" name="row[date]" type="text" value="{$row.date}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Freeze_num')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-freeze_num" data-rule="required" class="form-control" name="row[freeze_num]" type="number" value="{$row.freeze_num|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Freeze_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-freeze_time" data-rule="required" min="0" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[freeze_time]" type="text" value="{:$row.freeze_time?datetime($row.freeze_time):''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Expire_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-expire_time" data-rule="required" min="0" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[expire_time]" type="text" value="{:$row.expire_time?datetime($row.expire_time):''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-status" data-rule="required" class="form-control" name="row[status]" type="number" value="{$row.status|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Release_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-release_time" min="0" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[release_time]" type="text" value="{:$row.release_time?datetime($row.release_time):''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Create_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-create_time" data-rule="required" min="0" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[create_time]" type="text" value="{:$row.create_time?datetime($row.create_time):''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Update_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-update_time" data-rule="required" min="0" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[update_time]" type="text" value="{:$row.update_time?datetime($row.update_time):''}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+        </div>
+    </div>
+</form>
