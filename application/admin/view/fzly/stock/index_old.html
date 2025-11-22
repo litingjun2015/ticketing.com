@@ -1,0 +1,259 @@
+{extend name="common/base" /}
+{block name="content"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h3 class="layui-card-title">库存管理</h3>
+        <div class="layui-btn-group layui-card-header-toolbar">
+            <button class="layui-btn layui-btn-primary" id="syncWarnBtn"><i class="fa fa-refresh"></i> 同步预警状态</button>
+            <button class="layui-btn layui-btn-normal" id="addStockBtn"><i class="fa fa-plus"></i> 新增库存</button>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <form class="layui-form layui-col-space5" lay-filter="searchForm">
+            <div class="layui-row">
+                <div class="layui-col-md2">
+                    <input type="text" name="ticket_type" placeholder="票种名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md2">
+                    <select name="channel">
+                        <option value="">所有渠道</option>
+                        {foreach name="channels" item="channel"}
+                        <option value="{$channel}">{$channel}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="layui-col-md2">
+                    <input type="text" name="date" placeholder="库存日期" autocomplete="off" class="layui-input" id="date">
+                </div>
+                <div class="layui-col-md2">
+                    <select name="status">
+                        <option value="">所有状态</option>
+                        <option value="1">启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </div>
+                <div class="layui-col-md2">
+                    <button class="layui-btn" lay-submit lay-filter="search"><i class="fa fa-search"></i> 搜索</button>
+                    <button type="reset" class="layui-btn layui-btn-primary"><i class="fa fa-refresh"></i> 重置</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="layui-table" id="stockTable" lay-filter="stockTable"></table>
+    </div>
+</div>
+
+<!-- 调整库存弹窗 -->
+<div id="adjustStock" style="display: none;">
+    <form class="layui-form" lay-filter="adjustForm">
+        <input type="hidden" name="id">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">票种</label>
+            <div class="layui-input-block">
+                <input type="text" name="ticket_type" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">渠道</label>
+            <div class="layui-input-block">
+                <input type="text" name="channel" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="date" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">当前可用库存</label>
+            <div class="layui-input-block">
+                <input type="text" name="available_stock" class="layui-input" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">调整类型</label>
+            <div class="layui-input-block">
+                <!-- 补充title属性，移除标签后的文本 -->
+                <input type="radio" name="adjust_type" value="1" checked lay-verify="required" title="增加">
+                <input type="radio" name="adjust_type" value="2" lay-verify="required" title="减少">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">调整数量</label>
+            <div class="layui-input-block">
+                <!-- 已配置验证，但需确保生效 -->
+                <input type="number" name="adjust_value" class="layui-input"
+                       lay-verify="required|number|gt:0" placeholder="请输入调整数量">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">调整备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" class="layui-textarea" placeholder="请输入调整原因或备注信息"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="doAdjust">确认调整</button>
+                <button type="button" class="layui-btn layui-btn-primary" id="cancelAdjust">取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form', 'table', 'laydate', 'layer'], function(){
+        var form = layui.form;
+        var table = layui.table;
+        var laydate = layui.laydate;
+        var layer = layui.layer;
+        var $ = layui.$;
+
+        // 日期选择器
+        laydate.render({
+            elem: '#date',
+            type: 'date'
+        });
+
+        // 渲染表格
+        var tableIns = table.render({
+            elem: '#stockTable',
+            url: '{:url("index")}',
+            page: true,
+            limit: 10,
+            limits: [10, 20, 30, 50],
+            cols: [[
+                {type: 'checkbox', fixed: 'left'},
+                {field: 'ticket_type', title: '票种', width: 120},
+                {field: 'channel_text', title: '渠道', width: 100},
+                {field: 'date', title: '库存日期', width: 120},
+                {field: 'total_stock', title: '总库存', width: 100},
+                {field: 'used_stock', title: '已使用', width: 100},
+                // 优化：通过 AJAX 获取当前票种+渠道的预警值
+                {field: 'available_stock', title: '可用库存', width: 100, templet: function(d){
+                        var warnValue = 0;
+                        // 异步获取预警值（需后端提供接口）
+                        $.get('{:url("getWarnValue")}', {
+                            ticket_type: d.ticket_type,
+                            channel: d.channel
+                        }, function(res) {
+                            if (res.code === 0) {
+                                warnValue = res.data.warn_value || 0;
+                            }
+                        }, 'json');
+                        return d.available_stock <= warnValue ?
+                            '<span style="color:red;">' + d.available_stock + '</span>' :
+                            d.available_stock;
+                    }},
+                {field: 'lock_stock', title: '锁定库存', width: 100},
+                {field: 'status_text', title: '状态', width: 100},
+                {field: 'update_time', title: '更新时间', width: 160, templet: function(d){
+                        return layui.util.toDateString(d.update_time * 1000, 'yyyy-MM-dd HH:mm:ss');
+                    }},
+                {title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#stockBar'}
+            ]]
+        });
+
+        // 搜索
+        form.on('submit(search)', function(data){
+            tableIns.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+
+        // 工具条事件
+        table.on('tool(stockTable)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'adjust'){
+                // 1. 赋值库存数据到表单（确保DOM元素已存在）
+                $('input[name="id"]').val(data.id);
+                $('input[name="ticket_type"]').val(data.ticket_type);
+                $('input[name="channel"]').val(data.channel);
+                $('input[name="date"]').val(data.date);
+                $('input[name="available_stock"]').val(data.available_stock);
+
+                // 2. 打开弹窗，并在弹窗成功显示后渲染单选按钮
+                layer.open({
+                    type: 1,
+                    title: '调整库存',
+                    area: ['500px', '450px'],
+                    content: $('#adjustStock'), // 弹窗内容（#adjustStock包含单选按钮）
+                    success: function(layero, index){
+                        // 关键：弹窗打开后，重新渲染radio组件
+                        form.render('radio');
+                    }
+                });
+            } else if(obj.event === 'log'){
+                // 查看调整日志
+                parent.$(".J-iframe").attr("src", "{:url('adjustLog')}?stock_id=" + data.id);
+            } else if(obj.event === 'edit'){
+                // 编辑库存
+                // 实际项目中实现编辑功能
+            }
+        });
+
+        // 调整库存提交
+        form.on('submit(doAdjust)', function(data){
+            $.ajax({
+                url: '{:url("adjust")}',
+                type: 'post',
+                data: data.field,
+                success: function(res){
+                    if(res.code == 1){
+                        layer.msg(res.msg, {icon: 1});
+                        layer.closeAll();
+                        tableIns.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2});
+                    }
+                }
+            });
+            return false;
+        });
+
+        // 取消调整
+        $('#cancelAdjust').click(function(){
+            layer.closeAll();
+        });
+
+        // 同步预警状态
+        $('#syncWarnBtn').click(function(){
+            layer.confirm('确定要同步库存预警状态吗？', function(index){
+                $.ajax({
+                    url: '{:url("syncWarnStatus")}',
+                    type: 'post',
+                    success: function(res){
+                        if(res.code == 1){
+                            layer.msg(res.msg, {icon: 1});
+                            tableIns.reload();
+                        } else {
+                            layer.msg(res.msg, {icon: 2});
+                        }
+                    }
+                });
+                layer.close(index);
+            });
+        });
+    });
+</script>
+
+<!-- 工具条模板 -->
+<script type="text/html" id="stockBar">
+    <button class="layui-btn layui-btn-xs" lay-event="adjust">调整库存</button>
+    <button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="log">调整日志</button>
+    <button class="layui-btn layui-btn-xs layui-btn-primary" lay-event="edit">编辑</button>
+</script>
+{/block}

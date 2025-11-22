@@ -1,193 +1,130 @@
 <?php
+
 namespace app\admin\controller\fzly;
 
 use app\admin\model\fzly\Stock as StockModel;
-use app\admin\model\fzly\StockAdjustLog;
-use app\admin\model\fzly\StockWarnLog;
 use app\common\controller\Backend;
 use think\Db;
-use think\Exception;
-use think\Log;
+use fast\Date;
 
+/**
+ * 库存管理
+ *
+ * @icon fa fa-cubes
+ */
 class Stock extends Backend
 {
+    /**
+     * Stock模型对象
+     * @var \app\common\model\fzly\Stock
+     */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
         $this->model = new StockModel();
+        $this->view->assign("channelList", $this->model->getChannelList());
+        $this->view->assign("statusList", $this->model->getStatusList());
     }
 
-    // 库存列表
+    /**
+     * 查看
+     */
     public function index()
     {
+        //当前是否为关联查询
+        $this->relationSearch = true;
+        //设置过滤方法
+        $this->request->filter(['strip_tags', 'trim']);
         if ($this->request->isAjax()) {
+            //如果发送的来源是Selectpage，则转发到Selectpage
+            if ($this->request->request('keyField')) {
+                return $this->selectpage();
+            }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
-
             $total = $this->model
+                ->with(['product'])
                 ->where($where)
+                ->order($sort, $order)
                 ->count();
 
             $list = $this->model
+                ->with(['product'])
                 ->where($where)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
 
-            // 检查库存预警状态
-            $this->model->checkWarnStatus();
-
-            $result = [
-                "total" => $total,
-                "rows" => $list
-            ];
-
-//            return json($result);
-
-            // 修正后的代码
-            return json([
-                'code' => 0,               // 成功状态码
-                'msg' => '获取成功',
-                'count' => $total,         // 总条数（对应 layui 的 count）
-                'data' => $list            // 数据列表（对应 layui 的 data）
-            ]);
-        }
-
-        // 获取渠道列表
-        $channels = ['官网', 'OTA', '窗口'];
-        $this->assign('channels', $channels);
-
-        return $this->view->fetch();
-    }
-
-    // 调整库存
-    public function adjust()
-    {
-        if ($this->request->isPost()) {
-            $data = $this->request->post();
-
-            // 优化后
-            $missing = [];
-            if (empty($data['id'])) $missing[] = '库存ID(id)';
-            if (!isset($data['adjust_type'])) $missing[] = '调整类型(adjust_type)';
-            if (empty($data['adjust_value'])) $missing[] = '调整数量(adjust_value)';
-            if (!empty($missing)) {
-                $this->error('参数不完整，缺失：' . implode('、', $missing));
+            foreach ($list as $row) {
+                $row->getRelation('product')->visible(['name', 'type']);
             }
 
-            // 新增：验证adjust_type必须为1或2
-            if (!in_array($data['adjust_type'], [1, 2])) {
-                $this->error('调整类型无效，请选择增加或减少');
-            }
-
-            $data['operator_id'] = $this->auth->id;
-            $data['operator_name'] = $this->auth->nickname;
-
-            $stockModel = new StockModel();
-            $result = $stockModel->adjustStock($data);
-
-            if ($result) {
-                $this->success('库存调整成功');
-            } else {
-                $this->error('库存调整失败');
-            }
-        }
-
-        $id = $this->request->get('id');
-        $stock = $this->model->find($id);
-        if (!$stock) {
-            $this->error('库存记录不存在');
-        }
-
-        $this->assign('stock', $stock);
-        return $this->view->fetch();
-    }
-
-    // 库存调整日志
-    public function adjustLog()
-    {
-        if ($this->request->isAjax()) {
-            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
-
-            $model = new StockAdjustLog();
-
-            $total = $model
-                ->where($where)
-                ->count();
-
-            $list = $model
-                ->where($where)
-                ->order($sort, $order)
-                ->limit($offset, $limit)
-                ->select();
-
-            $result = [
-                "total" => $total,
-                "rows" => $list
-            ];
+            $list = collection($list)->toArray();
+            $result = array("total" => $total, "rows" => $list);
 
             return json($result);
         }
+        return $this->view->fetch();
+    }
+
+    /**
+     * 获取库存预警值
+     */
+    public function getWarnValue()
+    {
+        $product_id = $this->request->get('product_id');
+        $channel = $this->request->get('channel');
+
+        $warn = Db::name('fzly_stock_warn')
+            ->where('product_id', $product_id)
+            ->where('channel', $channel)
+            ->find();
+
+        if ($warn) {
+            return json(['code' => 0, 'data' => ['warn_value' => $warn['warn_value']]]);
+        }
+        return json(['code' => 0, 'data' => ['warn_value' => 0]]);
+    }
+
+    /**
+     * 库存报表
+     */
+    public function report()
+    {
+        $type = $this->request->param('type', 'daily');
+        $start_date = $this->request->param('start_date', date('Y-m-d', strtotime('-7 days')));
+        $end_date = $this->request->param('end_date', date('Y-m-d'));
+        $channel = $this->request->param('channel', 'all');
+
+        $this->view->assign([
+            'type' => $type,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'channel' => $channel,
+            'channelList' => $this->model->getChannelList()
+        ]);
 
         return $this->view->fetch();
     }
 
-    // 库存预警记录
-    public function warnLog()
+    /**
+     * 导出报表
+     */
+    public function export()
     {
-        if ($this->request->isAjax()) {
-            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+        // 导出逻辑实现
+        $type = $this->request->param('type', 'excel');
+        // ...
+    }
 
-            $model = new StockWarnLog();
-
-            $total = $model
-                ->where($where)
-                ->count();
-
-            $list = $model
-                ->where($where)
-                ->order($sort, $order)
-                ->limit($offset, $limit)
-                ->select();
-
-            $result = [
-                "total" => $total,
-                "rows" => $list
-            ];
-
-            return json($result);
-        }
-
+    /**
+     * 库存可视化
+     */
+    public function visual()
+    {
+        $visualList = Db::name('fzly_stock_visual')->where('status', 1)->order('weigh', 'asc')->select();
+        $this->view->assign('visualList', $visualList);
         return $this->view->fetch();
-    }
-
-    // 处理预警
-    public function handleWarn()
-    {
-        $id = $this->request->post('id');
-        if (!$id) {
-            $this->error('参数错误');
-        }
-
-        $model = new StockWarnLog();
-        $result = $model->handleWarn($id, $this->auth->id, $this->auth->nickname);
-
-        if ($result) {
-            $this->success('处理成功');
-        } else {
-            $this->error('处理失败');
-        }
-    }
-
-    // 同步库存预警状态
-    public function syncWarnStatus()
-    {
-        try {
-            $this->model->checkWarnStatus();
-            $this->success('同步成功');
-        } catch (Exception $e) {
-            $this->error('同步失败：' . $e->getMessage());
-        }
     }
 }

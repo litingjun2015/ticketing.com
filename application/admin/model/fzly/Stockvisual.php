@@ -5,7 +5,7 @@ namespace app\admin\model\fzly;
 use think\Model;
 
 
-class Stock extends Model
+class Stockvisual extends Model
 {
 
     
@@ -13,7 +13,7 @@ class Stock extends Model
     
 
     // 表名
-    protected $name = 'fzly_stock';
+    protected $name = 'fzly_stock_visual';
     
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'integer';
@@ -25,15 +25,25 @@ class Stock extends Model
 
     // 追加属性
     protected $append = [
-        'channel_text',
+        'type_text',
         'status_text'
     ];
     
 
-    
-    public function getChannelList()
+    protected static function init()
     {
-        return ['offline' => __('Channel offline'), 'ota' => __('Channel ota'), 'mini_program' => __('Channel mini_program')];
+        self::afterInsert(function ($row) {
+            if (!$row['weigh']) {
+                $pk = $row->getPk();
+                $row->getQuery()->where($pk, $row[$pk])->update(['weigh' => $row[$pk]]);
+            }
+        });
+    }
+
+    
+    public function getTypeList()
+    {
+        return ['line' => __('Line'), 'bar' => __('Bar'), 'pie' => __('Pie'), 'map' => __('Map')];
     }
 
     public function getStatusList()
@@ -42,10 +52,10 @@ class Stock extends Model
     }
 
 
-    public function getChannelTextAttr($value, $data)
+    public function getTypeTextAttr($value, $data)
     {
-        $value = $value ?: ($data['channel'] ?? '');
-        $list = $this->getChannelList();
+        $value = $value ?: ($data['type'] ?? '');
+        $list = $this->getTypeList();
         return $list[$value] ?? '';
     }
 
