@@ -8,6 +8,7 @@ use fast\Date;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use think\Exception;
+use think\Log;
 
 /**
  * 报表管理
@@ -200,8 +201,6 @@ class Report extends Backend
             ['`date`', 'between', [$startDate, $endDate]]
         ];
 
-//        $where[] = ['date', 'between', [$start_date, $end_date]];
-
         if ($channel != 'all') {
             $where[] = ['channel', '=', $channel];
         }
@@ -239,15 +238,26 @@ class Report extends Backend
         $start_date = $this->request->param('start_date');
         $end_date = $this->request->param('end_date');
 
+        // 步骤1：转换日期格式（将/替换为-）
+        $startDate = str_replace('/', '-',$start_date);
+        $endDate = str_replace('/', '-', $end_date);
+
         // 构建查询条件
         $where = [];
-        $where[] = ['date', 'between time', [$start_date . ' 00:00:00', $end_date . ' 23:59:59']];
+
+        // 步骤2：构造二维索引数组，转义关键字段`date`
+        $where = [
+            ['`date`', 'between', [$startDate, $endDate]]
+        ];
+
+//        var_dump($where);
 
         // 按类型处理数据
         $data = [];
         switch ($type) {
             case 'daily':
                 $data = $this->handleDailyVisitorData($where, $start_date, $end_date);
+                Log::info($data);
                 break;
             case 'weekly':
                 $data = $this->handleWeeklyVisitorData($where, $start_date, $end_date);
@@ -589,7 +599,64 @@ class Report extends Backend
     private function handleWeeklySalesData($where, $start_date, $end_date) { return []; }
     private function handleMonthlySalesData($where, $start_date, $end_date) { return []; }
     private function handleYearlySalesData($where, $start_date, $end_date) { return []; }
-    private function handleDailyVisitorData($where, $start_date, $end_date) { return []; }
+    /**
+     * 处理每日客流数据
+     */
+    private function handleDailyVisitorData($where, $start_date, $end_date)
+    {
+        $list = Db::name('fzly_visitor_report')
+            ->whereBetween('date', [$start_date, $end_date])
+            ->field('date, entry_num, exit_num, current_num, staff_entry, onsite_ticket, ota_ticket, official_ticket')
+//            ->field('`date`,
+//         SUM(entry_num) as total_entry,
+//         SUM(exit_num) as total_exit,
+//         MAX(current_num) as max_current,
+//         SUM(staff_entry) as staff_entry,
+//         SUM(onsite_ticket) as onsite_entry,
+//         SUM(ota_ticket) as ota_entry,
+//         SUM(official_ticket) as official_entry')
+//            ->group(Db::raw('`date`)) // 使用Db::raw
+            ->select();
+
+        Log::info($list);
+
+        // 2. 获取完整的日期范围（确保无数据的日期也会显示）
+        $dates = $this->getDateRange($start_date, $end_date);
+
+        // 3. 构建图表数据（初始化所有日期的指标为0）
+        $chartData = [
+            'categories' => $dates, // 图表x轴：日期列表
+            'total_entry' => array_fill_keys($dates, 0), // 每日总入场数
+            'total_exit' => array_fill_keys($dates, 0),  // 每日总出场数
+            'max_current' => array_fill_keys($dates, 0)  // 每日最大在场数
+        ];
+
+        // 4. 用查询到的数据填充图表数据
+        foreach ($list as $item) {
+            $date = $item['date'];
+            if (in_array($date, $dates)) {
+                $chartData['total_entry'][$date] = $item['entry_num'] ?? 0;  // 用 entry_num 替换 total_entry
+                $chartData['total_exit'][$date] = $item['exit_num'] ?? 0;    // 用 exit_num 替换 total_exit
+                $chartData['max_current'][$date] = $item['current_num'] ?? 0; // 用 current_num 替换 max_current
+            }
+        }
+
+        // 5. 将图表数据转换为数组（前端图表通常需要数组格式）
+        $chartData['total_entry_array'] = array_values($chartData['total_entry']);
+        $chartData['total_exit_array'] = array_values($chartData['total_exit']);
+        $chartData['max_current_array'] = array_values($chartData['max_current']);
+
+        // 6. 返回表格数据和图表数据
+        return [
+            'tableData' => $list, // 用于表格展示的原始数据
+            'chartData' => [
+                'categories' => $dates,
+                'entryData' => array_values($chartData['total_entry']),  // 对应前端 entryData
+                'exitData' => array_values($chartData['total_exit']),    // 对应前端 exitData
+                'currentData' => array_values($chartData['max_current']) // 对应前端 currentData
+            ]
+        ];
+    }
     private function handleWeeklyVisitorData($where, $start_date, $end_date) { return []; }
     private function handleMonthlyVisitorData($where, $start_date, $end_date) { return []; }
     private function handleYearlyVisitorData($where, $start_date, $end_date) { return []; }
