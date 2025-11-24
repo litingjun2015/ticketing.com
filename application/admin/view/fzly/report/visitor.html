@@ -1,0 +1,256 @@
+{extend name="common/base" /}
+{block name="content"}
+
+<div class="panel panel-default panel-intro">
+  <div class="panel-heading">
+    {:build_heading(null, FALSE)}
+    <div class="panel-lead">
+      <em>{:__('Passenger flow data analysis and reporting')}</em>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <form class="form-inline" id="search-form">
+      <div class="form-group">
+        <label class="control-label">{:__('Report type')}</label>
+        <select name="type" class="form-control" id="type">
+          {foreach name="typeList" item="vo" key="k"}
+          <option value="{$k}" {:$type==$k?'selected':''}>{$vo}</option>
+          {/foreach}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">{:__('Date range')}</label>
+        <input type="text" class="form-control" name="date_range" value="{$start_date} - {$end_date}" id="date-range">
+      </div>
+      <button type="button" class="btn btn-primary" id="search-btn">{:__('Search')}</button>
+      <button type="button" class="btn btn-success" id="export-excel">{:__('Export Excel')}</button>
+      <button type="button" class="btn btn-info" id="export-pdf">{:__('Export PDF')}</button>
+    </form>
+
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-md-6">
+        <div id="entry-chart" style="height: 350px;"></div>
+      </div>
+      <div class="col-md-6">
+        <div id="source-chart" style="height: 350px;"></div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-md-12">
+        <table id="report-table" class="table table-striped table-bordered table-hover table-nowrap">
+          <thead>
+          <tr>
+            <th>{:__('Date')}</th>
+            <th>{:__('Entry number')}</th>
+            <th>{:__('Exit number')}</th>
+            <th>{:__('Current number')}</th>
+            <th>{:__('Staff entry')}</th>
+            <th>{:__('Onsite ticket')}</th>
+            <th>{:__('OTA ticket')}</th>
+            <th>{:__('Official ticket')}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- 报表数据将通过JS动态加载 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script src="/assets/libs/echarts/echarts.min.js"></script>
+<script src="/assets/libs/daterangepicker/daterangepicker.js"></script>
+<link rel="stylesheet" href="/assets/libs/daterangepicker/daterangepicker.css">
+<script>
+  $(function () {
+    // 初始化日期范围选择器
+    $('#date-range').daterangepicker({
+      format: 'YYYY-MM-DD',
+      separator: ' - ',
+      startDate: '{$start_date}',
+      endDate: '{$end_date}'
+    });
+
+    // 初始化图表
+    var entryChart = echarts.init(document.getElementById('entry-chart'));
+    var sourceChart = echarts.init(document.getElementById('source-chart'));
+
+    // 搜索按钮点击事件
+    $('#search-btn').click(function () {
+      loadReportData();
+    });
+
+    // 导出按钮点击事件
+    $('#export-excel').click(function () {
+      exportReport('excel');
+    });
+
+    $('#export-pdf').click(function () {
+      exportReport('pdf');
+    });
+
+    // 加载报表数据
+    function loadReportData() {
+      var type = $('#type').val();
+      var dateRange = $('#date-range').val().split(' - ');
+      var startDate = dateRange[0];
+      var endDate = dateRange[1];
+
+      $.ajax({
+        url: "{:url('report/getVisitorData')}",
+        type: 'get',
+        data: {
+          type: type,
+          start_date: startDate,
+          end_date: endDate
+        },
+        dataType: 'json',
+        success: function (res) {
+          if (res.code == 0) {
+            // 更新表格数据
+            updateTableData(res.data.tableData);
+            // 更新图表数据
+            updateEntryChart(res.data.entryChartData);
+            updateSourceChart(res.data.sourceChartData);
+          } else {
+            layer.msg(res.msg);
+          }
+        }
+      });
+    }
+
+    // 更新表格数据
+    function updateTableData(data) {
+      var tbody = $('#report-table tbody');
+      tbody.empty();
+
+      if (data.length == 0) {
+        tbody.append('<tr><td colspan="8" class="text-center">{:__('No data')}</td></tr>');
+        return;
+      }
+
+      $.each(data, function (i, item) {
+        var tr = '<tr>' +
+                '<td>' + item.date + '</td>' +
+                '<td>' + item.entry_num + '</td>' +
+                '<td>' + item.exit_num + '</td>' +
+                '<td>' + item.current_num + '</td>' +
+                '<td>' + item.staff_entry + '</td>' +
+                '<td>' + item.onsite_ticket + '</td>' +
+                '<td>' + item.ota_ticket + '</td>' +
+                '<td>' + item.official_ticket + '</td>' +
+                '</tr>';
+        tbody.append(tr);
+      });
+    }
+
+    // 更新入园趋势图表
+    function updateEntryChart(data) {
+      var option = {
+        title: {
+          text: '{:__('Entry Trend')}'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['{:__('Entry number')}', '{:__('Exit number')}', '{:__('Current number')}']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: data.categories
+        },
+        yAxis: {
+          type: 'value',
+          name: '{:__('Number of people')}'
+        },
+        series: [
+          {
+            name: '{:__('Entry number')}',
+            type: 'line',
+            data: data.entryData
+          },
+          {
+            name: '{:__('Exit number')}',
+            type: 'line',
+            data: data.exitData
+          },
+          {
+            name: '{:__('Current number')}',
+            type: 'line',
+            data: data.currentData
+          }
+        ]
+      };
+
+      entryChart.setOption(option);
+    }
+
+    // 更新客源地分布图表
+    function updateSourceChart(data) {
+      var option = {
+        title: {
+          text: '{:__('Source Area Distribution')}',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left'
+        },
+        series: [
+          {
+            name: '{:__('Source area')}',
+            type: 'pie',
+            radius: '70%',
+            data: data,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+
+      sourceChart.setOption(option);
+    }
+
+    // 导出报表
+    function exportReport(format) {
+      var type = $('#type').val();
+      var dateRange = $('#date-range').val().split(' - ');
+      var startDate = dateRange[0];
+      var endDate = dateRange[1];
+
+      var url = "{:url('report/export')}?format=" + format +
+              "&report_type=visitor" +
+              "&type=" + type +
+              "&start_date=" + startDate +
+              "&end_date=" + endDate;
+
+      window.location.href = url;
+    }
+
+    // 初始加载数据
+    loadReportData();
+  });
+</script>
+{/block}

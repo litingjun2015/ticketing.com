@@ -1,0 +1,75 @@
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Date')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-date" data-rule="required" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[date]" type="text" value="{:date('Y-m-d H:i:s')}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Entry_num')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-entry_num" data-rule="required" class="form-control" name="row[entry_num]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Exit_num')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-exit_num" data-rule="required" class="form-control" name="row[exit_num]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Current_num')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-current_num" data-rule="required" class="form-control" name="row[current_num]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Staff_entry')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-staff_entry" data-rule="required" class="form-control" name="row[staff_entry]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Onsite_ticket')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-onsite_ticket" data-rule="required" class="form-control" name="row[onsite_ticket]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Ota_ticket')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-ota_ticket" data-rule="required" class="form-control" name="row[ota_ticket]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Official_ticket')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-official_ticket" data-rule="required" class="form-control" name="row[official_ticket]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Source_area')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-source_area" class="form-control " rows="5" name="row[source_area]" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Max_capacity')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-max_capacity" data-rule="required" class="form-control" name="row[max_capacity]" type="number">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Instant_max_capacity')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-instant_max_capacity" data-rule="required" class="form-control" name="row[instant_max_capacity]" type="number">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+        </div>
+    </div>
+</form>

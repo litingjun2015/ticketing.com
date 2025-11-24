@@ -1,0 +1,153 @@
+{extend name="common/base" /}
+{block name="content"}
+
+<div class="panel panel-default panel-intro">
+    <div class="panel-heading">
+        {:build_heading(null, FALSE)}
+        <div class="panel-lead">
+            <em>{:__('Multi-dimensional data query and report generation to support operational decision-making')}</em>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="dashboard-statistics">
+                    <div class="row">
+                        <!-- 报表类型卡片 -->
+                        <div class="col-md-3">
+                            <a href="{:url('sales')}" class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fa fa-line-chart text-green"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-title">{:__('Sales Report')}</div>
+                                    <div class="stat-desc">{:__('Sales volume and revenue analysis')}</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{:url('stock/report')}" class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fa fa-cubes text-blue"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-title">{:__('Stock Report')}</div>
+                                    <div class="stat-desc">{:__('Inventory status and changes')}</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{:url('visitor')}" class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fa fa-users text-purple"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-title">{:__('Visitor Report')}</div>
+                                    <div class="stat-desc">{:__('Passenger flow analysis and statistics')}</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{:url('device')}" class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fa fa-microchip text-red"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-title">{:__('Device Report')}</div>
+                                    <div class="stat-desc">{:__('Equipment operation status')}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-3">
+                            <a href="{:url('custom')}" class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fa fa-sliders text-yellow"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-title">{:__('Custom Report')}</div>
+                                    <div class="stat-desc">{:__('User-defined report fields')}</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{:url('schedule')}" class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fa fa-clock-o text-teal"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-title">{:__('Scheduled Report')}</div>
+                                    <div class="stat-desc">{:__('Timed sending of reports')}</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{:url('dashboard')}" class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fa fa-dashboard text-primary"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-title">{:__('Data Dashboard')}</div>
+                                    <div class="stat-desc">{:__('Scenic key data display')}</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{:url('datasync/index')}" class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fa fa-refresh text-gray"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-title">{:__('Data Sync')}</div>
+                                    <div class="stat-desc">{:__('Synchronize each module data')}</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<style>
+    .stat-card {
+        display: block;
+        background: #fff;
+        border-radius: 4px;
+        padding: 15px;
+        color: #333;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+        text-decoration: none;
+        color: #333;
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .stat-icon {
+        font-size: 30px;
+        float: left;
+        margin-right: 15px;
+    }
+    .stat-content {
+        overflow: hidden;
+    }
+    .stat-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    .stat-desc {
+        color: #777;
+        font-size: 13px;
+    }
+</style>
+{/block}

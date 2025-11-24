@@ -8,7 +8,22 @@
     <!-- 备选CDN：cdnjs -->
     <!-- 其他公共样式/脚本 -->
     <!-- 1. 先加载jQuery -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+
+    <!-- 1. 引入 jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+    <!-- 2. 引入 Moment.js -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+    <!-- 可选：引入中文语言包，实现日期汉化 -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/locale/zh-cn.js"></script>
+
+    <!-- 3. 引入 daterangepicker 的 CSS 样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
+
+    <!-- 4. 引入 daterangepicker 的 JS 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+
     <!-- 2. 再加载layui -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/layui/2.8.18/css/layui.min.css">
     <!-- 3. 最后加载自定义业务JS -->

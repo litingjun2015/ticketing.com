@@ -1,0 +1,298 @@
+{extend name="common/base" /}
+{block name="content"}
+
+<div class="panel panel-default panel-intro">
+    <div class="panel-heading">
+        {:build_heading(null, FALSE)}
+        <div class="panel-lead">
+            <em>{:__('Scenic Area Key Data Dashboard')} - {$today}</em>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <!-- 今日入场数据 -->
+            <div class="col-md-12">
+                <div class="dashboard-panel">
+                    <h3>{:__('Today\'s Entry')}</h3>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="stat-box">
+                                <div class="stat-title">{:__('Staff')}</div>
+                                <div class="stat-value">{$data.staff_entry}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-box">
+                                <div class="stat-title">{:__('Onsite ticket')}</div>
+                                <div class="stat-value">{$data.onsite_ticket}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-box">
+                                <div class="stat-title">{:__('OTA ticket')}</div>
+                                <div class="stat-value">{$data.ota_ticket}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-box">
+                                <div class="stat-title">{:__('Official ticket')}</div>
+                                <div class="stat-value">{$data.official_ticket}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-4">
+                            <div class="stat-box total">
+                                <div class="stat-title">{:__('Total entry')}</div>
+                                <div class="stat-value">{$data.total_entry}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-box">
+                                <div class="stat-title">{:__('Total exit')}</div>
+                                <div class="stat-value">{$data.total_exit}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-box">
+                                <div class="stat-title">{:__('Current number')}</div>
+                                <div class="stat-value">{$data.current_num}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+            <!-- 承载量信息 -->
+            <div class="col-md-6">
+                <div class="dashboard-panel">
+                    <h3>{:__('Capacity Information')}</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="stat-box">
+                                <div class="stat-title">{:__('Daily maximum capacity')}</div>
+                                <div class="stat-value">{$data.max_capacity}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-box">
+                                <div class="stat-title">{:__('Instant maximum capacity')}</div>
+                                <div class="stat-value">{$data.instant_max_capacity}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="capacity-chart" style="height: 150px; margin-top: 15px;">
+                        <div id="capacity-gauge"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实时入园流量热力图 -->
+            <div class="col-md-6">
+                <div class="dashboard-panel">
+                    <h3>{:__('Real-time Entry Heat Map')}</h3>
+                    <div id="heat-map" style="height: 250px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+            <!-- 今日趋势图 -->
+            <div class="col-md-12">
+                <div class="dashboard-panel">
+                    <h3>{:__('Today\'s Entry Trend')}</h3>
+                    <div id="trend-chart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script src="/assets/libs/echarts/echarts.min.js"></script>
+<script src="/assets/libs/echarts/extension/dataTool.js"></script>
+<style>
+    .dashboard-panel {
+        background: #fff;
+        border-radius: 4px;
+        padding: 15px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .stat-box {
+        background: #f5f5f5;
+        border-radius: 4px;
+        padding: 15px;
+        text-align: center;
+    }
+    .stat-box.total {
+        background: #e8f4fd;
+        border: 1px solid #bce8f1;
+    }
+    .stat-title {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    .stat-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+    .capacity-chart {
+        width: 100%;
+    }
+</style>
+<script>
+    $(function () {
+        // 初始化图表
+        var capacityGauge = echarts.init(document.getElementById('capacity-gauge'));
+        var trendChart = echarts.init(document.getElementById('trend-chart'));
+        var heatMap = echarts.init(document.getElementById('heat-map'));
+
+        // 容量 gauge 图
+        var capacityOption = {
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c}%'
+            },
+            series: [
+                {
+                    name: '{:__('Capacity')}',
+                    type: 'gauge',
+                    detail: {formatter: '{value}%'},
+                    data: [{value: {$data.current_num / $data.instant_max_capacity * 100 | 0}, name: '{:__('Current usage')}'}]
+                }
+            ]
+        };
+
+        // 今日趋势图
+        var trendOption = {
+            title: {
+                text: ''
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['{:__('Entry number')}', '{:__('Exit number')}']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '{:__('Entry number')}',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [5, 10, 30, 150, 200, 180, 120, 40]
+                },
+                {
+                    name: '{:__('Exit number')}',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [0, 5, 20, 80, 150, 160, 180, 100]
+                }
+            ]
+        };
+
+        // 热力图
+        var heatMapOption = {
+            tooltip: {
+                position: 'top'
+            },
+            grid: {
+                height: '50%',
+                y: '10%'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['{:__('East Gate')}', '{:__('West Gate')}', '{:__('South Gate')}', '{:__('North Gate')}', '{:__('Main Attraction')}'],
+                splitArea: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type: 'category',
+                data: ['{:__('Now')}'],
+                splitArea: {
+                    show: false
+                }
+            },
+            visualMap: {
+                min: 0,
+                max: 100,
+                calculable: true,
+                orient: 'horizontal',
+                left: 'center',
+                bottom: '15%'
+            },
+            series: [
+                {
+                    name: '{:__('Entry Flow')}',
+                    type: 'heatmap',
+                    data: [
+                        ['{:__('East Gate')}', '{:__('Now')}', 60],
+                        ['{:__('West Gate')}', '{:__('Now')}', 30],
+                        ['{:__('South Gate')}', '{:__('Now')}', 45],
+                        ['{:__('North Gate')}', '{:__('Now')}', 20],
+                        ['{:__('Main Attraction')}', '{:__('Now')}', 80]
+                    ],
+                    label: {
+                        show: true
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 设置图表选项
+        capacityGauge.setOption(capacityOption);
+        trendChart.setOption(trendOption);
+        heatMap.setOption(heatMapOption);
+
+        // 定时刷新数据
+        setInterval(function() {
+            // 模拟数据刷新
+            loadDashboardData();
+        }, 300000); // 5分钟刷新一次
+
+        // 加载数据
+        function loadDashboardData() {
+            $.ajax({
+                url: "{:url('report/getDashboardData')}",
+                type: 'get',
+                dataType: 'json',
+                success: function(res) {
+                    if (res.code == 0) {
+                        // 更新数据
+                        capacityOption.series[0].data[0].value = res.data.current_num / res.data.instant_max_capacity * 100 | 0;
+                        capacityGauge.setOption(capacityOption);
+
+                        // 更新其他数据...
+                    }
+                }
+            });
+        }
+    });
+</script>
+{/block}

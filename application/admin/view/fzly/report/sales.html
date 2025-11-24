@@ -1,0 +1,252 @@
+{extend name="common/base" /}
+{block name="content"}
+
+<div class="panel panel-default panel-intro">
+    <div class="panel-heading">
+        {:build_heading(null, FALSE)}
+        <div class="panel-lead">
+            <em>{:__('Sales data analysis and reporting')}</em>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <form class="form-inline" id="search-form">
+            <div class="form-group">
+                <label class="control-label">{:__('Report type')}</label>
+                <select name="type" class="form-control" id="type">
+                    {foreach name="typeList" item="vo" key="k"}
+                    <option value="{$k}" {:$type==$k?'selected':''}>{$vo}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">{:__('Channel')}</label>
+                <select name="channel" class="form-control" id="channel">
+                    {foreach name="channelList" item="vo" key="k"}
+                    <option value="{$k}" {:$channel==$k?'selected':''}>{$vo}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">{:__('Product type')}</label>
+                <select name="product_type" class="form-control" id="product_type">
+                    {foreach name="productTypeList" item="vo" key="k"}
+                    <option value="{$k}" {:$product_type==$k?'selected':''}>{$vo}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">{:__('Date range')}</label>
+                <input type="text" class="form-control" name="date_range" value="{$start_date} - {$end_date}" id="date-range">
+            </div>
+            <button type="button" class="btn btn-primary" id="search-btn">{:__('Search')}</button>
+            <button type="button" class="btn btn-success" id="export-excel">{:__('Export Excel')}</button>
+            <button type="button" class="btn btn-info" id="export-pdf">{:__('Export PDF')}</button>
+        </form>
+
+        <div class="row" style="margin-top: 15px;">
+            <div class="col-md-12">
+                <div id="chart-container" style="height: 400px;"></div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 15px;">
+            <div class="col-md-12">
+                <table id="report-table" class="table table-striped table-bordered table-hover table-nowrap">
+                    <thead>
+                    <tr>
+                        <th>{:__('Date')}</th>
+                        <th>{:__('Product name')}</th>
+                        <th>{:__('Channel')}</th>
+                        <th>{:__('Sales number')}</th>
+                        <th>{:__('Sales amount')}</th>
+                        <th>{:__('Refund number')}</th>
+                        <th>{:__('Refund amount')}</th>
+                        <th>{:__('Actual sales')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 报表数据将通过JS动态加载 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script>
+    $(function () {
+        // 初始化日期范围选择器
+        $('#date-range').daterangepicker({
+            format: 'YYYY-MM-DD',
+            separator: ' - ',
+            startDate: '{$start_date}',
+            endDate: '{$end_date}'
+        });
+
+        // 初始化图表
+        var chart = echarts.init(document.getElementById('chart-container'));
+
+        // 搜索按钮点击事件
+        $('#search-btn').click(function () {
+            loadReportData();
+        });
+
+        // 导出按钮点击事件
+        $('#export-excel').click(function () {
+            exportReport('excel');
+        });
+
+        $('#export-pdf').click(function () {
+            exportReport('pdf');
+        });
+
+        // 加载报表数据
+        function loadReportData() {
+            var type = $('#type').val();
+            var channel = $('#channel').val();
+            var productType = $('#product_type').val();
+            var dateRange = $('#date-range').val().split(' - ');
+            var startDate = dateRange[0];
+            var endDate = dateRange[1];
+
+            $.ajax({
+                url: "{:url('fzly/report/getSalesData')}",
+                type: 'get',
+                data: {
+                    type: type,
+                    channel: channel,
+                    product_type: productType,
+                    start_date: startDate,
+                    end_date: endDate
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == 0) {
+                        // 更新表格数据
+                        updateTableData(res.data.tableData);
+                        // 更新图表数据
+                        updateChartData(res.data.chartData);
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+        }
+
+        // 更新表格数据
+        function updateTableData(data) {
+            var tbody = $('#report-table tbody');
+            tbody.empty();
+
+            if (data.length == 0) {
+                tbody.append('<tr><td colspan="8" class="text-center">{:__('No data')}</td></tr>');
+                return;
+            }
+
+            var channelMap = {:json_encode($channelList)};
+
+            $.each(data, function (i, item) {
+                var tr = '<tr>' +
+                    '<td>' + item.date + '</td>' +
+                    '<td>' + item.product_name + '</td>' +
+                    '<td>' + (channelMap[item.channel] || item.channel) + '</td>' +
+                    '<td>' + item.sales_num + '</td>' +
+                    '<td>' + item.sales_amount + '</td>' +
+                    '<td>' + item.refund_num + '</td>' +
+                    '<td>' + item.refund_amount + '</td>' +
+                    '<td>' + item.actual_sales + '</td>' +
+                    '</tr>';
+                tbody.append(tr);
+            });
+        }
+
+        // 更新图表数据
+        function updateChartData(data) {
+            var option = {
+                title: {
+                    text: '{:__('Sales Trend')}'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['{:__('Total sales')}', '{:__('Offline')}', '{:__('OTA')}', '{:__('Mini program')}', '{:__('Official')}']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.categories
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '{:__('Amount')}'
+                },
+                series: [
+                    {
+                        name: '{:__('Total sales')}',
+                        type: 'line',
+                        data: data.total_sales_array
+                    },
+                    {
+                        name: '{:__('Offline')}',
+                        type: 'bar',
+                        data: data.channel_sales_array.offline || []
+                    },
+                    {
+                        name: '{:__('OTA')}',
+                        type: 'bar',
+                        data: data.channel_sales_array.ota || []
+                    },
+                    {
+                        name: '{:__('Mini program')}',
+                        type: 'bar',
+                        data: data.channel_sales_array.mini_program || []
+                    },
+                    {
+                        name: '{:__('Official')}',
+                        type: 'bar',
+                        data: data.channel_sales_array.official || []
+                    }
+                ]
+            };
+
+            chart.setOption(option);
+        }
+
+        // 导出报表
+        function exportReport(format) {
+            var type = $('#type').val();
+            var channel = $('#channel').val();
+            var productType = $('#product_type').val();
+            var dateRange = $('#date-range').val().split(' - ');
+            var startDate = dateRange[0];
+            var endDate = dateRange[1];
+
+            var url = "{:url('report/export')}?format=" + format +
+                "&report_type=sales" +
+                "&type=" + type +
+                "&channel=" + channel +
+                "&product_type=" + productType +
+                "&start_date=" + startDate +
+                "&end_date=" + endDate;
+
+            window.location.href = url;
+        }
+
+        // 初始加载数据
+        loadReportData();
+    });
+</script>
+{/block}
