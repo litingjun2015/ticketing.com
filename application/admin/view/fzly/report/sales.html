@@ -5,14 +5,14 @@
     <div class="panel-heading">
         {:build_heading(null, FALSE)}
         <div class="panel-lead">
-            <em>{:__('Sales data analysis and reporting')}</em>
+            <em>{:__('sales.data_analysis_reporting')}</em>
         </div>
     </div>
 
     <div class="panel-body">
         <form class="form-inline" id="search-form">
             <div class="form-group">
-                <label class="control-label">{:__('Report type')}</label>
+                <label class="control-label">{:__('sales.report_type')}</label>
                 <select name="type" class="form-control" id="type">
                     {foreach name="typeList" item="vo" key="k"}
                     <option value="{$k}" {:$type==$k?'selected':''}>{$vo}</option>
@@ -20,7 +20,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="control-label">{:__('Channel')}</label>
+                <label class="control-label">{:__('sales.channel')}</label>
                 <select name="channel" class="form-control" id="channel">
                     {foreach name="channelList" item="vo" key="k"}
                     <option value="{$k}" {:$channel==$k?'selected':''}>{$vo}</option>
@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="control-label">{:__('Product type')}</label>
+                <label class="control-label">{:__('sales.product_type')}</label>
                 <select name="product_type" class="form-control" id="product_type">
                     {foreach name="productTypeList" item="vo" key="k"}
                     <option value="{$k}" {:$product_type==$k?'selected':''}>{$vo}</option>
@@ -36,12 +36,12 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="control-label">{:__('Date range')}</label>
+                <label class="control-label">{:__('sales.date_range')}</label>
                 <input type="text" class="form-control" name="date_range" value="{$start_date} - {$end_date}" id="date-range">
             </div>
-            <button type="button" class="btn btn-primary" id="search-btn">{:__('Search')}</button>
-            <button type="button" class="btn btn-success" id="export-excel">{:__('Export Excel')}</button>
-            <button type="button" class="btn btn-info" id="export-pdf">{:__('Export PDF')}</button>
+            <button type="button" class="btn btn-primary" id="search-btn">{:__('sales.search')}</button>
+            <button type="button" class="btn btn-success" id="export-excel">{:__('sales.export_excel')}</button>
+            <button type="button" class="btn btn-info" id="export-pdf">{:__('sales.export_pdf')}</button>
         </form>
 
         <div class="row" style="margin-top: 15px;">
@@ -55,14 +55,14 @@
                 <table id="report-table" class="table table-striped table-bordered table-hover table-nowrap">
                     <thead>
                     <tr>
-                        <th>{:__('Date')}</th>
-                        <th>{:__('Product name')}</th>
-                        <th>{:__('Channel')}</th>
-                        <th>{:__('Sales number')}</th>
-                        <th>{:__('Sales amount')}</th>
-                        <th>{:__('Refund number')}</th>
-                        <th>{:__('Refund amount')}</th>
-                        <th>{:__('Actual sales')}</th>
+                        <th>{:__('sales.date')}</th>
+                        <th>{:__('sales.product_name')}</th>
+                        <th>{:__('sales.channel')}</th>
+                        <th>{:__('sales.sales_number')}</th>
+                        <th>{:__('sales.sales_amount')}</th>
+                        <th>{:__('sales.refund_number')}</th>
+                        <th>{:__('sales.refund_amount')}</th>
+                        <th>{:__('sales.actual_sales')}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -168,7 +168,7 @@
         function updateChartData(data) {
             var option = {
                 title: {
-                    text: '{:__('Sales Trend')}'
+                    text: '{:__('sales.sales_trend')}'
                 },
                 tooltip: {
                     trigger: 'axis',

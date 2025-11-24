@@ -1,6 +1,30 @@
 <?php
 
 return [
+    // 销售报表相关翻译
+    'sales.data_analysis_reporting' => '销售数据分析与报表',
+    'sales.report_type' => '报表类型',
+    'sales.channel' => '渠道',
+    'sales.product_type' => '产品类型',
+    'sales.date_range' => '日期范围',
+    'sales.search' => '搜索',
+    'sales.export_excel' => '导出Excel',
+    'sales.export_pdf' => '导出PDF',
+    'sales.date' => '日期',
+    'sales.product_name' => '产品名称',
+    'sales.sales_number' => '销售数量',
+    'sales.sales_amount' => '销售金额',
+    'sales.refund_number' => '退款数量',
+    'sales.refund_amount' => '退款金额',
+    'sales.actual_sales' => '实际销售额',
+    'sales.sales_trend' => '销售趋势',
+    'sales.total_sales' => '总销售额',
+    'sales.offline' => '线下',
+    'sales.ota' => 'OTA',
+    'sales.mini_program' => '小程序',
+    'sales.official' => '官网',
+    'sales.amount' => '金额',
+    'sales.no_data' => '暂无数据',
         // 其他菜单...
         '基础参数配置' => 'systemsetting/basic',
         '库存预警配置' => 'systemsetting/stock_warn',

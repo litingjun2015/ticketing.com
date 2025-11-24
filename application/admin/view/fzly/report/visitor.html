@@ -64,9 +64,6 @@
 {/block}
 
 {block name="script"}
-<script src="/assets/libs/echarts/echarts.min.js"></script>
-<script src="/assets/libs/daterangepicker/daterangepicker.js"></script>
-<link rel="stylesheet" href="/assets/libs/daterangepicker/daterangepicker.css">
 <script>
   $(function () {
     // 初始化日期范围选择器
@@ -103,7 +100,7 @@
       var endDate = dateRange[1];
 
       $.ajax({
-        url: "{:url('report/getVisitorData')}",
+        url: "{:url('fzly/report/getVisitorData')}",
         type: 'get',
         data: {
           type: type,

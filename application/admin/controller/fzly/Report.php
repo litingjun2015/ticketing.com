@@ -188,9 +188,19 @@ class Report extends Backend
         $channel = $this->request->param('channel', 'all');
         $product_type = $this->request->param('product_type', 'all');
 
+        // 步骤1：转换日期格式（将/替换为-）
+        $startDate = str_replace('/', '-',$start_date);
+        $endDate = str_replace('/', '-', $end_date);
+
         // 构建查询条件
         $where = [];
-        $where[] = ['date', 'between', [$start_date, $end_date]];
+
+        // 步骤2：构造二维索引数组，转义关键字段`date`
+        $where = [
+            ['`date`', 'between', [$startDate, $endDate]]
+        ];
+
+//        $where[] = ['date', 'between', [$start_date, $end_date]];
 
         if ($channel != 'all') {
             $where[] = ['channel', '=', $channel];
@@ -421,10 +431,16 @@ class Report extends Backend
      */
     private function handleDailySalesData($where, $start_date, $end_date)
     {
+//        $list = Db::name('fzly_sales_report')
+//            ->where($where)
+//            ->field('date, product_name, channel, SUM(sales_num) as sales_num, SUM(sales_amount) as sales_amount, SUM(refund_num) as refund_num, SUM(refund_amount) as refund_amount, SUM(actual_sales) as actual_sales')
+//            ->group('date, product_name, channel')
+//            ->select();
+
         $list = Db::name('fzly_sales_report')
-            ->where($where)
-            ->field('date, product_name, channel, SUM(sales_num) as sales_num, SUM(sales_amount) as sales_amount, SUM(refund_num) as refund_num, SUM(refund_amount) as refund_amount, SUM(actual_sales) as actual_sales')
-            ->group('date, product_name, channel')
+            ->whereBetween('date', [$start_date, $end_date]) // 快捷方法，无需手动写between
+            ->field('`date`, product_name, channel, SUM(sales_num) as sales_num, SUM(sales_amount) as sales_amount, SUM(refund_num) as refund_num, SUM(refund_amount) as refund_amount, SUM(actual_sales) as actual_sales')
+            ->group('`date`, product_name, channel') // date是关键字，需转义
             ->select();
 
         // 处理图表数据
