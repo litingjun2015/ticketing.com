@@ -595,10 +595,239 @@ class Report extends Backend
         ];
     }
 
-    // 其他数据处理方法省略...
-    private function handleWeeklySalesData($where, $start_date, $end_date) { return []; }
-    private function handleMonthlySalesData($where, $start_date, $end_date) { return []; }
-    private function handleYearlySalesData($where, $start_date, $end_date) { return []; }
+    /**
+     * 处理周销售数据
+     */
+    /**
+     * 处理周销售数据
+     */
+    private function handleWeeklySalesData($where, $start_date, $end_date)
+    {
+        // 修复：移除SELECT中的`date`字段，仅保留DATE_FORMAT生成的week
+        $list = Db::name('fzly_sales_report')
+            ->whereBetween('date', [$start_date, $end_date])
+            ->field(Db::raw("DATE_FORMAT(`date`, '%Y-%u') as week, 
+         product_name, 
+         channel, 
+         SUM(sales_num) as sales_num, 
+         SUM(sales_amount) as sales_amount, 
+         SUM(refund_num) as refund_num, 
+         SUM(refund_amount) as refund_amount, 
+         SUM(actual_sales) as actual_sales")
+            )
+            ->group("week, product_name, channel")
+            ->select();
+
+        // 后续代码保持不变...
+        $weeks = $this->getWeekRange($start_date, $end_date);
+
+        // 初始化图表数据
+        $chartData = [
+            'categories' => $weeks,
+            'total_sales' => array_fill_keys($weeks, 0),
+            'channel_sales' => [
+                'offline' => array_fill_keys($weeks, 0),
+                'ota' => array_fill_keys($weeks, 0),
+                'mini_program' => array_fill_keys($weeks, 0),
+                'official' => array_fill_keys($weeks, 0)
+            ]
+        ];
+
+        // 填充图表数据
+        foreach ($list as $item) {
+            $week = $item['week'];
+            if (in_array($week, $weeks)) {
+                $chartData['total_sales'][$week] += $item['actual_sales'];
+
+                if (isset($chartData['channel_sales'][$item['channel']])) {
+                    $chartData['channel_sales'][$item['channel']][$week] += $item['actual_sales'];
+                }
+            }
+        }
+
+        // 转换为数组格式
+        $chartData['total_sales_array'] = array_values($chartData['total_sales']);
+        foreach ($chartData['channel_sales'] as $channel => $values) {
+            $chartData['channel_sales_array'][$channel] = array_values($values);
+        }
+
+        return [
+            'tableData' => $list,
+            'chartData' => $chartData
+        ];
+    }
+
+    /**
+     * 处理月销售数据
+     */
+    private function handleMonthlySalesData($where, $start_date, $end_date)
+    {
+        // 查询月销售数据，按月份、产品名称、渠道分组
+        $list = Db::name('fzly_sales_report')
+            ->whereBetween('date', [$start_date, $end_date])
+            // 修复后
+            ->field(Db::raw("DATE_FORMAT(`date`, '%Y-%m') as month, 
+                 product_name, 
+                 channel, 
+                 SUM(sales_num) as sales_num, 
+                 SUM(sales_amount) as sales_amount, 
+                 SUM(refund_num) as refund_num, 
+                 SUM(refund_amount) as refund_amount, 
+                 SUM(actual_sales) as actual_sales")
+            )
+            ->group("month, product_name, channel")
+            ->select();
+
+        // 获取日期范围内的所有月份（格式：年-月，如2024-01）
+        $months = $this->getMonthRange($start_date, $end_date);
+
+        // 初始化图表数据
+        $chartData = [
+            'categories' => $months,
+            'total_sales' => array_fill_keys($months, 0),
+            'channel_sales' => [
+                'offline' => array_fill_keys($months, 0),
+                'ota' => array_fill_keys($months, 0),
+                'mini_program' => array_fill_keys($months, 0),
+                'official' => array_fill_keys($months, 0)
+            ]
+        ];
+
+        // 填充图表数据
+        foreach ($list as $item) {
+            $month = $item['month'];
+            if (in_array($month, $months)) {
+                $chartData['total_sales'][$month] += $item['actual_sales'];
+
+                if (isset($chartData['channel_sales'][$item['channel']])) {
+                    $chartData['channel_sales'][$item['channel']][$month] += $item['actual_sales'];
+                }
+            }
+        }
+
+        // 转换为数组格式
+        $chartData['total_sales_array'] = array_values($chartData['total_sales']);
+        foreach ($chartData['channel_sales'] as $channel => $values) {
+            $chartData['channel_sales_array'][$channel] = array_values($values);
+        }
+
+        return [
+            'tableData' => $list,
+            'chartData' => $chartData
+        ];
+    }
+
+    /**
+     * 处理年销售数据
+     */
+    private function handleYearlySalesData($where, $start_date, $end_date)
+    {
+        // 查询年销售数据，按年份、产品名称、渠道分组
+        $list = Db::name('fzly_sales_report')
+            ->whereBetween('date', [$start_date, $end_date])
+            ->field(Db::raw("DATE_FORMAT(`date`, '%Y') as year, 
+                 product_name, 
+                 channel, 
+                 SUM(sales_num) as sales_num, 
+                 SUM(sales_amount) as sales_amount, 
+                 SUM(refund_num) as refund_num, 
+                 SUM(refund_amount) as refund_amount, 
+                 SUM(actual_sales) as actual_sales")
+            )
+            ->group("year, product_name, channel")
+            ->select();
+
+        // 获取日期范围内的所有年份（格式：年，如2024）
+        $years = $this->getYearRange($start_date, $end_date);
+
+        // 初始化图表数据
+        $chartData = [
+            'categories' => $years,
+            'total_sales' => array_fill_keys($years, 0),
+            'channel_sales' => [
+                'offline' => array_fill_keys($years, 0),
+                'ota' => array_fill_keys($years, 0),
+                'mini_program' => array_fill_keys($years, 0),
+                'official' => array_fill_keys($years, 0)
+            ]
+        ];
+
+        // 填充图表数据
+        foreach ($list as $item) {
+            $year = $item['year'];
+            if (in_array($year, $years)) {
+                $chartData['total_sales'][$year] += $item['actual_sales'];
+
+                if (isset($chartData['channel_sales'][$item['channel']])) {
+                    $chartData['channel_sales'][$item['channel']][$year] += $item['actual_sales'];
+                }
+            }
+        }
+
+        // 转换为数组格式
+        $chartData['total_sales_array'] = array_values($chartData['total_sales']);
+        foreach ($chartData['channel_sales'] as $channel => $values) {
+            $chartData['channel_sales_array'][$channel] = array_values($values);
+        }
+
+        return [
+            'tableData' => $list,
+            'chartData' => $chartData
+        ];
+    }
+
+    /**
+     * 获取周范围数组（格式：年-周数）
+     */
+    private function getWeekRange($start, $end)
+    {
+        $weeks = [];
+        $current = strtotime($start);
+        $endTime = strtotime($end);
+
+        while ($current <= $endTime) {
+            $week = date('Y-W', $current);
+            if (!in_array($week, $weeks)) {
+                $weeks[] = $week;
+            }
+            $current = strtotime('+1 week', $current);
+        }
+        return $weeks;
+    }
+
+    /**
+     * 获取月范围数组（格式：年-月）
+     */
+    private function getMonthRange($start, $end)
+    {
+        $months = [];
+        $current = strtotime($start);
+        $endTime = strtotime($end);
+
+        while ($current <= $endTime) {
+            $month = date('Y-m', $current);
+            if (!in_array($month, $months)) {
+                $months[] = $month;
+            }
+            $current = strtotime('+1 month', $current);
+        }
+        return $months;
+    }
+
+    /**
+     * 获取年范围数组（格式：年）
+     */
+    private function getYearRange($start, $end)
+    {
+        $years = [];
+        $startYear = date('Y', strtotime($start));
+        $endYear = date('Y', strtotime($end));
+
+        for ($year = $startYear; $year <= $endYear; $year++) {
+            $years[] = (string)$year;
+        }
+        return $years;
+    }
     /**
      * 处理每日客流数据
      */
