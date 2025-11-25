@@ -5,7 +5,7 @@ namespace app\admin\model\fzly;
 use think\Model;
 
 
-class FinanceReconciliation extends Model
+class FinanceReportConfig extends Model
 {
 
     
@@ -13,7 +13,7 @@ class FinanceReconciliation extends Model
     
 
     // 表名
-    protected $name = 'fzly_finance_reconciliation';
+    protected $name = 'fzly_finance_report_config';
     
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'integer';
@@ -25,27 +25,27 @@ class FinanceReconciliation extends Model
 
     // 追加属性
     protected $append = [
-        'reconciliation_type_text',
+        'is_public_text',
         'status_text'
     ];
     
 
     
-    public function getReconciliationTypeList()
+    public function getIsPublicList()
     {
-        return ['ota' => __('Ota'), 'supplier' => __('Supplier'), 'bank' => __('Bank')];
+        return ['0' => __('Is_public 0'), '1' => __('Is_public 1')];
     }
 
     public function getStatusList()
     {
-        return ['pending' => __('Pending'), 'reconciling' => __('Reconciling'), 'completed' => __('Completed'), 'abnormal' => __('Abnormal')];
+        return ['0' => __('Status 0'), '1' => __('Status 1')];
     }
 
 
-    public function getReconciliationTypeTextAttr($value, $data)
+    public function getIsPublicTextAttr($value, $data)
     {
-        $value = $value ?: ($data['reconciliation_type'] ?? '');
-        $list = $this->getReconciliationTypeList();
+        $value = $value ?: ($data['is_public'] ?? '');
+        $list = $this->getIsPublicList();
         return $list[$value] ?? '';
     }
 

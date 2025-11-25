@@ -5,24 +5,24 @@ namespace app\admin\controller\fzly;
 use app\common\controller\Backend;
 
 /**
- * 对账单管理
+ * 支出记录管理
  *
  * @icon fa fa-circle-o
  */
-class Financereconciliation extends Backend
+class Financeexpense extends Backend
 {
 
     /**
-     * FinanceReconciliation模型对象
-     * @var \app\admin\model\fzly\FinanceReconciliation
+     * FinanceExpense模型对象
+     * @var \app\admin\model\fzly\FinanceExpense
      */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = new \app\admin\model\fzly\FinanceReconciliation;
-        $this->view->assign("reconciliationTypeList", $this->model->getReconciliationTypeList());
+        $this->model = new \app\admin\model\fzly\FinanceExpense;
+        $this->view->assign("expenseTypeList", $this->model->getExpenseTypeList());
         $this->view->assign("statusList", $this->model->getStatusList());
     }
 

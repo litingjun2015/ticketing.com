@@ -1,0 +1,57 @@
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Period_type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-period_type" data-rule="required" class="form-control selectpicker" name="row[period_type]">
+                {foreach name="periodTypeList" item="vo"}
+                    <option value="{$key}" {in name="key" value=""}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Period')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-period" data-rule="required" class="form-control" name="row[period]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Total_income')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-total_income" data-rule="required" class="form-control" step="0.01" name="row[total_income]" type="number" value="0.00">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Total_expense')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-total_expense" data-rule="required" class="form-control" step="0.01" name="row[total_expense]" type="number" value="0.00">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Gross_profit')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-gross_profit" data-rule="required" class="form-control" step="0.01" name="row[gross_profit]" type="number" value="0.00">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Net_profit')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-net_profit" data-rule="required" class="form-control" step="0.01" name="row[net_profit]" type="number" value="0.00">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Profit_rate')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-profit_rate" class="form-control" step="0.01" name="row[profit_rate]" type="number" value="0.00">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+        </div>
+    </div>
+</form>

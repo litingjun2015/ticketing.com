@@ -1,11 +1,11 @@
 <?php
 
-namespace app\admin\model\fzly;
+namespace app\admin\model\fzly\finance;
 
 use think\Model;
 
 
-class FinanceReconciliation extends Model
+class Reconciliation extends Model
 {
 
     

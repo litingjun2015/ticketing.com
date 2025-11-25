@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\controller\fzly;
+namespace app\admin\controller\fzly\finance;
 
 use app\common\controller\Backend;
 
@@ -9,19 +9,19 @@ use app\common\controller\Backend;
  *
  * @icon fa fa-circle-o
  */
-class Financereconciliation extends Backend
+class Reconciliation extends Backend
 {
 
     /**
-     * FinanceReconciliation模型对象
-     * @var \app\admin\model\fzly\FinanceReconciliation
+     * Reconciliation模型对象
+     * @var \app\admin\model\fzly\finance\Reconciliation
      */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = new \app\admin\model\fzly\FinanceReconciliation;
+        $this->model = new \app\admin\model\fzly\finance\Reconciliation;
         $this->view->assign("reconciliationTypeList", $this->model->getReconciliationTypeList());
         $this->view->assign("statusList", $this->model->getStatusList());
     }

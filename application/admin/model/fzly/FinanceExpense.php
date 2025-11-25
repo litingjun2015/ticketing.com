@@ -5,7 +5,7 @@ namespace app\admin\model\fzly;
 use think\Model;
 
 
-class FinanceReconciliation extends Model
+class FinanceExpense extends Model
 {
 
     
@@ -13,7 +13,7 @@ class FinanceReconciliation extends Model
     
 
     // 表名
-    protected $name = 'fzly_finance_reconciliation';
+    protected $name = 'fzly_finance_expense';
     
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'integer';
@@ -25,27 +25,27 @@ class FinanceReconciliation extends Model
 
     // 追加属性
     protected $append = [
-        'reconciliation_type_text',
+        'expense_type_text',
         'status_text'
     ];
     
 
     
-    public function getReconciliationTypeList()
+    public function getExpenseTypeList()
     {
-        return ['ota' => __('Ota'), 'supplier' => __('Supplier'), 'bank' => __('Bank')];
+        return ['purchase' => __('Purchase'), 'ota_commission' => __('Ota_commission'), 'equipment_maintenance' => __('Equipment_maintenance'), 'salary' => __('Salary'), 'other' => __('Other')];
     }
 
     public function getStatusList()
     {
-        return ['pending' => __('Pending'), 'reconciling' => __('Reconciling'), 'completed' => __('Completed'), 'abnormal' => __('Abnormal')];
+        return ['pending' => __('Pending'), 'confirmed' => __('Confirmed'), 'canceled' => __('Canceled')];
     }
 
 
-    public function getReconciliationTypeTextAttr($value, $data)
+    public function getExpenseTypeTextAttr($value, $data)
     {
-        $value = $value ?: ($data['reconciliation_type'] ?? '');
-        $list = $this->getReconciliationTypeList();
+        $value = $value ?: ($data['expense_type'] ?? '');
+        $list = $this->getExpenseTypeList();
         return $list[$value] ?? '';
     }
 

@@ -5,12 +5,12 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
-                    index_url: 'fzly/financereconciliation/index' + location.search,
-                    add_url: 'fzly/financereconciliation/add',
-                    edit_url: 'fzly/financereconciliation/edit',
-                    del_url: 'fzly/financereconciliation/del',
-                    multi_url: 'fzly/financereconciliation/multi',
-                    import_url: 'fzly/financereconciliation/import',
+                    index_url: 'fzly/finance/reconciliation/index' + location.search,
+                    add_url: 'fzly/finance/reconciliation/add',
+                    edit_url: 'fzly/finance/reconciliation/edit',
+                    del_url: 'fzly/finance/reconciliation/del',
+                    multi_url: 'fzly/finance/reconciliation/multi',
+                    import_url: 'fzly/finance/reconciliation/import',
                     table: 'fzly_finance_reconciliation',
                 }
             });

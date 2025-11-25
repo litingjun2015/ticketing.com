@@ -5,7 +5,7 @@ namespace app\admin\model\fzly;
 use think\Model;
 
 
-class FinanceReconciliation extends Model
+class FinanceVoucher extends Model
 {
 
     
@@ -13,7 +13,7 @@ class FinanceReconciliation extends Model
     
 
     // 表名
-    protected $name = 'fzly_finance_reconciliation';
+    protected $name = 'fzly_finance_voucher';
     
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'integer';
@@ -25,27 +25,27 @@ class FinanceReconciliation extends Model
 
     // 追加属性
     protected $append = [
-        'reconciliation_type_text',
+        'voucher_type_text',
         'status_text'
     ];
     
 
     
-    public function getReconciliationTypeList()
+    public function getVoucherTypeList()
     {
-        return ['ota' => __('Ota'), 'supplier' => __('Supplier'), 'bank' => __('Bank')];
+        return ['invoice' => __('Invoice'), 'receipt' => __('Receipt'), 'contract' => __('Contract')];
     }
 
     public function getStatusList()
     {
-        return ['pending' => __('Pending'), 'reconciling' => __('Reconciling'), 'completed' => __('Completed'), 'abnormal' => __('Abnormal')];
+        return ['valid' => __('Valid'), 'invalid' => __('Invalid')];
     }
 
 
-    public function getReconciliationTypeTextAttr($value, $data)
+    public function getVoucherTypeTextAttr($value, $data)
     {
-        $value = $value ?: ($data['reconciliation_type'] ?? '');
-        $list = $this->getReconciliationTypeList();
+        $value = $value ?: ($data['voucher_type'] ?? '');
+        $list = $this->getVoucherTypeList();
         return $list[$value] ?? '';
     }
 

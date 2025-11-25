@@ -5,13 +5,13 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
-                    index_url: 'fzly/financereconciliation/index' + location.search,
-                    add_url: 'fzly/financereconciliation/add',
-                    edit_url: 'fzly/financereconciliation/edit',
-                    del_url: 'fzly/financereconciliation/del',
-                    multi_url: 'fzly/financereconciliation/multi',
-                    import_url: 'fzly/financereconciliation/import',
-                    table: 'fzly_finance_reconciliation',
+                    index_url: 'fzly/financeexpense/index' + location.search,
+                    add_url: 'fzly/financeexpense/add',
+                    edit_url: 'fzly/financeexpense/edit',
+                    del_url: 'fzly/financeexpense/del',
+                    multi_url: 'fzly/financeexpense/multi',
+                    import_url: 'fzly/financeexpense/import',
+                    table: 'fzly_finance_expense',
                 }
             });
 
@@ -28,15 +28,12 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     [
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
-                        {field: 'reconciliation_type', title: __('Reconciliation_type'), searchList: {"ota":__('Ota'),"supplier":__('Supplier'),"bank":__('Bank')}, formatter: Table.api.formatter.normal},
-                        {field: 'partner', title: __('Partner'), operate: 'LIKE'},
-                        {field: 'start_date', title: __('Start_date'), operate:'RANGE', addclass:'datetimerange', autocomplete:false},
-                        {field: 'end_date', title: __('End_date'), operate:'RANGE', addclass:'datetimerange', autocomplete:false},
-                        {field: 'system_amount', title: __('System_amount'), operate:'BETWEEN'},
-                        {field: 'partner_amount', title: __('Partner_amount'), operate:'BETWEEN'},
-                        {field: 'difference', title: __('Difference'), operate:'BETWEEN'},
-                        {field: 'status', title: __('Status'), searchList: {"pending":__('Pending'),"reconciling":__('Reconciling'),"completed":__('Completed'),"abnormal":__('Abnormal')}, formatter: Table.api.formatter.status},
-                        {field: 'file_url', title: __('File_url'), operate: 'LIKE', formatter: Table.api.formatter.url},
+                        {field: 'date', title: __('Date'), operate:'RANGE', addclass:'datetimerange', autocomplete:false},
+                        {field: 'expense_type', title: __('Expense_type'), searchList: {"purchase":__('Purchase'),"ota_commission":__('Ota_commission'),"equipment_maintenance":__('Equipment_maintenance'),"salary":__('Salary'),"other":__('Other')}, formatter: Table.api.formatter.normal},
+                        {field: 'amount', title: __('Amount'), operate:'BETWEEN'},
+                        {field: 'voucher_id', title: __('Voucher_id')},
+                        {field: 'supplier', title: __('Supplier'), operate: 'LIKE'},
+                        {field: 'status', title: __('Status'), searchList: {"pending":__('Pending'),"confirmed":__('Confirmed'),"canceled":__('Canceled')}, formatter: Table.api.formatter.status},
                         {field: 'remark', title: __('Remark'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
                         {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
                         {field: 'updatetime', title: __('Updatetime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},

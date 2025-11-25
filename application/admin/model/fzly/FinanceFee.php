@@ -5,7 +5,7 @@ namespace app\admin\model\fzly;
 use think\Model;
 
 
-class FinanceReconciliation extends Model
+class FinanceFee extends Model
 {
 
     
@@ -13,7 +13,7 @@ class FinanceReconciliation extends Model
     
 
     // 表名
-    protected $name = 'fzly_finance_reconciliation';
+    protected $name = 'fzly_finance_fee';
     
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'integer';
@@ -25,28 +25,14 @@ class FinanceReconciliation extends Model
 
     // 追加属性
     protected $append = [
-        'reconciliation_type_text',
         'status_text'
     ];
     
 
     
-    public function getReconciliationTypeList()
-    {
-        return ['ota' => __('Ota'), 'supplier' => __('Supplier'), 'bank' => __('Bank')];
-    }
-
     public function getStatusList()
     {
-        return ['pending' => __('Pending'), 'reconciling' => __('Reconciling'), 'completed' => __('Completed'), 'abnormal' => __('Abnormal')];
-    }
-
-
-    public function getReconciliationTypeTextAttr($value, $data)
-    {
-        $value = $value ?: ($data['reconciliation_type'] ?? '');
-        $list = $this->getReconciliationTypeList();
-        return $list[$value] ?? '';
+        return ['pending' => __('Pending'), 'confirmed' => __('Confirmed')];
     }
 
 

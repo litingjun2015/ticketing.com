@@ -5,24 +5,24 @@ namespace app\admin\controller\fzly;
 use app\common\controller\Backend;
 
 /**
- * 对账单管理
+ * 财务报表配置管理
  *
  * @icon fa fa-circle-o
  */
-class Financereconciliation extends Backend
+class Financereportconfig extends Backend
 {
 
     /**
-     * FinanceReconciliation模型对象
-     * @var \app\admin\model\fzly\FinanceReconciliation
+     * FinanceReportConfig模型对象
+     * @var \app\admin\model\fzly\FinanceReportConfig
      */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = new \app\admin\model\fzly\FinanceReconciliation;
-        $this->view->assign("reconciliationTypeList", $this->model->getReconciliationTypeList());
+        $this->model = new \app\admin\model\fzly\FinanceReportConfig;
+        $this->view->assign("isPublicList", $this->model->getIsPublicList());
         $this->view->assign("statusList", $this->model->getStatusList());
     }
 
