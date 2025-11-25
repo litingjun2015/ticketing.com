@@ -13,15 +13,15 @@ class Datasynclog extends Backend
 {
 
     /**
-     * Datasynclog模型对象
-     * @var \app\admin\model\fzly\Datasynclog
+     * DataSyncLog模型对象
+     * @var \app\admin\model\fzly\DataSyncLog
      */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = new \app\admin\model\fzly\Datasynclog;
+        $this->model = new \app\admin\model\fzly\DataSyncLog;
         $this->view->assign("statusList", $this->model->getStatusList());
     }
 

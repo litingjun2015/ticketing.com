@@ -5,7 +5,7 @@ namespace app\admin\model\fzly;
 use think\Model;
 
 
-class Datasynclog extends Model
+class DataSyncLog extends Model
 {
 
     

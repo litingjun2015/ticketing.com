@@ -4,7 +4,7 @@ namespace app\admin\validate\fzly;
 
 use think\Validate;
 
-class Datasynclog extends Validate
+class DataSyncLog extends Validate
 {
     /**
      * 验证规则

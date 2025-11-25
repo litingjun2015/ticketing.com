@@ -2,141 +2,159 @@
 
 namespace app\admin\controller\fzly;
 
-use app\admin\model\Admin;
-use app\admin\model\User;
 use app\common\controller\Backend;
-use app\common\model\Attachment;
-use app\common\model\fzly\admission\Admission;
-use app\common\model\fzly\content\Content;
-use app\common\model\fzly\order\Order;
-use app\common\model\fzly\trends\Trends;
-use app\common\model\fzly\user\Detail;
-use app\common\model\fzly\user\guide\Product;
-use fast\Date;
 use think\Db;
+use fast\Date;
 
 /**
- * 控制台
+ * 景区数据大屏
  *
- * @icon   fa fa-dashboard
- * @remark 用于展示当前系统中的统计数据、统计报表及重要实时数据
+ * @icon fa fa-dashboard
  */
 class Dashboard extends Backend
 {
-
     /**
-     * 查看
+     * 查看数据大屏
      */
     public function index()
     {
-        try {
-            \think\Db::execute("SET @@sql_mode='';");
-        } catch (\Exception $e) {
+        // 获取今日数据
+        $todayData = $this->getTodayDashboardData();
 
-        }
-        $column = [];
-        $starttime = Date::unixtime('day', -6);
-        $endtime = Date::unixtime('day', 0, 'end');
-        $joinlist = Db::name('fzly_order')->where('createtime', 'between time', [$starttime, $endtime])
-            ->where('status', 'in', [2, 3])
-            ->field('createtime, status, COUNT(*) AS nums, DATE_FORMAT(FROM_UNIXTIME(createtime), "%Y-%m-%d") AS join_date')
-            ->group('join_date')
-            ->select();
-        for ($time = $starttime; $time <= $endtime;) {
-            $column[] = date("m-d", $time);
-            $time += 86400;
-        }
-        $orderlist = array_fill_keys($column, 0);
-        foreach ($joinlist as $k => $v) {
-            $orderlist[$v['join_date']] = $v['nums'];
-        }
+        // 获取今日时段数据（用于图表）
+        $hourlyData = $this->getHourlyData();
 
-
-        $joinlist = Db("user")->where('jointime', 'between time', [$starttime, $endtime])
-            ->field('jointime, status, COUNT(*) AS nums, DATE_FORMAT(FROM_UNIXTIME(jointime), "%Y-%m-%d") AS join_date')
-            ->group('join_date')
-            ->select();
-        for ($time = $starttime; $time <= $endtime;) {
-            $column[] = date("m-d", $time);
-            $time += 86400;
-        }
-        $userlist = array_fill_keys($column, 0);
-        foreach ($joinlist as $k => $v) {
-            $userlist[$v['join_date']] = $v['nums'];
-        }
-
-
-
-
-
-        //获取门票、攻略、游记、美食、导游产品的访问量
-        $z21 = [
-            ['name'=>"门票",'value'=>Admission::sum('view_nums')],
-            ['name'=>"攻略",'value'=>Content::where(['type'=>1])->sum('view_nums')],
-            ['name'=>"游记",'value'=>Content::where(['type'=>2])->sum('view_nums')],
-            ['name'=>"美食",'value'=>Content::where(['type'=>3])->sum('view_nums')],
-            ['name'=>"导游产品",'value'=>Product::sum('view_nums')],
-        ];
-
-        //门票销量排行
-        $mp_o = Order::whereIn('status',[2,3])->where("order_type",1)->field('goods_id,count(*) as nums,sum(order_amount_total) as pp')->order('nums','desc')->group('goods_id')->limit(5)->select()
-        ->each(function ($tem){
-            $ad = Admission::get($tem['goods_id']);
-            if ($ad){
-                $tem->title = $ad['title'];
-            }else{
-                $tem->title = "门票已删除";
-            }
-        });
-        //导游产品销量排行
-        $mp_pro = Order::whereIn('status',[2,3])->where("order_type",2)->field('goods_id,count(*) as nums,sum(order_amount_total) as pp')->order('nums','desc')->group('goods_id')->limit(5)->select()
-            ->each(function ($tem){
-                $ad = Product::get($tem['goods_id']);
-                if ($ad){
-                    $tem->title = $ad['title'];
-                }else{
-                    $tem->title = "产品已删除";
-                }
-            });
-
-
+        // 获取客源地分布
+        $sourceData = $this->getSourceAreaData();
 
         $this->view->assign([
-            'mp'         => Admission::count(),
-            'dy'        => Detail::where(["is_dy"=>1])->count(),
-            'cp'        => Product::count(),
-            'user'     => User::count(),
-            'j_gl'     => Content::where(['type'=>1,"status"=>3])->whereTime('createtime','d')->count(),
-            'z_gl'     => Content::where(['type'=>1,"status"=>3])->whereTime('createtime','yesterday')->count(),
-            'j_yj'     => Content::where(['type'=>2,"status"=>3])->whereTime('createtime','d')->count(),
-            'z_yj'     => Content::where(['type'=>2,"status"=>3])->whereTime('createtime','yesterday')->count(),
-            'j_dt'     => Trends::where(["status"=>3])->whereTime('createtime','d')->count(),
-            'z_dt'     => Trends::where(["status"=>3])->whereTime('createtime','yesterday')->count(),
-            'j_dd'     => Order::whereIn('status',[2,3])->whereTime('createtime','d')->count(),
-            'j_user'     => User::whereTime('createtime','d')->count(),
-            'j_daoy'     => Detail::where(["is_dy"=>1])->whereTime('createtime','d')->count(),
-            'mp_list'=>Admission::order('view_nums desc')->field('id,title,view_nums')->limit(5)->select(),
-            'mp_xl'  =>$mp_o,
-            'dy_list'  =>Detail::where(["is_dy"=>1])->order('fs_s desc')->field('id,user_id,fs_s')->limit(5)->select()
-                        ->each(function ($tem){
-                            $user = User::get($tem['user_id']);
-                            if ($user){
-                                $tem->user_name = $user['username'];
-                            }else{
-                                $tem->user_name = "用户已删除";
-                            }
-                        }),
-            "mp_pro"=>$mp_pro,
+            'today' => date('Y-m-d'),
+            'todayData' => $todayData,
+            'hourlyData' => $hourlyData,
+            'sourceData' => $sourceData
         ]);
 
-        $this->assignconfig('column', array_keys($orderlist));
-        $this->assignconfig('orderdata', array_values($orderlist));
-        $this->assignconfig('column1', array_keys($userlist));
-        $this->assignconfig('userdata2', array_values($userlist));
-        $this->assignconfig('z21', ['门票', '攻略', '游记', '美食', '导游产品']);
-        $this->assignconfig('z22', $z21);
-
-        return $this->view->fetch();
+        return $this->view->fetch('dashboard');
     }
 
+    /**
+     * 获取今日大屏核心数据
+     */
+    private function getTodayDashboardData()
+    {
+        $today = date('Y-m-d');
+        $now = date('Y-m-d H:i:s');
+
+        // 今日总入场人数统计
+        $entryData = Db::name('fzly_visitor_report')
+            ->where('date', 'between time', [$today . ' 00:00:00', $now])
+            ->field('SUM(entry_num) as total_entry, 
+                    SUM(staff_entry) as staff, 
+                    SUM(onsite_ticket) as onsite, 
+                    SUM(ota_ticket) as ota, 
+                    SUM(official_ticket) as official')
+            ->find();
+
+        // 今日总出场人数
+        $exitNum = Db::name('fzly_visitor_report')
+            ->where('date', 'between time', [$today . ' 00:00:00', $now])
+            ->sum('exit_num');
+
+        // 当前在场人数（取最新记录）
+        $lastRecord = Db::name('fzly_visitor_report')
+            ->where('date', 'between time', [$today . ' 00:00:00', $now])
+            ->order('date', 'desc')
+            ->find();
+        $currentNum = $lastRecord ? $lastRecord['current_num'] : 0;
+
+        // 承载量信息（取今日最新设置）
+        $capacity = Db::name('fzly_visitor_report')
+            ->where('date', 'between time', [$today . ' 00:00:00', $now])
+            ->order('date', 'desc')
+            ->field('max_capacity, instant_max_capacity')
+            ->find();
+
+        return [
+            'total_entry' => $entryData['total_entry'] ?? 0,
+            'staff_entry' => $entryData['staff'] ?? 0,
+            'onsite_ticket' => $entryData['onsite'] ?? 0,
+            'ota_ticket' => $entryData['ota'] ?? 0,
+            'official_ticket' => $entryData['official'] ?? 0,
+            'exit_num' => $exitNum ?? 0,
+            'current_num' => $currentNum,
+            'max_capacity' => $capacity['max_capacity'] ?? 0,
+            'instant_max_capacity' => $capacity['instant_max_capacity'] ?? 0,
+            'capacity_usage' => $capacity['max_capacity'] ?
+                round(($entryData['total_entry'] / $capacity['max_capacity']) * 100, 2) : 0
+        ];
+    }
+
+    /**
+     * 获取今日时段数据
+     */
+    private function getHourlyData()
+    {
+        $today = date('Y-m-d');
+        $hours = [];
+        $data = [];
+
+        // 生成今日小时数组
+        for ($i = 0; $i < 24; $i++) {
+            $hours[] = str_pad($i, 2, '0', STR_PAD_LEFT) . ':00';
+        }
+
+        // 正确示例：使用非保留字作为别名
+        $hourlyData = Db::name('fzly_visitor_report')
+            ->field("HOUR(date) as hour, SUM(entry_num) as entry_total, SUM(exit_num) as exit_total")
+            ->where('date', 'like', '2025-11-25%')
+            ->group('hour')
+            ->select();
+
+        // 初始化数据数组
+        foreach ($hours as $hour) {
+            $data['time'][] = $hour;
+            $data['entry'][] = 0;
+            $data['exit'][] = 0;
+        }
+
+        // 填充数据
+        foreach ($hourlyData as $item) {
+            $index = (int)$item['hour'];
+            $data['entry'][$index] = $item['entry_total'];
+            $data['exit'][$index] = $item['exit_total'];
+        }
+
+        return $data;
+    }
+
+    /**
+     * 获取客源地分布数据
+     */
+    private function getSourceAreaData()
+    {
+        $today = date('Y-m-d');
+        $sourceData = [
+            'area' => [],
+            'num' => []
+        ];
+
+        // 获取今日最新客源地数据
+        $lastRecord = Db::name('fzly_visitor_report')
+            ->where('date', 'like', $today . '%')
+            ->where('source_area', '<>', '')
+            ->order('date', 'desc')
+            ->find();
+
+        if ($lastRecord && !empty($lastRecord['source_area'])) {
+            $areas = json_decode($lastRecord['source_area'], true);
+            if (is_array($areas)) {
+                foreach ($areas as $area => $num) {
+                    $sourceData['area'][] = $area;
+                    $sourceData['num'][] = $num;
+                }
+            }
+        }
+
+        return $sourceData;
+    }
 }
