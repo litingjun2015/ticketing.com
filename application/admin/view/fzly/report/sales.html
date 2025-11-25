@@ -142,6 +142,24 @@
             var tbody = $('#report-table tbody');
             tbody.empty();
 
+            // 根据报表类型动态设置日期列表头
+            var type = $('#type').val(); // 获取当前选中的报表类型
+            var dateHeaderText = '';
+            switch(type) {
+                case 'week': // 假设type为'week'时，date是周
+                    dateHeaderText = '{:__('sales.week')}'; // 需在语言包中定义“周”
+                    break;
+                case 'month': // 假设type为'month'时，date是月
+                    dateHeaderText = '{:__('sales.month')}'; // 需在语言包中定义“月”
+                    break;
+                case 'year': // 假设type为'year'时，date是年
+                    dateHeaderText = '{:__('sales.year')}'; // 需在语言包中定义“年”
+                    break;
+                default:
+                    dateHeaderText = '{:__('sales.date')}'; // 默认“日期”
+            }
+            $('#report-table thead th:first').text(dateHeaderText); // 更新表头
+
             if (data.length == 0) {
                 tbody.append('<tr><td colspan="8" class="text-center">{:__('No data')}</td></tr>');
                 return;
@@ -151,7 +169,7 @@
 
             $.each(data, function (i, item) {
                 var tr = '<tr>' +
-                    '<td>' + item.date + '</td>' +
+                    '<td>' + item.date + '</td>' + // 直接显示周/月/年格式（如2024-W01、2024-01、2024）
                     '<td>' + item.product_name + '</td>' +
                     '<td>' + (channelMap[item.channel] || item.channel) + '</td>' +
                     '<td>' + item.sales_num + '</td>' +
