@@ -102,15 +102,23 @@ class Report extends Backend
         $end_date = $this->request->param('end_date', date('Y-m-d'));
         $device_type = $this->request->param('device_type', 'all');
 
+        $statusList = [
+            'online' => __('Online'),
+            'offline' => __('Offline'),
+            'fault' => __('Fault'),
+            // 其他设备状态...
+        ];
+
         $this->view->assign([
             'type' => $type,
             'start_date' => $start_date,
             'end_date' => $end_date,
             'device_type' => $device_type,
-            'deviceTypeList' => $this->getDeviceTypeList()
+            'deviceTypeList' => $this->getDeviceTypeList(),
+            'statusList' => $statusList // 新增这一行
         ]);
 
-        return $this->view->fetch();
+        return $this->view->fetch('fzly/devicereport/index');
     }
 
     /**
