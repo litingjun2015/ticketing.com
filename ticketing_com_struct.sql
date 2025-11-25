@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 25/11/2025 10:45:23
+ Date: 25/11/2025 13:15:49
 */
 
 SET NAMES utf8mb4;
@@ -1748,7 +1748,7 @@ CREATE TABLE `fa_fzly_visitor_report`  (
   `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_date`(`date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '客流报表数据表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 40004 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '客流报表数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_fzly_withdraw_log
