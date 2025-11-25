@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 25/11/2025 13:15:49
+ Date: 25/11/2025 14:49:35
 */
 
 SET NAMES utf8mb4;
@@ -57,7 +57,7 @@ CREATE TABLE `fa_admin_log`  (
   `createtime` bigint(16) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `name`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 198 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 206 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_area
@@ -160,7 +160,7 @@ CREATE TABLE `fa_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 560 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '节点表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 569 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '节点表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_category
@@ -687,6 +687,31 @@ CREATE TABLE `fa_fzly_feedback`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '意见反馈表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for fa_fzly_finance_reconciliation
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_finance_reconciliation`;
+CREATE TABLE `fa_fzly_finance_reconciliation`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `reconciliation_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '对账编号',
+  `start_date` date NOT NULL COMMENT '对账开始日期',
+  `end_date` date NOT NULL COMMENT '对账结束日期',
+  `total_sales` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总销售额',
+  `total_cost` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总成本',
+  `total_profit` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总利润',
+  `reconciliation_status` enum('pending','completed','abnormal') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'pending' COMMENT '对账状态',
+  `reconciliation_time` bigint(16) NULL DEFAULT NULL COMMENT '对账时间',
+  `operator_id` int(10) NOT NULL COMMENT '操作人ID',
+  `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作人姓名',
+  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_reconciliation_no`(`reconciliation_no`) USING BTREE,
+  INDEX `idx_date_range`(`start_date`, `end_date`) USING BTREE,
+  INDEX `idx_status`(`reconciliation_status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '库存财务对账表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for fa_fzly_guide_money_log
 -- ----------------------------
 DROP TABLE IF EXISTS `fa_fzly_guide_money_log`;
@@ -953,6 +978,27 @@ CREATE TABLE `fa_fzly_product_category`  (
   INDEX `parent_id`(`parent_id`) USING BTREE,
   INDEX `status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品分类表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_profit_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_profit_detail`;
+CREATE TABLE `fa_fzly_profit_detail`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `reconciliation_id` int(10) NOT NULL COMMENT '对账ID',
+  `product_id` int(10) NOT NULL COMMENT '产品ID',
+  `product_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '产品名称',
+  `sales_num` int(10) NOT NULL DEFAULT 0 COMMENT '销售数量',
+  `sales_amount` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '销售金额',
+  `cost_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '成本单价',
+  `total_cost` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总成本',
+  `profit` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '利润',
+  `profit_rate` decimal(5, 2) NOT NULL DEFAULT 0.00 COMMENT '利润率(%)',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_reconciliation_id`(`reconciliation_id`) USING BTREE,
+  INDEX `idx_product_id`(`product_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '利润核算明细表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_fzly_promotion
@@ -1496,6 +1542,28 @@ CREATE TABLE `fa_fzly_stock_time_slot`  (
   UNIQUE INDEX `uniq_stock_time_slot`(`stock_id`, `time_slot`) USING BTREE,
   INDEX `idx_date_time_slot`(`date`, `time_slot`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '分时库存表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_stock_valuation
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_stock_valuation`;
+CREATE TABLE `fa_fzly_stock_valuation`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `valuation_date` date NOT NULL COMMENT '评估日期',
+  `product_id` int(10) NOT NULL COMMENT '产品ID',
+  `product_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '产品名称',
+  `stock_quantity` int(10) NOT NULL DEFAULT 0 COMMENT '库存数量',
+  `cost_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '成本单价',
+  `total_value` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '库存总价值',
+  `valuation_status` enum('normal','warning','expired') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'normal' COMMENT '评估状态',
+  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_valuation_date`(`valuation_date`) USING BTREE,
+  INDEX `idx_product_id`(`product_id`) USING BTREE,
+  INDEX `idx_status`(`valuation_status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '库存价值评估表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_fzly_stock_visual

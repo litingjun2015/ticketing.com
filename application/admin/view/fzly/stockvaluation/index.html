@@ -1,0 +1,92 @@
+{extend name="common/base" /}
+{block name="content"}
+
+<div class="panel panel-default panel-intro">
+    <div class="panel-heading">
+        {:build_heading(null, FALSE)}
+        <div class="panel-lead">
+            <em>{:__('Stock valuation management')}</em>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="toolbar" style="margin-bottom: 10px;">
+                    {:build_toolbar('refresh,add,del')}
+                    <a href="{:url('evaluate')}" class="btn btn-success btn-add {:$auth->check('fzly/stockvaluation/evaluate') ? '' : 'hide'}">
+                        <i class="fa fa-calculator"></i> {:__('Generate valuation')}
+                    </a>
+                </div>
+                <form id="search-form" class="form-inline" role="form" method="get" action="">
+                    <div class="form-group">
+                        <label class="control-label">{:__('Valuation date')}</label>
+                        <input type="date" class="form-control" name="valuation_date" value="{$Think.get.valuation_date|htmlentities}" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">{:__('Product name')}</label>
+                        <input type="text" class="form-control" name="product_name" value="{$Think.get.product_name|htmlentities}" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">{:__('Status')}</label>
+                        {:build_select('valuation_status', $valuationStatusList, $Think.get.valuation_status, ['class' => 'form-control selectpicker'])}
+                    </div>
+                    <button type="submit" class="btn btn-primary">{:__('Search')}</button>
+                    <button type="reset" class="btn btn-default">{:__('Reset')}</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered table-nowrap">
+                <thead>
+                <tr>
+                    <th class="ids">{:__('Ids')}</th>
+                    <th>{:__('Valuation date')}</th>
+                    <th>{:__('Product name')}</th>
+                    <th>{:__('Stock quantity')}</th>
+                    <th>{:__('Cost price')}</th>
+                    <th>{:__('Total value')}</th>
+                    <th>{:__('Valuation status')}</th>
+                    <th>{:__('Notes')}</th>
+                    <th class="operate">{:__('Operate')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach name="list" item="vo"}
+                <tr>
+                    <td class="ids">
+                        <input type="checkbox" name="ids[]" value="{$vo.id}" />
+                    </td>
+                    <td>{$vo.valuation_date}</td>
+                    <td>{$vo.product_name}</td>
+                    <td>{$vo.stock_quantity}</td>
+                    <td>{$vo.cost_price}</td>
+                    <td>{$vo.total_value}</td>
+                    <td>{$vo.valuation_status_text}</td>
+                    <td>{$vo.notes}</td>
+                    <td class="operate">
+                        <a href="{:url('edit', ['ids' => $vo.id])}" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>
+                        <a href="{:url('export')}" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-danger btn-delone" data-url="{:url('del', ['ids' => $vo.id])}"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                {/foreach}
+                {empty name="list"}
+                <tr>
+                    <td colspan="9" class="text-center">{:__('No data')}</td>
+                </tr>
+                {/empty}
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="pagination-panel">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
