@@ -41,22 +41,6 @@ export function profile(data) {
 		data
 	})
 }
-// 获取短信验证码
-export function send(data) {
-	return request({
-		url: 'addons/fzly/sms/send',
-		method: 'POST',
-		data
-	})
-}
-// 检测/登录短信验证码
-export function check(data) {
-	return request({
-		url: 'addons/fzly/sms/check',
-		method: 'POST',
-		data
-	})
-}
 // 获取城市列表
 export function area(data) {
 	return request({

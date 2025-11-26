@@ -2,22 +2,8 @@
 	<view class="content font_family" :style="{backgroundImage:`url(${projectUrl}assets/addons/fzly/img/bb.png)`}">
 		<view class="mask" :style="{paddingTop:menuButtonInfo+'px'}">
 			<image class="close" src="../../static/public/close2.png" mode="" @click="go_index"></image>
-			<!-- <view class="">
-				<image class="img_text" src="../../static/public/login_text.png" mode=""></image>
-			</view> -->
 			<!-- 登录框 -->
 			<view class="login_box f_d f_j">
-				<view class="item f_j f_z_b">
-					<u--input placeholder="请输入手机号" fontSize='35rpx' border="none" v-model="query.mobile"></u--input>
-					<view class="right f_zj" @click="getCode">
-						<view class="">
-							{{code_tip}}
-						</view>
-					</view>
-				</view>
-				<view class="item f_j f_z_b">
-					<u--input placeholder="请输入验证码" fontSize='35rpx' border="none" v-model="query.captcha"></u--input>
-				</view>
 				<!-- 条款 -->
 				<view class="read f">
 					<image @click="check" v-if="read_check" class="icon" src="../../static/public/read.png" mode="">
@@ -27,45 +13,25 @@
 						<text @click="check">我已阅读并同意</text>
 						<text class="text" @click="go('/pagesA/public/public?title=用户协议')">《用户协议》</text>
 						<text class="text" @click="go('/pagesA/public/public?title=隐私政策')">《隐私政策》</text>
-						<text class="text" @click="go('/pagesA/public/public?title=中国电信认证服务条款')">《中国电信认证服务条款》</text>
 					</view>
 				</view>
-				<view class="login_btn f_zj" @click="mobile_login">
-					登录
-				</view>
-				<view class="other f_d f_j">
-					<view class="f_j">
-						<view class="line">
-
-						</view>
-						<view class="">
-							其他登陆方式
-						</view>
-						<view class="line">
-
-						</view>
-					</view>
-					<!-- #ifdef MP-WEIXIN -->
-					<button open-type="getPhoneNumber" @getphonenumber="wxlogin">
-						<image class="icon" src="../../static/public/login_icon.png" mode=""></image>
-					</button>
-					<!-- #endif -->
-					<!-- #ifdef H5 -->
-					<button @click="gzh_login">
-						<image class="icon" src="../../static/public/login_icon.png" mode=""></image>
-					</button>
-					<!-- #endif -->
-				</view>
+				<!-- #ifdef MP-WEIXIN -->
+				<button class="login_btn f_zj" open-type="getPhoneNumber" @getphonenumber="wxlogin">
+					微信一键登录
+				</button>
+				<!-- #endif -->
+				<!-- #ifdef H5 -->
+				<button class="login_btn f_zj" @click="gzh_login">
+					微信授权登录
+				</button>
+				<!-- #endif -->
 			</view>
 		</view>
-		<u-code :seconds="seconds" changeText='xs后重新获取' keepRunning @end="end" @start="start" ref="uCode"
-			@change="codeChange"></u-code>
 		<u-toast ref="uToast"></u-toast>
 	</view>
 </template>
 
 <script>
-	import { send } from '@/api/public.js'
 	import { mapState, mapActions } from 'vuex'
 	export default {
 		computed: {
@@ -73,15 +39,7 @@
 		},
 		data() {
 			return {
-				seconds: 60,
-				query: {
-					mobile: '',
-					captcha: '',
-					event: 'register',
-					code: ''
-				},
 				read_check: false,
-				code_tip: '',
 				projectUrl: ''
 			}
 		},
@@ -89,7 +47,7 @@
 			this.projectUrl = this.$projectUrl
 		},
 		methods: {
-			...mapActions(['loging', 'mobile_loging']),
+			...mapActions(['loging']),
 			go_index() {
 				uni.switchTab({
 					url: '/pages/index/index'
@@ -103,46 +61,9 @@
 			check() {
 				this.read_check = !this.read_check
 			},
-			codeChange(text) {
-				this.code_tip = text;
-			},
-			getCode() {
-				// 判断手机号格式
-				if (!uni.$u.test.mobile(this.query.mobile)) {
-					uni.$u.toast('请输入正确的手机号');
-					return
-				}
-				if (this.$refs.uCode.canGetCode) {
-					// 向后端请求验证码
-					uni.showLoading({
-						title: '正在获取验证码'
-					})
-					send({ mobile: this.query.mobile }).then(res => {
-						uni.hideLoading();
-						if (res.code == 1) {
-							// 这里此提示会被this.start()方法中的提示覆盖
-							uni.$u.toast('验证码已发送');
-							// 通知验证码组件内部开始倒计时
-							this.$refs.uCode.start();
-						} else {
-							uni.$u.toast(res.msg);
-						}
-
-						console.log(res)
-					})
-				} else {
-					uni.$u.toast('倒计时结束后再发送');
-				}
-			},
-			end() {
-				// uni.$u.toast('倒计时结束');
-			},
-			start() {
-				uni.$u.toast('已发送');
-			},
 			// 微信登录回调
 			wxlogin(e) {
-				// console.log(e)
+				console.log('微信登录回调', e)
 				if (!this.read_check) {
 					this.$refs.uToast.show({
 						type: 'error',
@@ -151,6 +72,7 @@
 					return
 				}
 				if (e.detail.errMsg === 'getPhoneNumber:ok') {
+					uni.showLoading({ title: '登录中...' })
 					// 授权成功,获取code
 					let obj = {
 						iv: encodeURIComponent(e.detail.iv),
@@ -159,57 +81,29 @@
 					}
 					uni.login({
 						success: (res) => {
-							console.log(res)
+							console.log('uni.login成功', res)
 							if (res.errMsg === 'login:ok') {
 								obj.code = res.code
-								// console.log(obj)
+								console.log('登录参数', obj)
 								this.loging(obj)
 							}
+						},
+						fail: (err) => {
+							uni.hideLoading()
+							console.log('uni.login失败', err)
+							this.$refs.uToast.show({
+								type: 'error',
+								message: '登录失败，请重试'
+							})
 						}
 					})
-				}
-			},
-			// 手机号登录
-			mobile_login() {
-				if (!this.read_check) {
+				} else {
+					console.log('用户拒绝授权手机号', e.detail.errMsg)
 					this.$refs.uToast.show({
 						type: 'error',
-						message: '请先勾选用户须知'
+						message: '需要授权手机号才能登录'
 					})
-					return
 				}
-				// 判断非空
-				if (!this.query.mobile) {
-					this.$refs.uToast.show({
-						message: '请输入手机号'
-					})
-					return
-				} else {
-					if (!uni.$u.test.mobile(this.query.mobile)) {
-						this.$refs.uToast.show({
-							message: '请输入正确的手机号'
-						})
-						return
-					}
-				}
-				if (!this.query.captcha) {
-					this.$refs.uToast.show({
-						message: '请输入验证码'
-					})
-					return
-				}
-				uni.login({
-					success: (res) => {
-						// console.log(res)
-						this.query.code = res.code
-						this.mobile_loging(this.query)
-					},
-					fail: (res) => {
-						this.$refs.uToast.show({
-							message: '登录失败，请重试'
-						})
-					}
-				})
 			},
 			// 公众号登录
 			gzh_login() {
