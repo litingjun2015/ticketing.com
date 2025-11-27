@@ -35,7 +35,7 @@
                 <label class="layui-form-label required">节假日日期</label>
                 <div class="layui-input-block">
                     <input type="text" name="holiday_dates"
-                           value="{$priceRule.holiday_dates|default=''}"
+                           value="{$priceRule.holiday_dates|is_array ? implode(',', $priceRule.holiday_dates) : ($priceRule.holiday_dates ?? '')}"
                            class="layui-input"
                            placeholder="请输入节假日日期（格式：2024-06-01,2024-06-02）">
                     <p class="layui-form-mid layui-word-aux">多个日期用逗号分隔</p>
