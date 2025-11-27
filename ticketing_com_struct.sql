@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 25/11/2025 14:49:35
+ Date: 27/11/2025 14:31:55
 */
 
 SET NAMES utf8mb4;
@@ -57,7 +57,7 @@ CREATE TABLE `fa_admin_log`  (
   `createtime` bigint(16) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `name`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 206 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 247 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_area
@@ -104,7 +104,7 @@ CREATE TABLE `fa_attachment`  (
   `storage` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'local' COMMENT '存储位置',
   `sha1` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '文件 sha1编码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '附件表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '附件表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_auth_group
@@ -160,7 +160,7 @@ CREATE TABLE `fa_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 569 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '节点表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 653 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '节点表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_category
@@ -518,6 +518,27 @@ CREATE TABLE `fa_fzly_custom_report`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '自定义报表配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for fa_fzly_data_change_log
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_data_change_log`;
+CREATE TABLE `fa_fzly_data_change_log`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员ID',
+  `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '管理员用户名',
+  `table_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据表名',
+  `table_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '数据ID',
+  `action` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作：add-新增，edit-编辑，del-删除',
+  `old_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '旧数据',
+  `new_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '新数据',
+  `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作IP',
+  `createtime` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_table`(`table_name`, `table_id`) USING BTREE,
+  INDEX `idx_admin_id`(`admin_id`) USING BTREE,
+  INDEX `idx_createtime`(`createtime`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据变更日志表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for fa_fzly_data_sync_log
 -- ----------------------------
 DROP TABLE IF EXISTS `fa_fzly_data_sync_log`;
@@ -687,29 +708,170 @@ CREATE TABLE `fa_fzly_feedback`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '意见反馈表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for fa_fzly_finance_expense
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_finance_expense`;
+CREATE TABLE `fa_fzly_finance_expense`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `date` date NOT NULL COMMENT '日期',
+  `expense_type` enum('purchase','ota_commission','equipment_maintenance','salary','other') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '支出类型',
+  `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '支出金额',
+  `voucher_id` int(10) NULL DEFAULT NULL COMMENT '关联凭证ID',
+  `supplier` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商',
+  `status` enum('pending','confirmed','canceled') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'confirmed' COMMENT '状态',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_date`(`date`) USING BTREE,
+  INDEX `idx_type`(`expense_type`) USING BTREE,
+  INDEX `idx_voucher`(`voucher_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '支出记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_finance_fee
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_finance_fee`;
+CREATE TABLE `fa_fzly_finance_fee`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `date` date NOT NULL COMMENT '日期',
+  `payment_channel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '支付渠道',
+  `order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
+  `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '订单金额',
+  `fee_rate` decimal(5, 2) NULL DEFAULT 0.00 COMMENT '手续费率(%)',
+  `fee_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '手续费金额',
+  `status` enum('pending','confirmed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'confirmed' COMMENT '状态',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_date`(`date`) USING BTREE,
+  INDEX `idx_channel`(`payment_channel`) USING BTREE,
+  INDEX `idx_order`(`order_no`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '手续费记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_finance_income
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_finance_income`;
+CREATE TABLE `fa_fzly_finance_income`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `date` date NOT NULL COMMENT '日期',
+  `income_type` enum('ticket','product','food','timed_service','parking') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '收入类型',
+  `channel` enum('offline','ota','mini_program','official','other') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '渠道',
+  `order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
+  `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '收入金额',
+  `status` enum('pending','confirmed','refunded') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'confirmed' COMMENT '状态',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_date`(`date`) USING BTREE,
+  INDEX `idx_type`(`income_type`) USING BTREE,
+  INDEX `idx_channel`(`channel`) USING BTREE,
+  INDEX `idx_order`(`order_no`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收入记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_finance_profit
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_finance_profit`;
+CREATE TABLE `fa_fzly_finance_profit`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `period_type` enum('daily','monthly','yearly') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '周期类型',
+  `period` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '周期值(如2023-10, 2023)',
+  `total_income` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总收入',
+  `total_expense` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总支出',
+  `gross_profit` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '毛利润',
+  `net_profit` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '净利润',
+  `profit_rate` decimal(5, 2) NULL DEFAULT 0.00 COMMENT '利润率(%)',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_period`(`period_type`, `period`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '利润核算表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for fa_fzly_finance_reconciliation
 -- ----------------------------
 DROP TABLE IF EXISTS `fa_fzly_finance_reconciliation`;
 CREATE TABLE `fa_fzly_finance_reconciliation`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `reconciliation_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '对账编号',
-  `start_date` date NOT NULL COMMENT '对账开始日期',
-  `end_date` date NOT NULL COMMENT '对账结束日期',
-  `total_sales` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总销售额',
-  `total_cost` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总成本',
-  `total_profit` decimal(12, 2) NOT NULL DEFAULT 0.00 COMMENT '总利润',
-  `reconciliation_status` enum('pending','completed','abnormal') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'pending' COMMENT '对账状态',
-  `reconciliation_time` bigint(16) NULL DEFAULT NULL COMMENT '对账时间',
-  `operator_id` int(10) NOT NULL COMMENT '操作人ID',
-  `operator_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作人姓名',
-  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
+  `reconciliation_type` enum('ota','supplier','bank') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '对账类型',
+  `partner` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '合作方',
+  `start_date` date NOT NULL COMMENT '开始日期',
+  `end_date` date NOT NULL COMMENT '结束日期',
+  `system_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '系统金额',
+  `partner_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '合作方金额',
+  `difference` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '差额',
+  `status` enum('pending','reconciling','completed','abnormal') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'pending' COMMENT '状态',
+  `file_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '对账单文件路径',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
   `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_reconciliation_no`(`reconciliation_no`) USING BTREE,
-  INDEX `idx_date_range`(`start_date`, `end_date`) USING BTREE,
-  INDEX `idx_status`(`reconciliation_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '库存财务对账表' ROW_FORMAT = Dynamic;
+  INDEX `idx_type`(`reconciliation_type`) USING BTREE,
+  INDEX `idx_partner`(`partner`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '对账单表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_finance_reconciliation_diff
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_finance_reconciliation_diff`;
+CREATE TABLE `fa_fzly_finance_reconciliation_diff`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `reconciliation_id` int(10) NOT NULL COMMENT '对账单ID',
+  `order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
+  `system_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '系统金额',
+  `partner_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '合作方金额',
+  `difference` decimal(10, 2) NULL DEFAULT NULL COMMENT '差额',
+  `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '差异原因',
+  `status` enum('unhandled','handled') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'unhandled' COMMENT '状态',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_reconciliation`(`reconciliation_id`) USING BTREE,
+  INDEX `idx_order`(`order_no`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '对账单差异表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_finance_report_config
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_finance_report_config`;
+CREATE TABLE `fa_fzly_finance_report_config`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `report_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '报表类型',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '报表标题',
+  `fields` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '报表字段(JSON)',
+  `filters` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '筛选条件(JSON)',
+  `sort` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '排序规则(JSON)',
+  `user_id` int(10) NOT NULL COMMENT '创建用户',
+  `is_public` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否公开:0=否,1=是',
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态:0=禁用,1=启用',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_type`(`report_type`) USING BTREE,
+  INDEX `idx_user`(`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '财务报表配置表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_finance_voucher
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_finance_voucher`;
+CREATE TABLE `fa_fzly_finance_voucher`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `voucher_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '凭证编号',
+  `voucher_type` enum('invoice','receipt','contract') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '凭证类型',
+  `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '凭证金额',
+  `file_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '凭证文件路径',
+  `status` enum('valid','invalid') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'valid' COMMENT '状态',
+  `createtime` bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_voucher_no`(`voucher_no`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '财务凭证表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_fzly_guide_money_log
@@ -819,6 +981,27 @@ CREATE TABLE `fa_fzly_house_brand`  (
   `updatetime` bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '酒店品牌表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_login_log
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_login_log`;
+CREATE TABLE `fa_fzly_login_log`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员ID',
+  `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '管理员用户名',
+  `login_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '登录类型：1-正常登录，2-退出登录，3-登录失败',
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态：1-成功，0-失败',
+  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录信息',
+  `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录IP',
+  `location` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'IP所在地',
+  `useragent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'User-Agent',
+  `logintime` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '登录时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_admin_id`(`admin_id`) USING BTREE,
+  INDEX `idx_logintime`(`logintime`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_fzly_message_log
@@ -1617,6 +1800,50 @@ CREATE TABLE `fa_fzly_supplier`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '供应商表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_system_maintenance
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_system_maintenance`;
+CREATE TABLE `fa_fzly_system_maintenance`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '维护标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '维护内容',
+  `maintenance_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '维护类型',
+  `start_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '开始时间',
+  `end_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '结束时间',
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '状态：0-未开始，1-进行中，2-已完成',
+  `operator_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作人ID',
+  `operator_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作人姓名',
+  `createtime` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `updatetime` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_status`(`status`) USING BTREE,
+  INDEX `idx_time`(`start_time`, `end_time`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统维护记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for fa_fzly_system_operation_log
+-- ----------------------------
+DROP TABLE IF EXISTS `fa_fzly_system_operation_log`;
+CREATE TABLE `fa_fzly_system_operation_log`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员ID',
+  `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '管理员用户名',
+  `operation_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作类型',
+  `operation_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '操作内容',
+  `module` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作模块',
+  `controller` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '控制器',
+  `action` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方法',
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作URL',
+  `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作IP',
+  `useragent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'User-Agent',
+  `createtime` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_admin_id`(`admin_id`) USING BTREE,
+  INDEX `idx_createtime`(`createtime`) USING BTREE,
+  INDEX `idx_operation_type`(`operation_type`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统操作日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for fa_fzly_trends
