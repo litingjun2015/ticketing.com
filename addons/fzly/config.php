@@ -16,7 +16,7 @@ return [
         'title' => '微信小程序appid',
         'type' => 'string',
         'content' => [],
-        'value' => '********',
+        'value' => 'wx6de4aa48e9a09cba',
         'rule' => 'required',
         'msg' => '',
         'tip' => '',
@@ -28,7 +28,7 @@ return [
         'title' => '微信小程序secret',
         'type' => 'string',
         'content' => [],
-        'value' => '********',
+        'value' => '88924ae491da97ae6c98b525d4a0699d',
         'rule' => 'required',
         'msg' => '',
         'tip' => '',
@@ -45,7 +45,7 @@ return [
         'rule' => '',
         'extend' => '',
     ],
-	[
+    [
         'type' => 'string',
         'name' => 'wechat_cert_serial_no',
         'title' => '证书序列号',

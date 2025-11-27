@@ -208,13 +208,20 @@ class Api
         $type = $type ? : $this->responseType;
 
         if (isset($header['statuscode'])) {
-            $code = $header['statuscode'];
+            $statuscode = $header['statuscode'];
             unset($header['statuscode']);
         } else {
             //未设置状态码,根据code值判断
-            $code = $code >= 1000 || $code < 200 ? 200 : $code;
+            $statuscode = $code >= 1000 || $code < 200 ? 200 : $code;
         }
-        $response = Response::create($result, $type, $code)->header($header);
+        $response = Response::create($result, $type, $statuscode)->header($header);
+        
+        // 成功时直接发送响应，不抛出异常
+        if ($code == 1) {
+            $response->send();
+            exit;
+        }
+        
         throw new HttpResponseException($response);
     }
 

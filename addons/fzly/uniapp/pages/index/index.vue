@@ -181,8 +181,10 @@
 			// #ifdef MP-WEIXIN
 			if (this.ws.SocketTask && this.ws.socketOpen && this.ws.pageHideCloseWs) {
 				console.log('微信小程序页面hide主动关闭链接')
+				if (this.ws.SocketTask) {
+					uni.closeSocket();
+				}
 			}
-			uni.closeSocket();
 			// #endif
 		},
 		onUnload() {

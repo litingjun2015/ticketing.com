@@ -37,7 +37,7 @@ use app\common\model\fzly\distribution\Share;
 class User extends Api
 {
 
-    protected $noNeedLogin = ['login','pact','getjssdk','loginWxOfficial','getjmlogin'];
+    protected $noNeedLogin = ['login','pact','getjssdk','loginWxOfficial','getjmlogin','userInfo'];
     protected $noNeedRight = ['*'];
     protected $config = [];
 
@@ -51,137 +51,145 @@ class User extends Api
      * 注册/登录
      */
     public function login(){
-        $encryptdata = $this->request->post('encryptedData','','trim');
-        $iv          = $this->request->post('iv');
-        $code        = $this->request->post('code');
-        $parent_id = $this->request->header("pid")??0;
-        if (!$code || !$encryptdata || !$iv) {
-            $this->error('请求数据不能为空');
-        }
-        $iv = urldecode($iv);
-        $encryptdata = urldecode($encryptdata);
-        //微信授权登录
-        $login = new Wxlogin('fzly');
-        $res   = $login->login($code,$encryptdata,$iv);
-        if (!$res["code"]){
-            $this->error($res['msg']);
-        }
-        $openId = $res['data']['openid'];
-        $mobile = $res['data']['mobile'];
-        //查询用户表是否存在此open_id,存在则登录,不存在则注册
-        $user = Detail::get(["openid"=>$openId]);
-        if ($user){
-            //登录
-            $u_info = U::get($user->user_id);
-            if ($u_info['status']!="normal"){
-                $this->error("用户状态不正确");
+        try {
+            Log::info("[login] 开始登录流程");
+            
+            $encryptdata = $this->request->post('encryptedData','','trim');
+            $iv          = $this->request->post('iv');
+            $code        = $this->request->post('code');
+            $parent_id = $this->request->header("pid")??0;
+            
+            Log::info("[login] 请求参数: code={$code}, iv长度=" . strlen($iv) . ", encryptdata长度=" . strlen($encryptdata) . ", parent_id={$parent_id}");
+            
+            if (!$code || !$encryptdata || !$iv) {
+                Log::error("[login] 请求数据不能为空");
+                $this->error('请求数据不能为空');
             }
-            $ret = $this->auth->direct($user->user_id);
-            if ($ret) {
-                $data = ['userinfo' => $this->auth->getUserinfo()];
-                //查询该用户是否有上级
-//                if ($user->parent_id == 0 && $parent_id){
-//                    $user->parent_id = $parent_id;
-//                    $user->yqtime = time();
-//                    $user->save();
-//                    //添加分享邀请信息
-//                    $pname = \app\common\model\User::where("id",$parent_id)->value("username");
-//                    Share::create([
-//                        "user_id"=>$user['id'],
-//                        "p_id"=>$parent_id,
-//                        "desc"=>$u_info['username']."在".date("Y-m-d H:i:s")."成为".$pname."下级",
-//                        "createtime"=>time(),
-//                    ]);
-//                }
-                $this->success("登录成功", $data);
-            } else {
-                $this->error($this->auth->getError());
+            $iv = urldecode($iv);
+            $encryptdata = urldecode($encryptdata);
+            
+            Log::info("[login] 开始微信授权登录");
+            //微信授权登录
+            $login = new Wxlogin('fzly');
+            $res   = $login->login($code,$encryptdata,$iv);
+            Log::info("[login] 微信登录返回: " . json_encode($res));
+            
+            if (!$res["code"]){
+                Log::error("[login] 微信登录失败: " . $res['msg']);
+                $this->error($res['msg']);
             }
-        }else{
-            //注册
-            $username   = "微信用户".chr(rand(65,90)).chr(rand(97,122)).chr(rand(65,90)).chr(rand(97,122)).substr($mobile,-4);
-            $password   = mt_rand(100000,999999);
-            //判断用户是否用手机号注册过 如果注册过 绑定微信号
-            $info = U::get(["mobile"=>$mobile]);
-            if ($info){
-                if ($info['status']!="normal"){
+            $openId = $res['data']['openid'];
+            $mobile = $res['data']['mobile'];
+            Log::info("[login] 获取到openId={$openId}, mobile={$mobile}");
+            
+            //查询用户表是否存在此open_id,存在则登录,不存在则注册
+            $user = Detail::get(["openid"=>$openId]);
+            Log::info("[login] 查询用户Detail: " . ($user ? "存在,user_id=" . $user->user_id : "不存在"));
+            
+            if ($user){
+                //登录
+                $u_info = U::get($user->user_id);
+                Log::info("[login] 查询用户信息: " . ($u_info ? "存在,status=" . $u_info['status'] : "不存在"));
+                
+                if (!$u_info || $u_info['status']!="normal"){
+                    Log::error("[login] 用户状态不正确");
                     $this->error("用户状态不正确");
                 }
-                //更新用户表中的openid
-                $detail_res = Detail::get(["user_id"=>$info->id]);
-                if ($detail_res){
-                    $update_data = [
-                        'openid'   => $openId,
-                        'updatetime'   => time(),
-                    ];
-//                    if ($detail_res->parent_id == 0 && $parent_id){
-//                        $update_data['parent_id'] = $parent_id;
-//                        $update_data['yqtime'] = time();
-//                        //添加分享邀请信息
-//                        $pname = \app\common\model\User::where("id",$parent_id)->value("username");
-//                        Share::create([
-//                            "user_id"=>$info['id'],
-//                            "p_id"=>$parent_id,
-//                            "desc"=>$info['username']."在".date("Y-m-d H:i:s")."成为".$pname."下级",
-//                            "createtime"=>time(),
-//                        ]);
-//                    }
-                    Detail::update(["openid"=>$openId],$update_data);
-                }else{
-                    Detail::create([
-                        'openid'   => $openId,
-                        'user_id'   => $info->id,
-                        'parent_id'   => $parent_id,
-                        'createtime'   => time(),
-                        'updatetime'   => time(),
-                    ]);
-//                    //添加分享邀请信息
-//                    $pname = \app\common\model\User::where("id",$parent_id)->value("username");
-//                    Share::create([
-//                        "user_id"=>$info['id'],
-//                        "p_id"=>$parent_id,
-//                        "desc"=>$info['username']."在".date("Y-m-d H:i:s")."通过".$pname."注册",
-//                        "createtime"=>time(),
-//                    ]);
-                }
-                $this->auth->direct($info->id);
-                $data = ['userinfo' => $this->auth->getUserinfo()];
-                $this->success("登录成功", $data);
-            }else{
-                $ret = $this->auth->register($username, $password, "", $mobile, []);
+                $ret = $this->auth->direct($user->user_id);
+                Log::info("[login] auth->direct结果: " . ($ret ? "成功" : "失败"));
+                
                 if ($ret) {
-                    $user = U::get($this->auth->id);
-                    $user->avatar = "/assets/img/avatar.png";
-                    $user->save();
-
-                    $detail = [
-                        'openid'   => $openId,
-                        'user_id'   => $user->id,
-                        'createtime'   => time(),
-                        'updatetime'   => time(),
-                    ];
-                    //查询该用户是否有上级
-                    if ($parent_id){
-                        $detail['parent_id'] = $parent_id;
-                        $detail['yqtime'] = time();
-                        //添加分享邀请信息
-                        $pname = \app\common\model\User::where("id",$parent_id)->value("username");
-                        Share::create([
-                            "user_id"=>$this->auth->id,
-                            "p_id"=>$parent_id,
-                            "desc"=>$username."在".date("Y-m-d H:i:s")."通过".$pname."注册",
-                            "createtime"=>time(),
-                        ]);
-                    }
-                    Detail::create($detail);
-
-
                     $data = ['userinfo' => $this->auth->getUserinfo()];
-                    $this->success(__('注册成功'), $data);
+                    Log::info("[login] 登录成功");
+                    $this->success("登录成功", $data);
                 } else {
+                    Log::error("[login] 登录失败: " . $this->auth->getError());
                     $this->error($this->auth->getError());
                 }
+            }else{
+                //注册
+                Log::info("[login] 用户不存在,开始注册流程");
+                $username   = "微信用户".chr(rand(65,90)).chr(rand(97,122)).chr(rand(65,90)).chr(rand(97,122)).substr($mobile,-4);
+                $password   = mt_rand(100000,999999);
+                
+                //判断用户是否用手机号注册过 如果注册过 绑定微信号
+                $info = U::get(["mobile"=>$mobile]);
+                Log::info("[login] 通过手机号查询用户: " . ($info ? "存在,id=" . $info->id : "不存在"));
+                
+                if ($info){
+                    if ($info['status']!="normal"){
+                        Log::error("[login] 用户状态不正确");
+                        $this->error("用户状态不正确");
+                    }
+                    //更新用户表中的openid
+                    $detail_res = Detail::get(["user_id"=>$info->id]);
+                    Log::info("[login] 查询用户Detail: " . ($detail_res ? "存在" : "不存在"));
+                    
+                    if ($detail_res){
+                        $update_data = [
+                            'openid'   => $openId,
+                            'updatetime'   => time(),
+                        ];
+                        Detail::update(["openid"=>$openId],$update_data);
+                        Log::info("[login] 更新Detail openid成功");
+                    }else{
+                        Detail::create([
+                            'openid'   => $openId,
+                            'user_id'   => $info->id,
+                            'parent_id'   => $parent_id,
+                            'createtime'   => time(),
+                            'updatetime'   => time(),
+                        ]);
+                        Log::info("[login] 创建Detail成功");
+                    }
+                    $this->auth->direct($info->id);
+                    $data = ['userinfo' => $this->auth->getUserinfo()];
+                    Log::info("[login] 绑定手机号用户登录成功");
+                    $this->success("登录成功", $data);
+                }else{
+                    Log::info("[login] 开始注册新用户: username={$username}");
+                    $ret = $this->auth->register($username, $password, "", $mobile, []);
+                    Log::info("[login] 注册结果: " . ($ret ? "成功" : "失败-" . $this->auth->getError()));
+                    
+                    if ($ret) {
+                        $user = U::get($this->auth->id);
+                        $user->avatar = "/assets/img/avatar.png";
+                        $user->save();
+
+                        $detail = [
+                            'openid'   => $openId,
+                            'user_id'   => $user->id,
+                            'createtime'   => time(),
+                            'updatetime'   => time(),
+                        ];
+                        //查询该用户是否有上级
+                        if ($parent_id){
+                            $detail['parent_id'] = $parent_id;
+                            $detail['yqtime'] = time();
+                            //添加分享邀请信息
+                            $pname = \app\common\model\User::where("id",$parent_id)->value("username");
+                            Share::create([
+                                "user_id"=>$this->auth->id,
+                                "p_id"=>$parent_id,
+                                "desc"=>$username."在".date("Y-m-d H:i:s")."通过".$pname."注册",
+                                "createtime"=>time(),
+                            ]);
+                        }
+                        Detail::create($detail);
+                        Log::info("[login] 注册成功,创建Detail完成");
+
+                        $data = ['userinfo' => $this->auth->getUserinfo()];
+                        $this->success(__('注册成功'), $data);
+                    } else {
+                        Log::error("[login] 注册失败: " . $this->auth->getError());
+                        $this->error($this->auth->getError());
+                    }
+                }
             }
+        } catch (\Exception $e) {
+            Log::error("[login] 异常: " . $e->getMessage() . " at " . $e->getFile() . ":" . $e->getLine());
+            Log::error("[login] 堆栈: " . $e->getTraceAsString());
+            $this->error("登录异常: " . $e->getMessage());
         }
     }
 
