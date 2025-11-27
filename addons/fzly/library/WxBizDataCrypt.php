@@ -65,3 +65,6 @@ class WxBizDataCrypt
         return self::$OK;
     }
 }
+
+
+

@@ -186,6 +186,12 @@ class Report extends Backend
         return $this->view->fetch();
     }
 
+    public function getDashboardData()
+    {
+        $data = $this->getTodayDashboardData();
+        return json(['code' => 0, 'data' => $data]);
+    }
+
     /**
      * 获取销售报表数据
      */

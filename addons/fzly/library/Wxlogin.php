@@ -55,11 +55,11 @@ class Wxlogin
         return ["code"=>1,"data"=>['mobile' => $mobile,  'openid' => $openid]];
     }
 
+
     /**
      * 微信登录
      * @return array 成功0，失败返回对应的错误码
      */
-
     public function logins($code,$encryptdata,$iv)
     {
         // 根据拿的code来拿access_token
@@ -76,11 +76,11 @@ class Wxlogin
         return ["code"=>1,"data"=>['mobile' => $res['phone_info']['purePhoneNumber']]];
     }
 
+
     /**
      * 微信登录
      * @return array 成功0，失败返回对应的错误码
      */
-
     public function get_openid($code)
     {
         // 根据拿的code来拿access_token
@@ -94,6 +94,10 @@ class Wxlogin
         return ["code"=>1,"data"=>['openid' => $openid]];
 
     }
+
+
+
+
 
     public function sendCmd($url, $data)
     {
@@ -111,12 +115,14 @@ class Wxlogin
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); // 获取的信息以文件流的形式返回
         $tmpInfo = curl_exec($curl); // 执行操作
 
+
         if (curl_errno($curl)) {
             echo 'Errno' . curl_error($curl);
         }
         curl_close($curl); // 关键CURL会话
         return $tmpInfo; // 返回数据
     }
+
 
     function https_request($url, $data = null)
     {
@@ -139,3 +145,8 @@ class Wxlogin
     }
 
 }
+
+
+
+
+
