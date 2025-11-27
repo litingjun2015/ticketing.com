@@ -19,13 +19,13 @@
 							}"></u-icon>
 						<!-- 我修改的部分 -->
 						<view class="up_btn" v-if="item.btn && item.btn=='置顶'">
-							<image class="img" src="../../../../static/msg/up.png" mode=""></image>
+							<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/up.png" mode=""></image>
 						</view>
 						<view class="up_btn" v-if="item.btn && item.btn=='取消置顶'">
-							<image class="img" src="../../../../static/msg/no_up.png" mode=""></image>
+							<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/no_up.png" mode=""></image>
 						</view>
 						<view class="sc_btn" v-if="item.btn && item.btn=='删除'">
-							<image class="img" src="../../../../static/msg/sc.png" mode=""></image>
+							<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/sc.png" mode=""></image>
 						</view>
 						<!-- 我修改的部分 -->
 						<text v-if="item.text" class="u-swipe-action-item__right__button__wrapper__text u-line-1"

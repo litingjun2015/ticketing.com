@@ -43,12 +43,12 @@
 			<view class="style" v-if="type==2"
 				:style="{backgroundImage:`url(${projectUrl}assets/addons/fzly/img/order_bg.png)`}">
 				<view class="style_style f_j">
-					<image class="icon" src="../../static/public/checkmark_b.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/checkmark_b.png" mode=""></image>
 					<text class="text" v-if="obj.car">{{obj.car}}</text>
 					<text class="text" v-if="obj.time">{{obj.time}}</text>
 				</view>
 				<view class="style_style f_j mar">
-					<image class="icon" src="../../static/public/date.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/date.png" mode=""></image>
 					<text class="text">{{obj.date}}</text>
 				</view>
 			</view>
@@ -80,13 +80,13 @@
 			<view class="cost">
 				<view class="can_use f_z_b" v-if="can_title!='no_use'">
 					<view class="left f_j">
-						<image class="img" src="../../static/public/can_use.png" mode=""></image>
+						<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/can_use.png" mode=""></image>
 						<text class="text">使用优惠券</text>
 					</view>
 					<view class="right f_j" @click="check_use">
 						<text class="text" v-if="!can_title">{{can_list.length>0?'有优惠券可用':'暂无优惠券可用'}}</text>
 						<text class="text" style="color: #000000;" v-if="can_title">使用{{can_title}}</text>
-						<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 					</view>
 				</view>
 				<view class="f_z_b">
@@ -143,11 +143,11 @@
 					</view>
 					<!-- 标记 -->
 					<view class="tag">
-						<image v-if="item.state==-1" class="img" src="../../static/public/ygq.png" mode="">
+						<image v-if="item.state==-1" class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/ygq.png" mode="">
 						</image>
-						<image v-if="item.state==1" class="img" src="../../static/public/ysy.png" mode="">
+						<image v-if="item.state==1" class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/ysy.png" mode="">
 						</image>
-						<image v-if="item.state==0" class="img" src="../../static/public/wsy.png" mode="">
+						<image v-if="item.state==0" class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/wsy.png" mode="">
 						</image>
 					</view>
 				</view>

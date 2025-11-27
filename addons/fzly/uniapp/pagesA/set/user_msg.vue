@@ -7,7 +7,7 @@
 					<u-avatar :src="set_data.avatar" size="140rpx" mode="aspectFill"></u-avatar>
 					<button class="ava_btn" open-type="chooseAvatar" @chooseavatar="chooseavatar">
 						<view class="set_avatar f_zj">
-							<image class="icon" src="../../static/public/set_avatar.png" mode="aspectFill"></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set_avatar.png" mode="aspectFill"></image>
 						</view>
 					</button>
 					<!-- #endif -->
@@ -15,7 +15,7 @@
 					<u-avatar :src="set_data.avatar" size="140rpx" mode="aspectFill" @click="h5_avatar"></u-avatar>
 					<button class="ava_btn" @click="h5_avatar">
 						<view class="set_avatar f_zj">
-							<image class="icon" src="../../static/public/set_avatar.png" mode="aspectFill"></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set_avatar.png" mode="aspectFill"></image>
 						</view>
 					</button>
 					<!-- #endif -->
@@ -53,7 +53,7 @@
 					<view class="">
 						{{gender_val}}
 					</view>
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 			<view class="item f_z_b" @click="birthday_show=true">
@@ -64,7 +64,7 @@
 					<view class="">
 						{{set_data.birthday}}
 					</view>
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 			<view class="item f_z_b" @click="go('/pagesA/set/address?type=set')">
@@ -75,7 +75,7 @@
 					<view class="">
 						{{set_data.c_city}}
 					</view>
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 		</view>

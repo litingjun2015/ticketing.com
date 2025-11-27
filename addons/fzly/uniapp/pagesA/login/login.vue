@@ -1,14 +1,14 @@
 <template>
 	<view class="content font_family" :style="{backgroundImage:`url(${projectUrl}assets/addons/fzly/img/bb.png)`}">
 		<view class="mask" :style="{paddingTop:menuButtonInfo+'px'}">
-			<image class="close" src="../../static/public/close2.png" mode="" @click="go_index"></image>
+			<image class="close" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/close2.png" mode="" @click="go_index"></image>
 			<!-- 登录框 -->
 			<view class="login_box f_d f_j">
 				<!-- 条款 -->
 				<view class="read f">
-					<image @click="check" v-if="read_check" class="icon" src="../../static/public/read.png" mode="">
+					<image @click="check" v-if="read_check" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/read.png" mode="">
 					</image>
-					<image @click="check" v-else class="icon" src="../../static/public/no_read.png" mode=""></image>
+					<image @click="check" v-else class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/no_read.png" mode=""></image>
 					<view class="" style="flex: 1;">
 						<text @click="check">我已阅读并同意</text>
 						<text class="text" @click="go('/pagesA/public/public?title=用户协议')">《用户协议》</text>

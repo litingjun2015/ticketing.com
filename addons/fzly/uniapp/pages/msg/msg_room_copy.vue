@@ -4,7 +4,7 @@
 		<view class="header">
 			<view style="width: 100vw" :style="{height:menuButtonInfo+'px'}"></view>
 			<view class="header_title">
-				<image class="icon" src="../../static/msg/back_icon.png" mode="" @click="back"></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/back_icon.png" mode="" @click="back"></image>
 				<view class="text global-font">
 					消息
 				</view>
@@ -21,7 +21,7 @@
 				<view class="item_box" v-if="item.type==1">
 					<u-avatar src='https://q1.itc.cn/q_70/images03/20240320/fcf023d835c54f78bac6c7efc98fbb4c.jpeg'
 						size='82rpx'></u-avatar>
-					<image class="msg_icon" src="../../static/msg/msg_left.png" mode=""></image>
+					<image class="msg_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/msg_left.png" mode=""></image>
 					<view class="msg_box global-font">
 						<view class="msg">
 							啥u厚度阿是蛋黄酥啥u厚度阿是蛋黄酥 啥u厚度阿是蛋黄酥
@@ -38,7 +38,7 @@
 							啥u厚度阿是蛋黄酥啥u厚度阿是蛋黄酥 啥u厚度阿是蛋黄酥
 						</view>
 					</view>
-					<image class="msg_icon_right" src="../../static/msg/msg_right.png" mode=""></image>
+					<image class="msg_icon_right" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/msg_right.png" mode=""></image>
 					<u-avatar src='https://q1.itc.cn/q_70/images03/20240320/fcf023d835c54f78bac6c7efc98fbb4c.jpeg'
 						size='82rpx'></u-avatar>
 				</view>
@@ -52,21 +52,21 @@
 		<view class="bottom" :style="{paddingBottom:paddingBottom+'rpx',bottom:KeyboardHeight+'px'}">
 			<!-- 功能区 -->
 			<view class="chat_function">
-				<image class="speech" src="../../static/msg/speech.png" mode=""></image>
+				<image class="speech" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/speech.png" mode=""></image>
 				<view class="ipt">
 					<u--textarea maxlength='250' :adjustPosition='false' autoHeight placeholder="请输入内容" border="none"
 						v-model="chat_msg" @change="change" @confirm='send_confirm'></u--textarea>
 				</view>
-				<image @click="send_img" class="chat_add" src="../../static/msg/chat_add.png" mode=""></image>
+				<image @click="send_img" class="chat_add" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/chat_add.png" mode=""></image>
 			</view>
 			<!-- 发送图片 -->
 			<view class="send_img" v-if="send_img_show" ref="sendImg">
 				<view class="item">
-					<image class="tu" src="../../static/msg/send_img.png" mode=""></image>
+					<image class="tu" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/send_img.png" mode=""></image>
 					<text>图片</text>
 				</view>
 				<view class="item">
-					<image class="pai" src="../../static/msg/photograph.png" mode=""></image>
+					<image class="pai" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/msg/photograph.png" mode=""></image>
 					<text>拍照</text>
 				</view>
 			</view>

@@ -39,7 +39,7 @@
 			<u-loadmore v-if="comment_list.length>0" line @loadmore="get_user_comment" :status="status"
 				:loading-text="loadingText" :loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 			<!-- 空 -->
-			<u-empty v-if="comment_list.length==0" text='当前没有评论哟~' icon="/static/public/kong.png">
+			<u-empty v-if="comment_list.length==0" text='当前没有评论哟~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 	</view>

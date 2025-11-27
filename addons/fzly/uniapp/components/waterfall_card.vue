@@ -11,7 +11,7 @@
 				{{img.title}}
 			</view>
 			<view class="sales f_j">
-				<image class="icon" src="../static/public/view.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/view.png" mode=""></image>
 				<text>{{img.view_nums}}</text>
 			</view>
 		</view>

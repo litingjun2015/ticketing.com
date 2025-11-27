@@ -39,7 +39,7 @@
 				:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 		</view>
 		<view class="empty_top" v-else>
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 	</view>

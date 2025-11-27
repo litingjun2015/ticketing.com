@@ -59,7 +59,7 @@
 							:style="{backgroundImage:`url(${projectUrl}assets/addons/fzly/img/card_r.png)`}">
 							<image v-if="query_data.back_image" class="card_show" :src="query_data.back_image"
 								mode="aspectFill"></image>
-							<image @click="add_img(1)" v-else class="add" src="../../static/public/add_b.png" mode="">
+							<image @click="add_img(1)" v-else class="add" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_b.png" mode="">
 							</image>
 							<!-- 删除按钮 -->
 							<view @click="delet(1)" class="delte_btn" v-if="query_data.back_image">
@@ -75,7 +75,7 @@
 							:style="{backgroundImage:`url(${projectUrl}assets/addons/fzly/img/card_g.png)`}">
 							<image v-if="query_data.font_image" class="card_show" :src="query_data.font_image"
 								mode="aspectFill"></image>
-							<image @click="add_img(2)" v-else class="add" src="../../static/public/add_b.png" mode="">
+							<image @click="add_img(2)" v-else class="add" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_b.png" mode="">
 							</image>
 							<!-- 删除按钮 -->
 							<view @click="delet(2)" class="delte_btn" v-if="query_data.font_image">
@@ -100,7 +100,7 @@
 					:style="{backgroundImage:`url(${projectUrl}assets/addons/fzly/img/zg.png)`}">
 					<image v-if="query_data.certificate_image" class="card_show" :src="query_data.certificate_image"
 						mode="aspectFill"></image>
-					<image @click="add_img(3)" v-else class="add" src="../../static/public/add_b.png" mode=""></image>
+					<image @click="add_img(3)" v-else class="add" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_b.png" mode=""></image>
 					<!-- 删除按钮 -->
 					<view @click="delet(3)" class="delte_btn" v-if="query_data.certificate_image">
 						<u-icon name="close-circle-fill" color="#ffffff" size="20"></u-icon>

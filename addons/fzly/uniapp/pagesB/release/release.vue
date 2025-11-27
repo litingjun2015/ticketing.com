@@ -38,7 +38,7 @@
 								<text class="text">起</text>
 							</view>
 							<view class="num f_j">
-								<image class="icon" src="../../static/public/view.png" mode="aspectFill"></image>
+								<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/view.png" mode="aspectFill"></image>
 								<view class="num_text">
 									浏览数{{item.view_nums}}
 								</view>
@@ -70,7 +70,7 @@
 				:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 		</view>
 		<view class="empty_top" v-if="list.length==0">
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 		<u-tabbar :value="value" inactiveColor='#242424' activeColor='#FFAE35' :placeholder="true" :border="false"
@@ -90,7 +90,7 @@
 						<u--input :placeholder="placeholder" inputAlign='center' border="none"
 							v-model="price_data.price"></u--input>
 					</view>
-					<image class="icon" src="../../static/public/set.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 				</view>
 				<view class="btn" @click="price_set">
 					确认

@@ -2,7 +2,7 @@
 	<view class="content font_family">
 		<view class="header" :style="{paddingTop:menuButtonInfo+'px',backgroundImage:`url(${user_msg.back_avatar})`}">
 			<view class="back f_zj" @click="back">
-				<image class="icon" src="../../static/public/back_w.png"></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_w.png"></image>
 			</view>
 			<!-- 作者信息 -->
 			<view class="author_msg f">
@@ -12,7 +12,7 @@
 				<view class="right">
 					<view class="top">
 						<text class="name">{{user_msg.username}}</text>
-						<!-- <image class="icon" src="../../static/public/zf_w.png" mode=""></image> -->
+						<!-- <image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/zf_w.png" mode=""></image> -->
 					</view>
 					<view class="bottom f">
 						<view class="data f_d f_j">
@@ -28,7 +28,7 @@
 							<text class="text">获赞</text>
 						</view>
 						<!-- <view class="btn f_zj">
-							<image class="icon" src="../../static/public/ygz.png" mode=""></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/ygz.png" mode=""></image>
 						</view> -->
 						<view class="btn f_zj gz_btn" @click="follow_btn(1)" v-if="user_msg.is_follow==0">
 							关注
@@ -57,7 +57,7 @@
 			<u-loadmore v-if="list.length>0" line @loadmore='get_list' :status="status" :loading-text="loadingText"
 				:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 			<view class="empty_top" v-if="list.length==0">
-				<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+				<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 		</view>

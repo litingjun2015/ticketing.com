@@ -9,7 +9,7 @@
 					<view class="flexc box_1_message_item" v-if="item1.sender=='you'">
 						<image class="box_1_message_head_img" :src="item1.session_user.avatar" mode=""></image>
 						<view class="box_1_message_text">
-							<image class="box_1_message_text_img" src="@/static/img.png" mode=""></image>
+							<image class="box_1_message_text_img" src="@https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/img.png" mode=""></image>
 							<view class="">
 								<rich-text :nodes="item1.message"></rich-text>
 							</view>
@@ -17,11 +17,11 @@
 					</view>
 					<view class="flexc flexEnd box_1_message_item" v-if="item1.sender=='me'">
 						<view class="box_1_message_text_1">
-							<image class="box_1_message_text_img_1" src="@/static/img1.png" mode=""></image>
+							<image class="box_1_message_text_img_1" src="@https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/img1.png" mode=""></image>
 							<view class="">
 								<rich-text :nodes="item1.message"></rich-text>
 							</view>
-							<!-- 	<image v-if="item1.show" class="box_1_message_close_img" src="@/static/laji.png"
+							<!-- 	<image v-if="item1.show" class="box_1_message_close_img" src="@https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/laji.png"
 								mode="aspectFill">
 							</image> -->
 						</view>

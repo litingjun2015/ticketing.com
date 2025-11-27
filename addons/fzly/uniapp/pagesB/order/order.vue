@@ -64,7 +64,7 @@
 				:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 		</view>
 		<view class="empty_top" v-if="list.length==0">
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 		<u-toast ref="uToast"></u-toast>

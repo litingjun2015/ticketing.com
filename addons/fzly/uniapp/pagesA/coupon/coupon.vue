@@ -27,9 +27,9 @@
 			<view class="bottom">
 				<view class="title f_z_b f_j" @click="see_rule(index)">
 					<text class="text">使用规则</text>
-					<image v-if="coupon_index===index" class="icon" src="../../static/public/screen_up.png" mode="">
+					<image v-if="coupon_index===index" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/screen_up.png" mode="">
 					</image>
-					<image v-else class="icon" src="../../static/public/screen_down.png" mode=""></image>
+					<image v-else class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/screen_down.png" mode=""></image>
 				</view>
 				<view class="rules" v-if="coupon_index===index">
 					{{item.coupon_remarks}}
@@ -42,13 +42,13 @@
 			</view>
 			<!-- 标记 -->
 			<view class="tag">
-				<image v-if="item.state==-1" class="img" src="../../static/public/ygq.png" mode=""></image>
-				<image v-if="item.state==1" class="img" src="../../static/public/ysy.png" mode=""></image>
-				<image v-if="item.state==0" class="img" src="../../static/public/wsy.png" mode=""></image>
+				<image v-if="item.state==-1" class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/ygq.png" mode=""></image>
+				<image v-if="item.state==1" class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/ysy.png" mode=""></image>
+				<image v-if="item.state==0" class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/wsy.png" mode=""></image>
 			</view>
 		</view>
 		<view class="empty_top" v-if="list.length==0">
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 	</view>

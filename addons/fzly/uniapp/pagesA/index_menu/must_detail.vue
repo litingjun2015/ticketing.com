@@ -2,7 +2,7 @@
 	<view class="content font_family" v-if="detail_msg">
 		<view class="header">
 			<view class="user_top f_j" :style="{paddingTop:menuButtonInfo+'px'}">
-				<image class="icon" src="../../static/public/back_b.png" mode="" @click="back"></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_b.png" mode="" @click="back"></image>
 				<u-avatar size="80rpx" @click="go_author" :src="detail_msg.avatar"></u-avatar>
 				<text class="name" @click="go_author">{{detail_msg.username}}</text>
 				<view class="btn" @click="follow_btn(1)" v-if="detail_msg.is_gz==0">
@@ -23,11 +23,11 @@
 			</view>
 			<!-- 位置 -->
 			<view class="position f_j">
-				<image class="icon" src="../../static/index/pt.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/pt.png" mode=""></image>
 				<text>{{detail_msg.city}}</text>
 			</view>
 			<!-- <view class="like_tag f_zj">
-				<image class="like_icon" src="../../static/public/like_t.png" mode=""></image>
+				<image class="like_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/like_t.png" mode=""></image>
 			</view> -->
 		</view>
 		<view class="title">
@@ -43,20 +43,20 @@
 		<view class="like_box">
 			<view class="btn f_z_b">
 				<view class="item">
-					<!-- <image class="icon" src="../../static/public/collection.png" mode=""></image> -->
+					<!-- <image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/collection.png" mode=""></image> -->
 					<image @click="sc_btn(1)" v-if="detail_msg.is_sc==0" class="icon"
-						src="../../static/public/collection.png" mode=""></image>
-					<image @click="sc_btn(2)" v-else class="icon" src="../../static/public/star_t.png" mode=""></image>
+						src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/collection.png" mode=""></image>
+					<image @click="sc_btn(2)" v-else class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/star_t.png" mode=""></image>
 					<text @click="sc_btn(1)" v-if="detail_msg.is_sc==0" class="num">{{detail_msg.sc_nums}}</text>
 					<text @click="sc_btn(2)" v-else class="num">{{detail_msg.sc_nums}}</text>
 				</view>
 				<view class="item" @click="show_comment_box">
-					<image class="icon1" src="../../static/public/comment.png" mode=""></image>
+					<image class="icon1" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/comment.png" mode=""></image>
 					<text class="num">{{detail_msg.common_nums}}</text>
 				</view>
 				<!-- #ifdef MP-WEIXIN -->
 				<view class="item" @click="fx_show=true">
-					<image class="icon1" src="../../static/public/zf.png" mode=""></image>
+					<image class="icon1" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/zf.png" mode=""></image>
 					<!-- <text class="num">10</text> -->
 				</view>
 				<!-- #endif -->
@@ -70,7 +70,7 @@
 			<view class="user f_z_b" @click="show_comment_box">
 				<u-avatar size="56rpx" :src="user_info.avatar" mode="aspectFill"></u-avatar>
 				<view class="ipt_box f_j">
-					<image class="icon" src="../../static/public/set.png"></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png"></image>
 					<view class="ipt_text">
 						精彩评论将被优先展示
 					</view>
@@ -95,14 +95,14 @@
 			<scroll-view class="comment_box" scroll-y="true">
 				<comment v-for="(item,index) in comment" :key="index" :msg='item' @user_reply='user_reply'></comment>
 				<view class="empty_top" v-if="comment.length==0">
-					<u-empty text='快来分享你的评论吧~' icon="/static/public/kong.png">
+					<u-empty text='快来分享你的评论吧~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 					</u-empty>
 				</view>
 			</scroll-view>
 			<!-- 回复框 -->
 			<view class="bottom f_zj">
 				<view class="ipt_box f_j">
-					<image class="img" src="../../static/public/set.png" mode=""></image>
+					<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 					<u--input :placeholder="placeholder" border="none" v-model="publish_commont.content"
 						@confirm='confirm'></u--input>
 				</view>
@@ -121,13 +121,13 @@
 				<view class="fx_item f">
 					<button type="default" open-type="share">
 						<view class="item f_d f_j">
-							<image class="img" src="../../static/public/vx.png" mode=""></image>
+							<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/vx.png" mode=""></image>
 							<text class="text">微信好友</text>
 						</view>
 					</button>
 					<!-- <button type="default" open-type="share">
 						<view class="item f_d f_j" @click="share">
-							<image class="img" src="../../static/public/pyq.png" mode=""></image>
+							<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/pyq.png" mode=""></image>
 							<text class="text">朋友圈</text>
 						</view>
 					</button> -->

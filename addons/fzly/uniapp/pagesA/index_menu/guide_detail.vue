@@ -2,7 +2,7 @@
 	<view class="content font_family">
 		<view class="header" :style="{paddingTop:menuButtonInfo+'px',backgroundImage:`url(${detail.back_avatar})`}">
 			<view class="back f_zj" @click="back">
-				<image class="icon" src="../../static/public/back_w.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_w.png" mode=""></image>
 			</view>
 		</view>
 		<!-- 导游信息 -->
@@ -15,7 +15,7 @@
 					<view class="name f">
 						<text>{{detail.username}}</text>
 						<button open-type="share" class="f_zj">
-							<image class="icon" src="../../static/public/zf.png" mode=""></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/zf.png" mode=""></image>
 						</button>
 					</view>
 					<view class="remarks f">
@@ -91,7 +91,7 @@
 				</view>
 			</view>
 			<view class="" v-if="detail.product.length==0">
-				<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+				<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 		</view>

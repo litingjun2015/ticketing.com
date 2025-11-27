@@ -20,7 +20,7 @@
 			</view>
 			<!-- 空列表 -->
 			<view class="" v-if="list.length==0">
-				<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+				<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 		</scroll-view>
@@ -135,13 +135,13 @@
 					position: absolute;
 					top: -15rpx;
 					left: 20rpx;
-					background-image: url(../../static/public/sort_q.png);
+					background-image: url(https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/sort_q.png);
 					background-repeat: no-repeat;
 					background-size: 100%;
 				}
 
 				.sort_h {
-					background-image: url(../../static/public/sort_h.png) !important;
+					background-image: url(https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/sort_h.png) !important;
 					color: #FFFFFF;
 				}
 

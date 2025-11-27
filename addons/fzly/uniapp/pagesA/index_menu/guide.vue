@@ -1,9 +1,9 @@
 <template>
 	<view class="content font_family">
 		<view class="header f_j" :style="{paddingTop:menuButtonInfo+'px'}">
-			<image class="back" src="../../static/public/back_b.png" mode="" @click="back"></image>
+			<image class="back" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_b.png" mode="" @click="back"></image>
 			<view class="ipt_box f_j">
-				<image class="icon" src="../../static/index/magnif.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image>
 				<u--input placeholder="搜一搜导游" border="none" @confirm='confirm' v-model="query_data.search"></u--input>
 			</view>
 		</view>

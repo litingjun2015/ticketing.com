@@ -13,7 +13,7 @@
 						{{date}}
 					</view>
 				</view>
-				<image class="content_time_left_img" src="../static/triangle_6.png" mode="" />
+				<image class="content_time_left_img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_6.png" mode="" />
 			</view>
 			<view class="content_time_right">
 				<view class="content_time_right_left">
@@ -47,7 +47,7 @@
 					</view>
 				</view>
 				<!-- <empty v-if="list.length<1"></empty> -->
-				<u-empty v-if="list.length<1" text='当前没有记录~' icon="/static/public/kong.png">
+				<u-empty v-if="list.length<1" text='当前没有记录~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 		</view>

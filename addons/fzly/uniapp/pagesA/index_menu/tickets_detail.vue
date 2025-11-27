@@ -8,7 +8,7 @@
 				{{ currentNum + 1 }}/{{ detail.images.length }}
 			</view>
 			<view class="back f_zj" :style="{top:menuButtonInfo+'px'}" @click="back">
-				<image class="img" src="../../static/public/back_w.png" mode=""></image>
+				<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_w.png" mode=""></image>
 			</view>
 		</view>
 		<view class="msg_box">
@@ -19,7 +19,7 @@
 							{{detail.title}}
 						</view>
 						<view class="pt f_j" @click="go_here">
-							<image class="icon" src="../../static/public/pt_h.png" mode=""></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/pt_h.png" mode=""></image>
 							<view class="text" style="width: 400rpx;">{{detail.address_xx}}</view>
 						</view>
 					</view>
@@ -184,7 +184,7 @@
 					</view>
 				</view>
 				<!-- 空 -->
-				<u-empty v-if="comment_list.length==0" text='当前没有评论哟~' icon="/static/public/kong.png">
+				<u-empty v-if="comment_list.length==0" text='当前没有评论哟~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 		</view>

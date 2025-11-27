@@ -3,7 +3,7 @@
 		<view class="header " :style="{paddingTop:menuButtonInfo+'px',backgroundImage:`url(${msg.image})`}">
 			<view class="box">
 				<view class="user f_j">
-					<image class="icon" src="../../static/public/back_w.png" mode="" @click="back"></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_w.png" mode="" @click="back"></image>
 					<u-avatar size="80rpx" @click="go(msg.user_id)" :src="msg.avatar"></u-avatar>
 					<text class="name text_ellipsis">{{msg.username}}</text>
 					<view class="btn" @click="follow_btn(1)" v-if="msg.is_gz==0 && user_info.id!==msg.user_id">
@@ -14,7 +14,7 @@
 					</view>
 				</view>
 				<view class="position f_j" :style="{bottom:menuButtonInfo+28+'px'}">
-					<image class="icon" src="../../static/index/pt.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/pt.png" mode=""></image>
 					<text>{{msg.city}}</text>
 				</view>
 			</view>
@@ -32,21 +32,21 @@
 		<view class="bottom">
 			<view class="btn f_z_b">
 				<view class="item">
-					<image @click="dz_btn(1)" v-if="msg.is_dz==0" class="icon" src="../../static/public/like.png"
+					<image @click="dz_btn(1)" v-if="msg.is_dz==0" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/like.png"
 						mode=""></image>
-					<image @click="dz_btn(2)" v-else class="icon" src="../../static/public/like_t.png" mode=""></image>
+					<image @click="dz_btn(2)" v-else class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/like_t.png" mode=""></image>
 					<text class="num" @click="dz_btn(1)" v-if="msg.is_dz==0">{{msg.dz_nums}}</text>
 					<text class="num" @click="dz_btn(2)" v-else>{{msg.dz_nums}}</text>
 				</view>
 				<view class="item">
-					<image @click="sc_btn(1)" v-if="msg.is_sc==0" class="icon" src="../../static/public/collection.png"
+					<image @click="sc_btn(1)" v-if="msg.is_sc==0" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/collection.png"
 						mode=""></image>
-					<image @click="sc_btn(2)" v-else class="icon" src="../../static/public/star_t.png" mode=""></image>
+					<image @click="sc_btn(2)" v-else class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/star_t.png" mode=""></image>
 					<text class="num" @click="sc_btn(1)" v-if="msg.is_sc==0">{{msg.sc_nums}}</text>
 					<text class="num" @click="sc_btn(2)" v-else>{{msg.sc_nums}}</text>
 				</view>
 				<view class="item">
-					<image class="icon1" src="../../static/public/view.png" mode=""></image>
+					<image class="icon1" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/view.png" mode=""></image>
 					<text class="num">{{msg.view_nums}}</text>
 				</view>
 			</view>

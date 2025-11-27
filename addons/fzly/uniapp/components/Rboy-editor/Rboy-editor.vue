@@ -14,7 +14,7 @@
 			<!-- <text class="iconfont icon-format-header-1" @click="editor_format_btn('H1')"></text> -->
 			<!-- <text class="iconfont icon-zitixieti" @click="editor_format_btn('italic')"></text> -->
 			<view class="iconfont" @click="editor_img_btn">
-				<image class="icon" src="../../static/public/add_img.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_img.png" mode=""></image>
 			</view>
 			<!-- <image src="" mode=""></image> -->
 		</view>

@@ -2,7 +2,7 @@
 	<view class="content font_family">
 		<view class="header" :style="{paddingTop:menuButtonInfo+'px',backgroundImage:`url(${user_info.back_avatar})`}">
 			<view class="back">
-				<image class="icon" src="../../static/public/homepage_back.png" mode="" @click="back"></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/homepage_back.png" mode="" @click="back"></image>
 			</view>
 		</view>
 		<view class="user_msg_box">
@@ -16,9 +16,9 @@
 					</view>
 					<view class="tag f">
 						<view class="item">
-							<image v-if="user_info.gender==1" class="icon" src="../../static/public/man.png" mode="">
+							<image v-if="user_info.gender==1" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/man.png" mode="">
 							</image>
-							<image v-if="user_info.gender==0" class="icon" src="../../static/public/woman.png" mode="">
+							<image v-if="user_info.gender==0" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/woman.png" mode="">
 							</image>
 						</view>
 						<view class="item">
@@ -77,29 +77,29 @@
 								{{item.title}}
 							</view>
 							<view class="" @click.stop="open_more(item)">
-								<image class="icon" src="../../static/public/set_more.png" mode="">
+								<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set_more.png" mode="">
 								</image>
 							</view>
 						</view>
 						<image class="img" :src="item.image" mode="aspectFill"></image>
 						<view class="data_box f_z_b">
 							<view class="data_item f_zj">
-								<image class="data_icon1" src="../../static/public/view.png" mode=""></image>
+								<image class="data_icon1" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/view.png" mode=""></image>
 								<text class="text">浏览</text>
 								<text class="text">{{item.view_nums}}</text>
 							</view>
 							<view class="data_item f_zj" @click.stop="sc_btn(item)">
-								<image v-if="item.is_sc==1" class="data_icon2" src="../../static/public/star_t.png"
+								<image v-if="item.is_sc==1" class="data_icon2" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/star_t.png"
 									mode=""></image>
-								<image v-else class="data_icon2" src="../../static/public/collection_h.png" mode="">
+								<image v-else class="data_icon2" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/collection_h.png" mode="">
 								</image>
 								<text class="text">收藏</text>
 								<text class="text">{{item.sc_nums}}</text>
 							</view>
 							<view class="data_item f_zj" @click.stop="dz_btn(item)">
-								<image v-if="item.is_dz==1" class="data_icon3" src="../../static/public/like_t.png"
+								<image v-if="item.is_dz==1" class="data_icon3" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/like_t.png"
 									mode=""></image>
-								<image v-else class="data_icon3" src="../../static/public/like.png" mode=""></image>
+								<image v-else class="data_icon3" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/like.png" mode=""></image>
 								<text class="text">点赞</text>
 								<text class="text">{{item.dz_nums}}</text>
 							</view>
@@ -110,7 +110,7 @@
 						:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 				</view>
 				<view class="empty_top" v-if="list.length==0">
-					<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+					<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 					</u-empty>
 				</view>
 			</view>
@@ -123,7 +123,7 @@
 			<!-- 回复框 -->
 			<view class="bottom f_zj">
 				<view class="ipt_box f_j">
-					<image class="img" src="../../static/public/set.png" mode=""></image>
+					<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 					<u--input placeholder="说点什么吧" border="none" v-model="value" @change="change"></u--input>
 				</view>
 			</view>
@@ -132,19 +132,19 @@
 		<u-popup round='40rpx' :show="more_show" @close="close_more">
 			<view class="more_box f">
 				<button class="item f_d f_j" open-type="share">
-					<image class="icon" src="../../static/public/vx.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/vx.png" mode=""></image>
 					<view class="text">
 						微信
 					</view>
 				</button>
 				<view class="item f_d f_j" v-if="tabs_action>1" @click="delete_btn">
-					<image class="icon" src="../../static/public/red_sc.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/red_sc.png" mode=""></image>
 					<view class="text">
 						删除
 					</view>
 				</view>
 				<view class="item f_d f_j" v-if="tabs_action>1 && more_item.status==2" @click="go()">
-					<image class="icon" src="../../static/public/bj.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/bj.png" mode=""></image>
 					<view class="text">
 						编辑
 					</view>

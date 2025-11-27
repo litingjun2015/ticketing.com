@@ -60,7 +60,7 @@
 					<image v-if="query_data.admission_image" class="card_show" :src="query_data.admission_image"
 						mode="aspectFill">
 					</image>
-					<image @click="add_img(1)" v-else class="add" src="../../static/public/add_b.png" mode=""></image>
+					<image @click="add_img(1)" v-else class="add" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_b.png" mode=""></image>
 					<!-- 删除按钮 -->
 					<view @click="delet(1)" class="delte_btn" v-if="query_data.admission_image">
 						<u-icon name="close-circle-fill" color="#f56c6c" size="20"></u-icon>
@@ -76,7 +76,7 @@
 					:style="{backgroundImage:`url(${projectUrl}assets/addons/fzly/img/zg.png)`}">
 					<image v-if="query_data.yy_image" class="card_show" :src="query_data.yy_image" mode="aspectFill">
 					</image>
-					<image @click="add_img(3)" v-else class="add" src="../../static/public/add_b.png" mode=""></image>
+					<image @click="add_img(3)" v-else class="add" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_b.png" mode=""></image>
 					<!-- 删除按钮 -->
 					<view @click="delet(3)" class="delte_btn" v-if="query_data.yy_image">
 						<u-icon name="close-circle-fill" color="#f56c6c" size="20"></u-icon>

@@ -42,12 +42,12 @@
 			<!-- 时间，类型 -->
 			<view class="style" v-if="type==2">
 				<view class="style_style f_j">
-					<image class="icon" src="../../static/public/checkmark_b.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/checkmark_b.png" mode=""></image>
 					<text class="text" v-if="obj.car">{{obj.car}}</text>
 					<text class="text" v-if="obj.time">{{obj.time}}</text>
 				</view>
 				<view class="style_style f_j mar">
-					<image class="icon" src="../../static/public/date.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/date.png" mode=""></image>
 					<text class="text">{{obj.date}}</text>
 				</view>
 			</view>

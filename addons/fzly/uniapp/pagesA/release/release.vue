@@ -1,7 +1,7 @@
 <template>
 	<view class="content font_family" :style="{paddingTop:menuButtonInfo+'px'}">
 		<view class="header f_j">
-			<image @click="back" class="icon" src="../../static/public/back_b.png" mode=""></image>
+			<image @click="back" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_b.png" mode=""></image>
 			<view class="item_box f">
 				<view @click="header_check(index)" class="item" :class="{item_action:header_action==index}"
 					v-for="(item,index) in header_title" :key="index">
@@ -27,7 +27,7 @@
 					<image class="item" :src="item" mode="aspectFill"></image>
 				</view>
 				<view class="add_img f_zj" @click="add_img" v-if="img_arr.length<9">
-					<image class="icon" src="../../static/public/add_img.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_img.png" mode=""></image>
 				</view>
 			</view>
 			<!-- 选择动态分类 -->
@@ -36,7 +36,7 @@
 					{{type_text?type_text:'请选择动态分类'}}
 				</view>
 				<view class="">
-					<image class="img" style="width: 13rpx;height: 20rpx;" src="../../static/index/go_hot.png" mode="">
+					<image class="img" style="width: 13rpx;height: 20rpx;" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode="">
 					</image>
 				</view>
 			</view>
@@ -45,7 +45,7 @@
 		<view class="strategy" v-else>
 			<view class="cover f_zj" @click="add_cover">
 				<view class="add_cover" v-if="!fb_data.image">
-					<image class="icon" src="../../static/public/add_cover.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_cover.png" mode=""></image>
 					<text class="text">添加封面</text>
 				</view>
 				<image v-else class="cover_img" :src="fb_data.image" mode="aspectFill"></image>
@@ -61,7 +61,7 @@
 				{{spot_text?spot_text:'请选择景区分类'}}
 			</view>
 			<view class="">
-				<image class="img" style="width: 13rpx;height: 20rpx;" src="../../static/index/go_hot.png" mode="">
+				<image class="img" style="width: 13rpx;height: 20rpx;" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode="">
 				</image>
 			</view>
 		</view>

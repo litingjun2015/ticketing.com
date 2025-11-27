@@ -3,7 +3,7 @@
 		<scroll-view scroll-y="true" class="city_box" :scroll-into-view='scroll_index'>
 			<view class="hot_city_box" id="index">
 				<view class="title">
-					<image class="icon" src="../../static/public/hot_city.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/hot_city.png" mode=""></image>
 					<text>热门城市</text>
 				</view>
 				<view class="hot_city f">

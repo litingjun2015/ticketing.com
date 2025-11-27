@@ -2,12 +2,12 @@
 	<view class="content font_family">
 		<view class="add ">
 			<view class="box f_zj" @click="go('/pagesB/income/add_account')">
-				<image class="icon" src="../../static/public/add.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add.png" mode=""></image>
 				<text>新增提现账户</text>
 			</view>
 		</view>
 		<view class="item f_j">
-			<image class="icon" src="../../static/business/vx_account.png" mode="aspectFill"></image>
+			<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/vx_account.png" mode="aspectFill"></image>
 			<view class="name f_d f_z_b">
 				<view class="">
 					微信
@@ -24,7 +24,7 @@
 			</view>
 		</view>
 		<view class="item f_j" v-for="(item,index) in account_arr" :key="index">
-			<image class="icon" v-if="item.type_text=='支付宝'" src="../../static/business/zfb_account.png"
+			<image class="icon" v-if="item.type_text=='支付宝'" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/zfb_account.png"
 				mode="aspectFill"></image>
 			<image class="icon" v-else :src="item.bank_icon" mode="aspectFill"></image>
 			<view class="name f_d f_z_b">
@@ -38,7 +38,7 @@
 					{{item.bank_code | hide_card}}
 				</view>
 			</view>
-			<image class="sc" v-if="item.status==1" src="../../static/public/red_sc.png" mode="" @click="sc(item.id)">
+			<image class="sc" v-if="item.status==1" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/red_sc.png" mode="" @click="sc(item.id)">
 			</image>
 			<view class="no_btn" v-if="item.status==0">
 				审核中

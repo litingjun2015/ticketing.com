@@ -40,7 +40,7 @@
 			</view>
 			<view class="operation_box f">
 				<view class="left" @click="sm">
-					<image class="img" src="../../static/business/sm.png" mode="aspectFill"></image>
+					<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/sm.png" mode="aspectFill"></image>
 					<view class="title_box">
 						<view class="title">
 							扫码核销
@@ -60,7 +60,7 @@
 								查看收入明细
 							</view>
 						</view>
-						<image class="img" src="../../static/business/price.png" mode=""></image>
+						<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/price.png" mode=""></image>
 					</view>
 					<view class="bottom" @click="go_tabbar()">
 						<view class="title_box">
@@ -71,7 +71,7 @@
 								消息多多
 							</view>
 						</view>
-						<image class="img" src="../../static/business/msg.png" mode=""></image>
+						<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/msg.png" mode=""></image>
 					</view>
 				</view>
 			</view>
@@ -83,7 +83,7 @@
 				<view class="text">
 					{{item.text}}
 				</view>
-				<image class="go" src="../../static/index/go_hot.png" mode=""></image>
+				<image class="go" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 			</view>
 		</view>
 		<u-tabbar :value="value" inactiveColor='#242424' activeColor='#FFAE35' :placeholder="true" :border="false"
@@ -109,14 +109,14 @@
 				projectUrl: '',
 				value: 0,
 				menu: [
-					{ icon: '../../static/business/sr.png', text: '收入明细', url: '/pagesC/income/income' },
-					// { icon: '../../static/business/gy.png', text: '关于我们', url: '/pagesA/public/public?title=关于我们' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/sr.png', text: '收入明细', url: '/pagesC/income/income' },
+					// { icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/gy.png', text: '关于我们', url: '/pagesA/public/public?title=关于我们' },
 					// {
-					// 	icon: '../../static/business/fb_icon.png',
+					// 	icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/fb_icon.png',
 					// 	text: '发布门票',
 					// 	url: '/pagesC/product/product'
 					// },
-					{ icon: '../../static/business/set.png', text: '设置', url: '/pagesC/set/set' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/set.png', text: '设置', url: '/pagesC/set/set' },
 				],
 				msg: ''
 			};

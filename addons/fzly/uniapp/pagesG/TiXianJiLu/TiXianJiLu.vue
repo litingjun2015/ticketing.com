@@ -23,7 +23,7 @@
 
 		<view class="content pt-20">
 			<!-- <empty v-if="list.length<1"></empty> -->
-			<u-empty v-if="list.length<1" text='当前没有记录~' icon="/static/public/kong.png">
+			<u-empty v-if="list.length<1" text='当前没有记录~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 			<view class="main_content" v-for="item in list" :key="item">
 				<view class="main_content_box">

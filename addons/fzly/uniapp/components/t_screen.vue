@@ -7,19 +7,19 @@
 			<div :style="{height:menuButtonInfo+'px'}"></div>
 			<!-- :style="{paddingTop:menuButtonInfo+'px'}" -->
 			<view class="header f_j" @touchmove.stop.prevent="">
-				<image class="icon" src="../static/public/back_b.png" mode="" @click="back"></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_b.png" mode="" @click="back"></image>
 				<view class="search f_z_b">
 					<view class="search_left f_zj">
 						<view class="city" @click.stop="go('/pagesA/set/address?type=query')">
 							{{city}}
 						</view>
 						<image class="icon" @click.stop="go('/pagesA/set/address?type=query')"
-							src="../static/index/vector.png" mode=""></image>
+							src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/vector.png" mode=""></image>
 						<view class="line">
 
 						</view>
 						<view>
-							<image class="magnif" src="../static/index/magnif.png" mode=""></image>
+							<image class="magnif" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image>
 						</view>
 					</view>
 					<view class="search_right f_zj">
@@ -35,9 +35,9 @@
 							@click="title_check(index,item.type)">
 							{{item.title}}
 						</view>
-						<image v-if='title_index===index' class="img" src="../static/public/screen_up.png" mode="">
+						<image v-if='title_index===index' class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/screen_up.png" mode="">
 						</image>
-						<image v-else class="img" src="../static/public/screen_down.png" mode=""></image>
+						<image v-else class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/screen_down.png" mode=""></image>
 					</view>
 				</view>
 				<!-- 下拉框 -->

@@ -1,9 +1,9 @@
 <template>
 	<view class="content font_family" :style="{paddingTop:menuButtonInfo+'px'}">
 		<view class="header f_j">
-			<image class="back" src="../../static/public/back_b.png" mode="" @click="back"></image>
+			<image class="back" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_b.png" mode="" @click="back"></image>
 			<view class="ipt_box f_j">
-				<image class="icon" src="../../static/index/magnif.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image>
 				<u--input placeholder="想去哪里,搜一搜攻略" border="none" v-model="query.search" @confirm='confirm'></u--input>
 			</view>
 		</view>
@@ -19,7 +19,7 @@
 						{{item.title}}
 					</view>
 					<view class="position f_j">
-						<image class="icon" src="../../static/index/pt.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/pt.png" mode=""></image>
 						<text>{{item.city}}</text>
 					</view>
 				</view>
@@ -48,7 +48,7 @@
 				:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 		</view>
 		<view class="empty_top" v-if="list.length==0">
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 	</view>

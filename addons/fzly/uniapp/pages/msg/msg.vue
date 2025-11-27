@@ -13,7 +13,7 @@
 		</view>
 		<view class="con">
 			<view class="empty_top" v-if="messageList==0">
-				<u-empty text='没有消息哦~' icon="/static/public/kong.png">
+				<u-empty text='没有消息哦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 			<view class="" v-else>

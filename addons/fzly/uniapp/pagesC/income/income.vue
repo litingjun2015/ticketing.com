@@ -36,11 +36,11 @@
 				</view>
 				<view class="" @click="open" v-if="btn_action==0">
 					<text>{{query_data.time}}</text>
-					<image class="icon" src="../../static/index/more.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/more.png" mode=""></image>
 				</view>
 				<view class="" v-if="btn_action==1" @click="year_open">
 					<text>{{query_data.year}}</text>
-					<image class="icon" src="../../static/index/more.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/more.png" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -66,7 +66,7 @@
 				</view>
 			</view>
 			<view class="empty_top" v-if="list.length==0">
-				<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+				<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 		</view>

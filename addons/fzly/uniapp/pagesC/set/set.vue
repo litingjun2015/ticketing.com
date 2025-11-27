@@ -7,7 +7,7 @@
 				</view>
 				<button class="right f_j" open-type="chooseAvatar" @chooseavatar="onchooseavatar">
 					<u-avatar :src="user_info.avatar" size="54rpx" mode="aspectFill"></u-avatar>
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</button>
 			</view>
 			<view class="item f_z_b">
@@ -24,7 +24,7 @@
 					{{item.text}}
 				</view>
 				<view class="right f_j">
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 		</view>

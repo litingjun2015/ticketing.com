@@ -2,7 +2,7 @@
 	<view class="content font_family" v-if="detail">
 		<view class="header" :style="{paddingTop:menuButtonInfo+'px',backgroundImage:`url(${detail.image})`}">
 			<view class="back f_zj" @click="back">
-				<image class="icon" src="../../static/public/back_w.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_w.png" mode=""></image>
 			</view>
 		</view>
 		<!-- 内容 -->
@@ -11,7 +11,7 @@
 			<view class="title">
 				{{detail.title}}
 				<view class="address f_j">
-					<image class="icon" src="../../static/public/pt_h.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/pt_h.png" mode=""></image>
 					<view class="text">
 						{{detail.jq_title}}
 					</view>
@@ -216,7 +216,7 @@
 						<u--input :placeholder="placeholder" inputAlign='center' border="none"
 							v-model="price_data.price"></u--input>
 					</view>
-					<image class="icon" src="../../static/public/set.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 				</view>
 				<view class="btn" @click="price_set">
 					确认

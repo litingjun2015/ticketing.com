@@ -12,7 +12,7 @@
 			</view>
 			<!-- 标签 -->
 			<view class="tip">
-				<image class="tip_icon" src="../../static/public/set.png" mode=""></image>
+				<image class="tip_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 				<text class="tip_text">点击下方小标签写出你的感受,可以帮助更多小伙伴哦~</text>
 			</view>
 			<view class="tag f">
@@ -35,15 +35,15 @@
 					<image class="item" :src="item" mode="aspectFill"></image>
 				</view>
 				<view class="add_img f_zj" @click="add_img" v-if="img_arr.length<9">
-					<image class="icon" src="../../static/public/add_img.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_img.png" mode=""></image>
 				</view>
 			</view>
 			<!-- 匿名评价 -->
 			<view class="anonymous f_j">
 				<image @click="anonymous_check" v-if="anonymous" class="anonymous_action"
-					src="../../static/public/dg_y.png" mode="">
+					src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/dg_y.png" mode="">
 				</image>
-				<image @click="anonymous_check" v-else class="no_anonymous" src="../../static/public/dg_h.png" mode="">
+				<image @click="anonymous_check" v-else class="no_anonymous" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/dg_h.png" mode="">
 				</image>
 				<view class="anonymous_text">
 					匿名评价

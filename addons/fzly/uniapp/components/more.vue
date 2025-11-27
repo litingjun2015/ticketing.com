@@ -9,7 +9,7 @@
 			</view>
 			<view class="right" v-if="tomore" @click="go">
 				<text class="text">{{moretitle?moretitle:'更多'}}</text>
-				<image class="icon" src="../static/index/more.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/more.png" mode=""></image>
 			</view>
 		</view>
 	</view>

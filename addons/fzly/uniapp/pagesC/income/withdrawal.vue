@@ -9,7 +9,7 @@
 				<view class="">
 					{{tx_text}}
 				</view>
-				<image class="icon2" src="../../static/index/go_hot.png" mode=""></image>
+				<image class="icon2" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 			</view>
 		</view>
 		<!-- 提现输入框 -->
@@ -48,7 +48,7 @@
 				</view>
 				<scroll-view scroll-y="true" class="account">
 					<view class="item f_j" @click="account_check(0)">
-						<image class="icon" src="../../static/business/vx_account.png" mode="aspectFill"></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/vx_account.png" mode="aspectFill"></image>
 						<view class="name f_d f_z_b">
 							<view class="">
 								微信
@@ -57,13 +57,13 @@
 								{{user_info.mobile | hide_tel}}
 							</view>
 						</view>
-						<image v-if="0===account_action" class="check_icon" src="../../static/public/dg_y.png"
+						<image v-if="0===account_action" class="check_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/dg_y.png"
 							mode="aspectFill"></image>
-						<image v-else class="check_icon" src="../../static/public/dg_h.png" mode="aspectFill"></image>
+						<image v-else class="check_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/dg_h.png" mode="aspectFill"></image>
 					</view>
 					<view class="item f_j" v-for="(item,index) in account_arr" :key="index"
 						@click="account_check(index+1)">
-						<image class="icon" v-if="item.type_text=='支付宝'" src="../../static/business/zfb_account.png"
+						<image class="icon" v-if="item.type_text=='支付宝'" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/zfb_account.png"
 							mode="aspectFill"></image>
 						<image class="icon" v-else :src="item.bank_icon" mode="aspectFill"></image>
 						<view class="name f_d f_z_b">
@@ -77,13 +77,13 @@
 								{{item.bank_code | hide_card}}
 							</view>
 						</view>
-						<image v-if="index+1===account_action" class="check_icon" src="../../static/public/dg_y.png"
+						<image v-if="index+1===account_action" class="check_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/dg_y.png"
 							mode="aspectFill"></image>
-						<image v-else class="check_icon" src="../../static/public/dg_h.png" mode="aspectFill"></image>
+						<image v-else class="check_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/dg_h.png" mode="aspectFill"></image>
 					</view>
 				</scroll-view>
 				<view class="add_account f_j" @click="go('/pagesB/income/add_account')">
-					<image class="icon" src="../../static/public/set.png" mode="aspectFill"></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode="aspectFill"></image>
 					<view class="text">
 						添加账户
 					</view>
@@ -165,7 +165,7 @@
 						});
 					} else {
 						this.tx_text = '微信'
-						this.tx_icon = '../../static/business/vx_account.png'
+						this.tx_icon = 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/vx_account.png'
 						this.query_data.id = 0
 					}
 				} else {
@@ -175,7 +175,7 @@
 						this.query_data.id = this.account_arr[index - 1].id
 					} else {
 						this.tx_text = this.account_arr[index - 1].type_text
-						this.tx_icon = '../../static/business/zfb_account.png'
+						this.tx_icon = 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/zfb_account.png'
 						this.query_data.id = this.account_arr[index - 1].id
 					}
 

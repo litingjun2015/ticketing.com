@@ -1,7 +1,7 @@
 <template>
 	<view class="content font_family" :style="{paddingTop:menuButtonInfo+'px'}">
 		<view class="search f_j h5_search" @click="go_detail('/pagesA/index_menu/search')">
-			<image class="icon" src="../../static/index/magnif.png" mode=""></image>
+			<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image>
 			<view class="pl">
 				搜索喜欢的内容~
 			</view>
@@ -34,7 +34,7 @@
 				</view>
 			</view>
 			<view class="empty_top" v-if="hot_list.length==0">
-				<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+				<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 		</scroll-view>
@@ -69,7 +69,7 @@
 				</view>
 			</view>
 			<view class="empty_top" v-if='prescribe_list.length==0'>
-				<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+				<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 				</u-empty>
 			</view>
 		</view>
@@ -79,7 +79,7 @@
 			<waterfall v-for="(item,index) in all_list" :img='item'></waterfall>
 		</view>
 		<view class="empty_top" v-if='all_list.length==0'>
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 	</view>

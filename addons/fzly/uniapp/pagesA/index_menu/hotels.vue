@@ -1,18 +1,18 @@
 <template>
 	<view class="content font_family">
 		<!-- <view class="header f_j" :style="{paddingTop:menuButtonInfo+'px'}">
-			<image class="icon" src="../../static/public/back_b.png" mode="" @click="back"></image>
+			<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_b.png" mode="" @click="back"></image>
 			<view class="search f_z_b">
 				<view class="search_left f_zj">
 					<view class="city">
 						郑州
 					</view>
-					<image class="icon" src="../../static/index/vector.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/vector.png" mode=""></image>
 					<view class="line">
 
 					</view>
 					<view>
-						<image class="magnif" src="../../static/index/magnif.png" mode=""></image>
+						<image class="magnif" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image>
 					</view>
 				</view>
 				<view class="search_right f_zj">
@@ -37,7 +37,7 @@
 			</view>
 		</view>
 		<view class="list" v-else>
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 		<!-- 加载更多 -->

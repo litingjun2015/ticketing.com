@@ -3,16 +3,16 @@ export default {
 		return {
 			tabbar_list: [{
 					text: '首页',
-					icon: '/static/business/index.png',
-					action_icon: '/static/business/index_action.png'
+					icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/index.png',
+					action_icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/index_action.png'
 				},
-				{ text: '发布', icon: '/static/business/fb.png', action_icon: '/static/business/fb_action.png' },
+				{ text: '发布', icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/fb.png', action_icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/fb_action.png' },
 				{
 					text: '订单',
-					icon: '/static/business/order.png',
-					action_icon: '/static/business/order_action.png'
+					icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/order.png',
+					action_icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/order_action.png'
 				},
-				{ text: '返回', icon: '/static/business/back.png', action_icon: '/static/business/back.png' },
+				{ text: '返回', icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/back.png', action_icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/back.png' },
 			],
 			tz_url: [
 				'/pagesC/index/index',

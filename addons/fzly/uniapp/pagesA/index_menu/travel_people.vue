@@ -2,7 +2,7 @@
 	<view class="content font_family">
 		<view class="add ">
 			<view class="box f_zj" @click="open(1)">
-				<image class="icon" src="../../static/public/add.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add.png" mode=""></image>
 				<text>新增出行人</text>
 			</view>
 		</view>
@@ -13,10 +13,10 @@
 					<view class="no_check" v-if="!item.check">
 
 					</view>
-					<image v-else class="icon" src="../../static/public/checkmark_l.png" mode=""></image>
+					<image v-else class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/checkmark_l.png" mode=""></image>
 					<text class="text">{{item.name}}</text>
 				</view>
-				<image @click.stop="open(2,item)" class="icon" src="../../static/public/set.png" mode=""></image>
+				<image @click.stop="open(2,item)" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 			</view>
 		</view>
 		<!-- 确定按钮 -->
@@ -29,17 +29,17 @@
 				<view class="ipt_box f_j">
 					<text>姓名：</text>
 					<u--input placeholder="请输入内容" border="none" v-model="set_data.name"></u--input>
-					<image class="icon" src="../../static/public/set.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 				</view>
 				<view class="ipt_box f_j">
 					<text>电话：</text>
 					<u--input placeholder="请输入内容" border="none" v-model="set_data.tel"></u--input>
-					<image class="icon" src="../../static/public/set.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 				</view>
 				<view class="ipt_box f_j">
 					<text>身份证：</text>
 					<u--input placeholder="请输入内容" border="none" v-model="set_data.id_card"></u--input>
-					<image class="icon" src="../../static/public/set.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 				</view>
 				<view class="btn_set f_zj" @click="confirm">
 					确定

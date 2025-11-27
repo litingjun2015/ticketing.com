@@ -7,8 +7,8 @@
 					{{item.username}}
 				</view>
 				<view class="gender f_zj" :style="{background:item.gender==1?'#16A9FA':''}">
-					<image v-if="item.gender==1" class="gender_icon" src="../static/index/man.png" mode=""></image>
-					<image v-else class="gender_icon" src="../static/index/woman.png" mode=""></image>
+					<image v-if="item.gender==1" class="gender_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/man.png" mode=""></image>
+					<image v-else class="gender_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/woman.png" mode=""></image>
 				</view>
 			</view>
 			<view class="num">

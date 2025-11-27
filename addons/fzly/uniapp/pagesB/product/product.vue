@@ -21,7 +21,7 @@
 					<view class="">
 						{{type_text?type_text:'请选择'}}
 					</view>
-					<image class="icon" src="../../static/index/more.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/more.png" mode=""></image>
 				</view>
 			</view>
 			<!-- 车型选择 -->
@@ -66,7 +66,7 @@
 					<view class="">
 						{{query_data.city?query_data.city:'请选择'}}
 					</view>
-					<image class="icon" src="../../static/index/more.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/more.png" mode=""></image>
 				</view>
 			</view> -->
 			<!-- 景区详细地址 -->
@@ -84,7 +84,7 @@
 					景区合作证明
 				</view>
 				<view class="zm_box" @click="add_img(1)">
-					<image v-if="!query_data.zm_image" class="zm_img" src="../../static/business/zm.png"
+					<image v-if="!query_data.zm_image" class="zm_img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/business/zm.png"
 						mode="aspectFill">
 					</image>
 					<image v-else class="zm_img" :src="query_data.zm_image" mode="aspectFill">
@@ -98,7 +98,7 @@
 				</view>
 				<view class="fm_box f_zj" @click="add_img(2)">
 					<view class="add f_j" v-if="!query_data.image">
-						<image class="icon" src="../../static/public/add_cover.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_cover.png" mode=""></image>
 						<text class="text">添加封面</text>
 					</view>
 					<image class="fm" v-else :src="query_data.image" mode="aspectFill"></image>

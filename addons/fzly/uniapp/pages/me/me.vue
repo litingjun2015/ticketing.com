@@ -14,7 +14,7 @@
 			</view>
 			<view class="right f_j" v-if="user_info">
 				<view class="set_icon" @click="go('/pagesA/set/set')">
-					<image class="icon" src="../../static/me/me_set_icon.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/me_set_icon.png" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -22,7 +22,7 @@
 		<view class="order_box">
 			<view class="f_j f_z_b" @click="go('/pagesA/order/order?type=0')">
 				<text class="title">我的订单</text>
-				<image class="go_order" src="../../static/index/go_hot.png" mode=""></image>
+				<image class="go_order" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 			</view>
 			<view class="item_box f">
 				<view class="item f_d f_j" v-for="(item,index) in order" :key="index" @click="go(item.url)">
@@ -37,11 +37,11 @@
 			<view class="item_box">
 				<view class="item f_z_b" @click="go('/pagesB/index/index')" v-if="user_info.is_dy==2">
 					<view class="left f_j">
-						<image class="icon" src="../../static/me/function1.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/function1.png" mode=""></image>
 						<text class="text">导游中心</text>
 					</view>
 					<view class="right">
-						<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 					</view>
 				</view>
 				<view class="item f_z_b" @click="go(item.url)" v-for="(item,index) in more" :key="index">
@@ -50,25 +50,25 @@
 						<text class="text">{{item.text}}</text>
 					</view>
 					<view class="right">
-						<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 					</view>
 				</view>
 				<view class="item f_z_b" @click="go('/pagesC/index/index')" v-if="user_info.is_admissionuser==1">
 					<view class="left f_j">
-						<image class="icon" src="../../static/me/mp.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/mp.png" mode=""></image>
 						<text class="text">门票管理</text>
 					</view>
 					<view class="right">
-						<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 					</view>
 				</view>
 				<view class="item f_z_b" @click="go('/pagesC/join/join')" v-else>
 					<view class="left f_j">
-						<image class="icon" src="../../static/me/mp.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/mp.png" mode=""></image>
 						<text class="text">景区入驻</text>
 					</view>
 					<view class="right">
-						<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 					</view>
 				</view>
 			</view>
@@ -81,28 +81,28 @@
 						<text class="text">{{item.text}}</text>
 					</view>
 					<view class="right">
-						<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 					</view>
 				</view>
 				<view class="item f_z_b" @click="clean">
 					<view class="left f_j">
-						<image class="icon" src="../../static/me/function4.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/function4.png" mode=""></image>
 						<text class="text">清除记录</text>
 					</view>
 					<view class="right">
-						<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 					</view>
 				</view>
 				<!-- #ifdef MP-WEIXIN -->
 				<button open-type="contact">
 					<view class="item p_0 f_z_b">
 						<view class="left f_j">
-							<image class="icon" src="../../static/me/function3.png" mode=""></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/function3.png" mode=""></image>
 							<text class="text">客服中心</text>
 							<!-- <button open-type="contact">客服中心</button> -->
 						</view>
 						<view class="right f_j">
-							<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 						</view>
 					</view>
 				</button>
@@ -127,25 +127,25 @@
 				menuButtonInfo: 0,
 				// 订单
 				order: [
-					{ icon: '../../static/me/order1.png', text: '待付款', url: '/pagesA/order/order?type=1' },
-					{ icon: '../../static/me/order2.png', text: '已付款', url: '/pagesA/order/order?type=2' },
-					{ icon: '../../static/me/order3.png', text: '已核销', url: '/pagesA/order/order?type=3' },
-					// { icon: '../../static/me/order4.png', text: '待退款', url: '/pagesA/order/order?type=4' },
-					{ icon: '../../static/me/order5.png', text: '已取消', url: '/pagesA/order/order?type=4' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/order1.png', text: '待付款', url: '/pagesA/order/order?type=1' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/order2.png', text: '已付款', url: '/pagesA/order/order?type=2' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/order3.png', text: '已核销', url: '/pagesA/order/order?type=3' },
+					// { icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/order4.png', text: '待退款', url: '/pagesA/order/order?type=4' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/order5.png', text: '已取消', url: '/pagesA/order/order?type=4' },
 				],
 				// 更多功能
 				more: [{
-						icon: '../../static/me/function2.png',
+						icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/function2.png',
 						text: '成为导游',
 						url: '/pagesA/register_guide/register_guide'
 					},
-					{ icon: '../../static/me/coupon.png', text: '我的优惠券', url: '/pagesA/coupon/coupon' },
-					{ icon: '../../static/me/grzy.png', text: '个人主页', url: '/pagesA/user_homepage/user_homepage' },
-					{ icon: '../../static/me/fx.png', text: '分销', url: '/pagesG/distribution/distribution' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/coupon.png', text: '我的优惠券', url: '/pagesA/coupon/coupon' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/grzy.png', text: '个人主页', url: '/pagesA/user_homepage/user_homepage' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/fx.png', text: '分销', url: '/pagesG/distribution/distribution' },
 				],
 				more2: [
-					{ icon: '../../static/me/function5.png', text: '关于我们', url: '/pagesA/public/public?title=关于我们' },
-					{ icon: '../../static/me/function6.png', text: '意见反馈', url: '/pagesA/feedback/feedback' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/function5.png', text: '关于我们', url: '/pagesA/public/public?title=关于我们' },
+					{ icon: 'https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/function6.png', text: '意见反馈', url: '/pagesA/feedback/feedback' },
 				]
 			}
 		},
@@ -216,7 +216,7 @@
 
 <style lang="scss" scoped>
 	.content {
-		// background-image: url(../../static/me/me_bg.png);
+		// background-image: url(https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/me/me_bg.png);
 		background-repeat: no-repeat;
 		background-size: 100%;
 		padding: 0rpx 30rpx;

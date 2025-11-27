@@ -6,7 +6,7 @@
 				{{item.type==1?'攻略':item.type==2?'游记':'美食'}}
 			</view>
 			<view class="pt f_j">
-				<image class="pt_icon" src="../static/index/pt.png" mode=""></image>
+				<image class="pt_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/pt.png" mode=""></image>
 				<text class="text">{{item.city}}</text>
 			</view>
 		</view>
@@ -21,11 +21,11 @@
 				<text class="text">{{item.username}}</text>
 			</view>
 			<view class="like f_j" v-if="item.is_sc==0">
-				<image class="icon" src="../static/public/collection.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/collection.png" mode=""></image>
 				<text class="text">{{item.sc_nums}}</text>
 			</view>
 			<view class="like f_j" v-else>
-				<image class="icon" src="../static/public/star_t.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/star_t.png" mode=""></image>
 				<text class="text">{{item.sc_nums}}</text>
 			</view>
 		</view>

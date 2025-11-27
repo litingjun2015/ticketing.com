@@ -9,12 +9,12 @@
 						{{city}}
 					</view>
 					<image @click.stop="go('/pagesA/set/address?type=query')" class="icon"
-						src="../../static/index/vector.png" mode=""></image>
+						src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/vector.png" mode=""></image>
 					<view class="line">
 
 					</view>
 					<view class="f_j">
-						<image class="magnif" src="../../static/index/magnif.png" mode=""></image>
+						<image class="magnif" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image>
 					</view>
 				</view>
 				<view class="pl">
@@ -49,7 +49,7 @@
 					</view>
 					<view class="right" @click="go_more">
 						<text class="text">更多</text>
-						<image class="icon" src="../../static/index/more.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/more.png" mode=""></image>
 					</view>
 				</view>
 				<!-- 导游卡片 -->
@@ -57,7 +57,7 @@
 					<guidecard v-for="(item,index) in guide_list" :key="index" :item='item'></guidecard>
 				</view>
 				<view class="" v-else>
-					<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+					<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 					</u-empty>
 				</view>
 			</view>
@@ -104,7 +104,7 @@
 						<view class="tip_title f_j">
 							<view class="title_text">{{hot_msg.title}}</view>
 							<view class="tip_icon f_zj">
-								<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+								<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 							</view>
 						</view>
 						<view class="tip_content">
@@ -117,7 +117,7 @@
 					<placecard type='1' :item='item' v-for="(item,index) in travel_tj_list" :key="index"></placecard>
 				</view>
 				<view class="" v-if="travel_tj_list.length==0 && hot_msg===null">
-					<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+					<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 					</u-empty>
 				</view>
 			</view>

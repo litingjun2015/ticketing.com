@@ -2,7 +2,7 @@
 	<view class="content font_family" v-if="detail">
 		<view class="header">
 			<view class="back f_zj" @click="back" :style="{top:menuButtonInfo+'px'}">
-				<image class="icon" src="../../static/public/back_w.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_w.png" mode=""></image>
 			</view>
 			<u-swiper height="334rpx" :list="detail.images"></u-swiper>
 		</view>
@@ -13,7 +13,7 @@
 				<view>{{detail.title}}</view>
 				<view class="address">{{detail.address_xx}}</view>
 				<view class="jl f_j">
-					<image class="address_icon" src="../../static/public/pt_h.png" mode=""></image>
+					<image class="address_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/pt_h.png" mode=""></image>
 					<text class="text">距您{{detail.distance | conversion_km}}千米</text>
 				</view>
 			</view>

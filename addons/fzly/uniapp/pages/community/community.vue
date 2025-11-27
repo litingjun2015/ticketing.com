@@ -4,7 +4,7 @@
 		<view class="p_f_top f_top" :style="{paddingTop:menuButtonInfo+'px'}">
 			<view class="header f_j f_z">
 				<view class="left" @click="go('/pagesA/community_search/community_search')">
-					<!-- <image class="img" src="../../static/index/magnif.png" mode=""></image> -->
+					<!-- <image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image> -->
 				</view>
 				<view class="right f_zj">
 					<view class="item" v-for="(item,index) in header_check" :key="index"
@@ -30,7 +30,7 @@
 					</view>
 					<view class="" v-if="item.user_id!=user_info.id">
 						<view v-if="item.is_gz==0" @click="gz_btn(1,item)" class="right f_zj">
-							<image class="icon" src="../../static/community/follow.png" mode=""></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/community/follow.png" mode=""></image>
 							<text class="text">关注</text>
 						</view>
 						<view v-else @click="gz_btn(2,item)" class="right f_zj">
@@ -38,7 +38,7 @@
 						</view>
 					</view>
 					<view class="" v-else @click="sc_dt(item.id)">
-						<image class="sc" src="../../static/public/sc_dt.png" mode=""></image>
+						<image class="sc" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/sc_dt.png" mode=""></image>
 					</view>
 				</view>
 				<view class="title" v-html="item.title"></view>
@@ -61,14 +61,14 @@
 					<view class="right f_j">
 						<view class="like">
 							<image v-if="item.is_dz==0" @click="dz_btn(1,item)" class="icon"
-								src="../../static/community/like.png" mode="">
+								src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/community/like.png" mode="">
 							</image>
 							<image v-else class="icon" @click="dz_btn(2,item)"
-								src="../../static/community/like_action.png" mode=""></image>
+								src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/community/like_action.png" mode=""></image>
 							<text class="text">{{item.dz_nums<99?item.dz_nums:'99+'}}</text>
 						</view>
 						<view class="like" @click.stop="open(item.id)">
-							<image class="icon" src="../../static/community/comment.png" mode=""></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/community/comment.png" mode=""></image>
 							<text class="text">{{item.common_nums}}</text>
 						</view>
 					</view>
@@ -76,14 +76,14 @@
 			</view>
 		</view>
 		<view style="padding-top: 200rpx;" class="empty_top" v-if='trends_list.length==0'>
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 		<!-- 发布按钮 -->
 		<movable-area class="area">
 			<movable-view class="area_view" direction="all" x="600rpx" y="1300rpx">
 				<view class="add" @click="go('/pagesA/release/release')">
-					<image class="icon" src="../../static/community/add.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/community/add.png" mode=""></image>
 				</view>
 			</movable-view>
 		</movable-area>
@@ -92,14 +92,14 @@
 			<scroll-view class="comment_box" scroll-y="true" @scrolltolower='scrolltolower'>
 				<comment v-for="(item,index) in comment" @user_reply='user_reply' :key="index" :msg='item'></comment>
 				<view class="empty_top" v-if="comment.length==0">
-					<u-empty text='快来分享你的评论吧~' icon="/static/public/kong.png">
+					<u-empty text='快来分享你的评论吧~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 					</u-empty>
 				</view>
 			</scroll-view>
 			<!-- 回复框 -->
 			<view class="bottom f_zj">
 				<view class="ipt_box f_j">
-					<image class="img" src="../../static/public/set.png" mode=""></image>
+					<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/set.png" mode=""></image>
 					<u--input :placeholder="placeholder" border="none" v-model="publish_commont.content"
 						@confirm="confirm"></u--input>
 				</view>

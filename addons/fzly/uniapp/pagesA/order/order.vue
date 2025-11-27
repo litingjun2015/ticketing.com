@@ -36,13 +36,13 @@
 								</view>
 								<view class="type_text" v-else>
 									<view class="f_j">
-										<image class="type_icon" src="../../static/public/checkmark_b.png" mode="">
+										<image class="type_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/checkmark_b.png" mode="">
 										</image>
 										<text v-if="item.yd_model!=null">{{item.yd_model}}</text>
 										<text v-if="item.yd_dsj!=null">{{item.yd_dsj}}</text>
 									</view>
 									<view class="f_j">
-										<image class="type_icon" src="../../static/public/date.png" mode=""></image>
+										<image class="type_icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/date.png" mode=""></image>
 										<text>{{item.yd_time}}</text>
 									</view>
 								</view>
@@ -90,7 +90,7 @@
 				:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 		</view>
 		<view class="empty_top" v-if="list.length==0">
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 		<u-toast ref="uToast"></u-toast>

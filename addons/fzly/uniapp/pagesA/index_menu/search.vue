@@ -1,11 +1,11 @@
 <template>
 	<view class="content font_family" :style="{paddingTop:menuButtonInfo+'px'}">
 		<view class="header f_j">
-			<image class="icon" src="../../static/public/back_b.png" mode="" @click="back"></image>
+			<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_b.png" mode="" @click="back"></image>
 			<view class="search f_z_b">
 				<view class="search_left f_zj">
 					<view>
-						<image class="magnif" src="../../static/index/magnif.png" mode=""></image>
+						<image class="magnif" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image>
 					</view>
 				</view>
 				<view class="search_right f_zj">
@@ -21,7 +21,7 @@
 		<view class="history " v-if="history.length>0">
 			<view class="title f_z_b">
 				<text class="text">历史搜索</text>
-				<image class="icon" @click="del_history" src="../../static/public/sc.png" mode=""></image>
+				<image class="icon" @click="del_history" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/sc.png" mode=""></image>
 			</view>
 			<view class="item_box f">
 				<view class="item" v-for="(item,index) in history" :key="index">

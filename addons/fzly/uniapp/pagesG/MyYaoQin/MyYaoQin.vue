@@ -1,10 +1,10 @@
 <template>
 	<view class="box">
-		<image class="hadr_img" src="../static/Blue_background.png" mode="" />
-		<!-- <image src="../static/Arrow_right.png" mode="" /> -->
+		<image class="hadr_img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Blue_background.png" mode="" />
+		<!-- <image src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Arrow_right.png" mode="" /> -->
 		<view class="content">
 			<view class="content_introduce" @tap="goback">
-				<image class="content_introduce_ima" src="../static/WhiteArrow.png" mode="" />
+				<image class="content_introduce_ima" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/WhiteArrow.png" mode="" />
 				<view class="content_introduce_title">
 					我的团队
 				</view>
@@ -56,7 +56,7 @@
 						<view class="Membership_statistics_1_box_left">
 							一级成员
 						</view>
-						<image class="Membership_statistics_1_box_right_img" src="../static/Arrow_right.png" mode="" />
+						<image class="Membership_statistics_1_box_right_img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Arrow_right.png" mode="" />
 					</view>
 					<view class="Membership_statistics_1_box_user">
 						<view class="Membership_statistics_1_box_user_1">
@@ -71,9 +71,9 @@
 						<view class="Membership_statistics_1_box_go_right">
 							较上月{{mygroup.oneb || 0}}%
 							<image class="Membership_statistics_1_box_go_right_img" v-if="mygroup.oneb<=-1"
-								src="../static/Dom.png" mode="" />
+								src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Dom.png" mode="" />
 							<image class="Membership_statistics_1_box_go_right_img" v-if="mygroup.oneb>0"
-								src="../static/up.png" mode="" />
+								src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/up.png" mode="" />
 						</view>
 					</view>
 				</view>
@@ -86,7 +86,7 @@
 						<view class="Membership_statistics_1_box_left">
 							二级成员
 						</view>
-						<image class="Membership_statistics_1_box_right_img" src="../static/Arrow_right.png" mode="" />
+						<image class="Membership_statistics_1_box_right_img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Arrow_right.png" mode="" />
 					</view>
 					<view class="Membership_statistics_1_box_user">
 						<view class="Membership_statistics_1_box_user_1">
@@ -101,9 +101,9 @@
 						<view class="Membership_statistics_1_box_go_right">
 							较上月{{mygroup.twob || 0}}%
 							<image class="Membership_statistics_1_box_go_right_img" v-if="mygroup.twob<=-1"
-								src="../static/Dom.png" mode="" />
+								src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Dom.png" mode="" />
 							<image class="Membership_statistics_1_box_go_right_img" v-if="mygroup.twob>0"
-								src="../static/up.png" mode="" />
+								src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/up.png" mode="" />
 						</view>
 					</view>
 				</view>
@@ -119,14 +119,14 @@
 							加入时间
 						</view>
 						<view class="finally_1_1_img">
-							<image style="width: 20rpx;height: 30rpx;" v-if="rankall===0" src="../static/triangle_1.png"
-								mode="" />
-							<image style="width: 20rpx;height: 30rpx;" v-if="rankall===0" src="../static/triangle_4.png"
-								mode="" />
-							<image style="width: 20rpx;height: 25rpx;" v-if="rankall===1" src="../static/triangle_2.png"
-								mode="" />
-							<image style="width: 20rpx;height: 25rpx;" v-if="rankall===1" src="../static/triangle_6.png"
-								mode="" />
+							<image style="width: 20rpx;height: 30rpx;" v-if="rankall===0" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_1.png"
+							mode="" />
+						<image style="width: 20rpx;height: 30rpx;" v-if="rankall===0" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_4.png"
+							mode="" />
+						<image style="width: 20rpx;height: 25rpx;" v-if="rankall===1" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_2.png"
+							mode="" />
+						<image style="width: 20rpx;height: 25rpx;" v-if="rankall===1" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_6.png"
+							mode="" />
 						</view>
 					</view>
 					<view class="finally_1_2" @tap="rankuser">
@@ -135,13 +135,13 @@
 						</view>
 						<view class="finally_1_2_img">
 							<image style="width: 20rpx;height: 30rpx;" v-if="rankalluser===0"
-								src="../static/triangle_1.png" mode="" />
-							<image style="width: 20rpx;height: 30rpx;" v-if="rankalluser===0"
-								src="../static/triangle_4.png" mode="" />
-							<image style="width: 20rpx;height: 25rpx;" v-if="rankalluser===1"
-								src="../static/triangle_2.png" mode="" />
-							<image style="width: 20rpx;height: 25rpx;" v-if="rankalluser===1"
-								src="../static/triangle_6.png" mode="" />
+							src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_1.png" mode="" />
+						<image style="width: 20rpx;height: 30rpx;" v-if="rankalluser===0"
+							src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_4.png" mode="" />
+						<image style="width: 20rpx;height: 25rpx;" v-if="rankalluser===1"
+							src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_2.png" mode="" />
+						<image style="width: 20rpx;height: 25rpx;" v-if="rankalluser===1"
+							src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/triangle_6.png" mode="" />
 						</view>
 					</view>
 				</view>

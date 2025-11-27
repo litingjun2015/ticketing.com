@@ -1,9 +1,9 @@
 <template>
 	<view class="content font_family" :style="{paddingTop:menuButtonInfo+'px'}">
 		<view class="header f_j">
-			<image class="back" src="../../static/public/back_b.png" mode="" @click="back"></image>
+			<image class="back" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/back_b.png" mode="" @click="back"></image>
 			<view class="ipt_box f_j">
-				<image class="icon" src="../../static/index/magnif.png" mode=""></image>
+				<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/magnif.png" mode=""></image>
 				<u--input placeholder="搜一搜游记" border="none" v-model="query_data.search" @confirm='confirm'></u--input>
 			</view>
 		</view>
@@ -22,14 +22,14 @@
 					</view>
 					<view class="see_box f">
 						<view class="view f_j">
-							<image class="icon" src="../../static/public/view.png" mode=""></image>
+							<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/view.png" mode=""></image>
 							<text class="num">{{item.view_nums}}</text>
 						</view>
 						<view class="collection f_j">
 							<image v-if="item.is_sc==0" @click.stop="sc_btn(1,item)" class="icon"
-								src="../../static/public/collection_h.png" mode="">
+								src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/collection_h.png" mode="">
 							</image>
-							<image v-else class="icon" @click.stop="sc_btn(2,item)" src="../../static/public/star_t.png"
+							<image v-else class="icon" @click.stop="sc_btn(2,item)" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/star_t.png"
 								mode=""></image>
 							<text v-if="item.is_sc==0" @click.stop="sc_btn(1,item)" class="num">{{item.sc_nums}}</text>
 							<text v-else @click.stop="sc_btn(2,item)" class="num">{{item.sc_nums}}</text>
@@ -47,7 +47,7 @@
 				:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 		</view>
 		<view class="empty_top" v-if="list.length==0">
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 		<u-toast ref="uToast"></u-toast>

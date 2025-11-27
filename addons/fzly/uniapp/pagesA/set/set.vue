@@ -6,7 +6,7 @@
 					编辑个人信息
 				</view>
 				<view class="right">
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 			<!-- <view class="item f_j f_z_b" @click="go('/pagesA/set/address')">
@@ -15,7 +15,7 @@
 				</view>
 				<view class="right">
 					<text>漳州</text>
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view> -->
 			<!-- <view class="item f_j f_z_b" @click="go('/pagesA/set/binding')">
@@ -23,7 +23,7 @@
 					账号绑定
 				</view>
 				<view class="right">
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view> -->
 			<!-- <view class="item f_j f_z_b" @click="go('/pagesA/order/order?type=0')">
@@ -31,7 +31,7 @@
 					我的订单
 				</view>
 				<view class="right">
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view> -->
 			<view class="item f_j f_z_b" @click="go('/pagesA/public/public?title=使用协议')">
@@ -39,7 +39,7 @@
 					使用协议
 				</view>
 				<view class="right">
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 			<view class="item f_j f_z_b" @click="go('/pagesA/public/public?title=隐私条款')">
@@ -47,7 +47,7 @@
 					隐私条款
 				</view>
 				<view class="right">
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 			<view class="item f_j f_z_b" @click="go('/pagesA/public/public?title=隐私条款概要')">
@@ -55,7 +55,7 @@
 					隐私条款概要
 				</view>
 				<view class="right">
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 			<!-- <view class="item f_j f_z_b">
@@ -63,7 +63,7 @@
 					个人信息收集清单
 				</view>
 				<view class="right">
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view> -->
 		</view>

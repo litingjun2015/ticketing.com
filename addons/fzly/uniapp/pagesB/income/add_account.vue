@@ -9,7 +9,7 @@
 					<view class="" :class="{check_text:query_data.type}">
 						{{type_text}}
 					</view>
-					<image class="icon" src="../../static/index/go_hot.png" mode=""></image>
+					<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/index/go_hot.png" mode=""></image>
 				</view>
 			</view>
 			<view class="item f_j" v-if="type_text!='银行卡'">

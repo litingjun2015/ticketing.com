@@ -1,7 +1,7 @@
 <template>
 	<view class="content font_family">
 		<view class="item f_j">
-			<image class="icon" src="../../static/public/vx.png" mode=""></image>
+			<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/vx.png" mode=""></image>
 			<text class="text">微信</text>
 			<view class="btn" @click="binding(1)" v-if="user_info.openid">
 				已绑定

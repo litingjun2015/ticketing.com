@@ -76,7 +76,7 @@
 				</view>
 				<view class="fm_box f_zj" @click="add_img(2)">
 					<view class="add f_j" v-if="!query_data.image">
-						<image class="icon" src="../../static/public/add_cover.png" mode=""></image>
+						<image class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/add_cover.png" mode=""></image>
 						<text class="text">添加封面</text>
 					</view>
 					<image class="fm" v-else :src="query_data.image" mode="aspectFill"></image>

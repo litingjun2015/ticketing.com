@@ -63,19 +63,19 @@
 
 		<view class="box_2 a-center j-sb">
 			<view class="box_2_item" @click="routerTo('/pagesG/yongJin/yongJin')">
-				<image src="../static/Gicon1.svg" mode=""></image>
+				<image src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Gicon1.svg" mode=""></image>
 				<view class=" f-size-24 mt-10 color-23">
 					佣金流水
 				</view>
 			</view>
 			<view class="box_2_item" @click="routerTo('/pagesG/MyYaoQin/MyYaoQin')">
-				<image src="../static/Gicon2.svg" mode=""></image>
+				<image src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Gicon2.svg" mode=""></image>
 				<view class=" f-size-24 mt-10 color-23">
 					我的邀请
 				</view>
 			</view>
 			<view class="box_2_item" @click="routerTo('/pagesG/TiXianJiLu/TiXianJiLu')">
-				<image src="../static/Gicon3.svg" mode=""></image>
+				<image src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Gicon3.svg" mode=""></image>
 				<view class=" f-size-24 mt-10 color-23">
 					提现记录
 				</view>
@@ -84,7 +84,7 @@
 
 		<view class="box_3 a-center j-sb" @click="routerTo('/pagesG/haiBao/haiBao')">
 			<view class="a-center j-sb">
-				<image src="../static/Gicon4.png" mode=""></image>
+				<image src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/Gicon4.png" mode=""></image>
 				<view class="box_3_center ml-20">
 					<view class="color-23 f-size-30 mb-10">
 						推荐收入

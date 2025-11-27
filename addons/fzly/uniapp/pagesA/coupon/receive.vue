@@ -27,16 +27,16 @@
 							</view>
 						</view>
 						<!-- <view class="icon f_zj">
-							<image class="img" src="../../static/public/coupon_g.png" mode=""></image>
+							<image class="img" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/coupon_g.png" mode=""></image>
 						</view> -->
 					</view>
 				</view>
 				<view class="bottom">
 					<view class="title f_z_b f_j" @click="see_rule(index)">
 						<text class="text">使用规则</text>
-						<image v-if="coupon_index===index" class="icon" src="../../static/public/screen_up.png" mode="">
+						<image v-if="coupon_index===index" class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/screen_up.png" mode="">
 						</image>
-						<image v-else class="icon" src="../../static/public/screen_down.png" mode=""></image>
+						<image v-else class="icon" src="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/screen_down.png" mode=""></image>
 					</view>
 					<view class="rules" v-if="coupon_index===index">
 						{{item.remarks}}
@@ -59,7 +59,7 @@
 		<u-loadmore v-if="list.length>0" line @loadmore='get_list' :status="status" :loading-text="loadingText"
 			:loadmore-text="loadmoreText" :nomore-text="nomoreText" />
 		<view class="empty_top" v-if="list.length==0">
-			<u-empty text='没有数据啦~' icon="/static/public/kong.png">
+			<u-empty text='没有数据啦~' icon="https://wsbmb.oss-cn-chengdu.aliyuncs.com/qlx/public/kong.png">
 			</u-empty>
 		</view>
 		<u-toast ref="uToast"></u-toast>
