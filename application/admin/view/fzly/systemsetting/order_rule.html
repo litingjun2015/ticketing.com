@@ -3,9 +3,6 @@
 <div class="layui-card">
     <div class="layui-card-header">
         <h3 class="layui-card-title">订单规则配置</h3>
-        <div class="layui-btn-group layui-card-header-toolbar">
-            <button class="layui-btn layui-btn-normal" id="saveBtn"><i class="fa fa-save"></i> 保存配置</button>
-        </div>
     </div>
     <div class="layui-card-body">
         <form class="layui-form" id="orderRuleForm">
@@ -42,6 +39,10 @@
                            {if $orderRule.status == 0}checked{/if}>
                 </div>
             </div>
+            <div class="layui-btn-group layui-card-header-toolbar">
+                <button class="layui-btn layui-btn-normal" id="saveBtn"><i class="fa fa-save"></i> 保存配置</button>
+            </div>
+
         </form>
     </div>
 </div>
